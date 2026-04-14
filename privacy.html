@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy — Colossal AI Consulting</title>
+  <meta name="description" content="Privacy Policy for Colossal AI Consulting's LinkedIn App integration."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #0a0e1a;
+      --navy2:   #0f1525;
+      --teal:    #00c8d9;
+      --teal2:   #00a8b8;
+      --white:   #f0f5ff;
+      --muted:   #8fa3c0;
+      --border:  #1e2d4a;
+      --card-bg: #111827;
+      --text:    #c8d8f0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(10, 14, 26, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--navy2);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg { width: 22px; height: 22px; }
+
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .logo-text span { color: var(--teal); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--teal); }
+
+    /* ── HEADER ── */
+    .page-header {
+      position: relative;
+      padding: 140px 24px 72px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .page-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .header-glow {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(0,200,217,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-header-inner { position: relative; z-index: 2; }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border: 1px solid rgba(0,200,217,0.3);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .page-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── LAYOUT ── */
+    .doc-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+      position: relative;
+      z-index: 1;
+      align-items: start;
+    }
+
+    /* ── TOC SIDEBAR ── */
+    .toc-sidebar {
+      position: sticky;
+      top: 100px;
+      padding-right: 48px;
+    }
+
+    .toc-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li { margin-bottom: 4px; }
+
+    .toc-list a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: block;
+      padding: 5px 0;
+      border-left: 2px solid transparent;
+      padding-left: 12px;
+      transition: color 0.2s, border-color 0.2s;
+      line-height: 1.4;
+    }
+
+    .toc-list a:hover {
+      color: var(--white);
+      border-left-color: var(--teal);
+    }
+
+    /* ── CONTENT ── */
+    .doc-content { min-width: 0; }
+
+    .doc-section {
+      padding-bottom: 52px;
+      margin-bottom: 52px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .doc-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+
+    .section-num {
+      font-size: 0.7rem;
+      color: var(--teal);
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .doc-section h3 {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .doc-section p {
+      font-size: 0.93rem;
+      color: var(--text);
+      margin-bottom: 14px;
+      line-height: 1.75;
+    }
+
+    .doc-section p:last-child { margin-bottom: 0; }
+
+    .doc-section ul, .doc-section ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .doc-section li {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.65;
+    }
+
+    .doc-section strong { color: var(--white); font-weight: 500; }
+
+    .doc-section a {
+      color: var(--teal);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,200,217,0.2);
+      transition: border-color 0.2s;
+    }
+
+    .doc-section a:hover { border-bottom-color: var(--teal); }
+
+    .callout {
+      background: rgba(0, 200, 217, 0.06);
+      border: 1px solid rgba(0, 200, 217, 0.2);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .callout strong { color: var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy2);
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-left { font-size: 0.82rem; color: var(--muted); }
+    .footer-left strong { color: var(--white); font-family: 'Syne', sans-serif; }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--teal); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .doc-layout { grid-template-columns: 1fr; }
+      .toc-sidebar { display: none; }
+      footer { flex-direction: column; align-items: flex-start; padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#0a0e1a" stroke="#1e2d4a" stroke-width="2"/>
+        <path d="M 65 32 A 22 22 0 1 0 65 68" stroke="white" stroke-width="10" stroke-linecap="square" fill="none"/>
+        <line x1="65" y1="32" x2="76" y2="32" stroke="white" stroke-width="10" stroke-linecap="square"/>
+        <line x1="65" y1="68" x2="76" y2="68" stroke="white" stroke-width="10" stroke-linecap="square"/>
+        <circle cx="74" cy="42" r="5" fill="#00c8d9"/>
+      </svg>
+    </div>
+    <span class="logo-text">Colossal <span>AI</span> Consulting</span>
+  </a>
+  <a class="nav-back" href="/">← Back to Home</a>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<div class="page-header">
+  <div class="header-glow"></div>
+  <div class="page-header-inner">
+    <div class="page-badge">Legal</div>
+    <h1>Privacy Policy</h1>
+    <p class="page-meta">Effective Date: April 13, 2026 &nbsp;·&nbsp; Last Updated: April 13, 2026</p>
+  </div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="doc-layout">
+
+  <!-- TOC -->
+  <aside class="toc-sidebar">
+    <p class="toc-label">Contents</p>
+    <ol class="toc-list">
+      <li><a href="#intro">1. Introduction</a></li>
+      <li><a href="#data-collected">2. Information We Collect</a></li>
+      <li><a href="#linkedin-data">3. LinkedIn Data Access</a></li>
+      <li><a href="#how-we-use">4. How We Use Your Info</a></li>
+      <li><a href="#sharing">5. Sharing & Disclosure</a></li>
+      <li><a href="#retention">6. Data Retention</a></li>
+      <li><a href="#security">7. Security</a></li>
+      <li><a href="#your-rights">8. Your Rights</a></li>
+      <li><a href="#cookies">9. Cookies & Tracking</a></li>
+      <li><a href="#children">10. Children's Privacy</a></li>
+      <li><a href="#changes">11. Changes to This Policy</a></li>
+      <li><a href="#contact">12. Contact Us</a></li>
+    </ol>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="doc-content">
+
+    <div class="doc-section" id="intro">
+      <span class="section-num">Section 01</span>
+      <h2>Introduction</h2>
+      <p>Welcome to <strong>Colossal AI Consulting</strong> ("App," "we," "our," or "us"). This Privacy Policy explains how we collect, use, share, and protect information about you when you use our application, which integrates with the LinkedIn platform via LinkedIn's official APIs.</p>
+      <p>By connecting your LinkedIn account or otherwise using the App, you agree to the practices described in this policy. If you do not agree, please disconnect your account and discontinue use.</p>
+      <div class="callout">
+        This application is not endorsed by, affiliated with, or officially connected to LinkedIn Corporation or its subsidiaries. Use of LinkedIn data is governed by <a href="https://www.linkedin.com/legal/user-agreement" target="_blank">LinkedIn's User Agreement</a> and <a href="https://www.linkedin.com/legal/privacy-policy" target="_blank">Privacy Policy</a>.
+      </div>
+    </div>
+
+    <div class="doc-section" id="data-collected">
+      <span class="section-num">Section 02</span>
+      <h2>Information We Collect</h2>
+
+      <h3>Information You Provide</h3>
+      <ul>
+        <li>Account registration details (name, email address, password)</li>
+        <li>Profile information you choose to enter within the App</li>
+        <li>Support requests, feedback, and communications</li>
+      </ul>
+
+      <h3>Information Collected Automatically</h3>
+      <ul>
+        <li>IP address, browser type, operating system, and device identifiers</li>
+        <li>Log data including pages visited, timestamps, and referring URLs</li>
+        <li>Usage patterns and feature interactions within the App</li>
+      </ul>
+
+      <h3>LinkedIn API Data</h3>
+      <p>With your explicit authorization, we may access certain LinkedIn data as described in Section 3 below.</p>
+    </div>
+
+    <div class="doc-section" id="linkedin-data">
+      <span class="section-num">Section 03</span>
+      <h2>LinkedIn Data Access</h2>
+      <p>Our App requests only the minimum LinkedIn permissions required to deliver its core functionality. The scopes we request may include:</p>
+      <ul>
+        <li><strong>r_liteprofile</strong> — Basic profile information (name, profile picture, headline)</li>
+        <li><strong>r_emailaddress</strong> — Your primary email address for account creation</li>
+        <li><strong>w_member_social</strong> — Ability to post, comment, or react on your behalf (only when you initiate an action)</li>
+        <li><strong>r_organization_social</strong> — Read access to organization pages you manage (if applicable)</li>
+      </ul>
+      <div class="callout">
+        <strong>We will never:</strong> access LinkedIn data beyond what you authorize, store your LinkedIn credentials, sell or transfer your LinkedIn data to third-party advertisers, or use your data to re-identify you across other services.
+      </div>
+      <p>LinkedIn data accessed through the API is used solely for the purpose for which it was granted. We comply with <a href="https://legal.linkedin.com/api-terms-of-use" target="_blank">LinkedIn's API Terms of Use</a> at all times.</p>
+    </div>
+
+    <div class="doc-section" id="how-we-use">
+      <span class="section-num">Section 04</span>
+      <h2>How We Use Your Information</h2>
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Provide, operate, and improve the App and its features</li>
+        <li>Authenticate your identity and maintain your session</li>
+        <li>Perform actions on LinkedIn that you explicitly request</li>
+        <li>Send transactional communications (account alerts, security notices)</li>
+        <li>Respond to support requests and troubleshoot issues</li>
+        <li>Monitor for fraud, abuse, and security threats</li>
+        <li>Comply with applicable legal obligations</li>
+      </ul>
+      <p>We do <strong>not</strong> use your data for targeted advertising, nor do we build advertising profiles based on your LinkedIn activity.</p>
+    </div>
+
+    <div class="doc-section" id="sharing">
+      <span class="section-num">Section 05</span>
+      <h2>Sharing &amp; Disclosure</h2>
+      <p>We do not sell, rent, or trade your personal information. We may share data in the following limited circumstances:</p>
+
+      <h3>Service Providers</h3>
+      <p>Trusted vendors who assist in operating our infrastructure (hosting, analytics, email delivery) under strict confidentiality agreements and data processing terms.</p>
+
+      <h3>Legal Requirements</h3>
+      <p>We may disclose information when required by law, court order, or governmental authority, or to protect the rights, property, or safety of our users or the public.</p>
+
+      <h3>Business Transfers</h3>
+      <p>In the event of a merger, acquisition, or sale of assets, your data may be transferred as part of that transaction. We will notify you before your data becomes subject to a different privacy policy.</p>
+    </div>
+
+    <div class="doc-section" id="retention">
+      <span class="section-num">Section 06</span>
+      <h2>Data Retention</h2>
+      <p>We retain your personal data only as long as necessary to provide the App's services or as required by law. Specifically:</p>
+      <ul>
+        <li>Account data is retained for the duration of your active account.</li>
+        <li>LinkedIn API data is cached only as long as needed to fulfill your request and is purged within <strong>30 days</strong> unless you request longer storage for specific features.</li>
+        <li>Log data is retained for up to <strong>90 days</strong> for security and debugging purposes.</li>
+      </ul>
+      <p>Upon account deletion, we will remove or anonymize your personal data within <strong>30 days</strong>, except where retention is legally required.</p>
+    </div>
+
+    <div class="doc-section" id="security">
+      <span class="section-num">Section 07</span>
+      <h2>Security</h2>
+      <p>We implement industry-standard safeguards to protect your data, including:</p>
+      <ul>
+        <li>TLS/HTTPS encryption for all data in transit</li>
+        <li>AES-256 encryption for sensitive data at rest</li>
+        <li>OAuth 2.0 token-based authentication (we never store your LinkedIn password)</li>
+        <li>Periodic security audits and vulnerability assessments</li>
+        <li>Access controls limiting data to authorized personnel only</li>
+      </ul>
+      <p>No method of transmission or storage is 100% secure. If you believe your account has been compromised, contact us immediately at <a href="mailto:security@colossalai.consulting">security@colossalai.consulting</a>.</p>
+    </div>
+
+    <div class="doc-section" id="your-rights">
+      <span class="section-num">Section 08</span>
+      <h2>Your Rights</h2>
+      <p>Depending on your jurisdiction, you may have the following rights regarding your personal data:</p>
+      <ul>
+        <li><strong>Access</strong> — Request a copy of the data we hold about you</li>
+        <li><strong>Correction</strong> — Request correction of inaccurate data</li>
+        <li><strong>Deletion</strong> — Request deletion of your personal data ("right to be forgotten")</li>
+        <li><strong>Portability</strong> — Receive your data in a structured, machine-readable format</li>
+        <li><strong>Objection / Restriction</strong> — Object to or restrict certain processing activities</li>
+        <li><strong>Withdraw Consent</strong> — Revoke LinkedIn API access at any time via your LinkedIn account settings under <em>Settings &amp; Privacy → Data Privacy → Permitted Services</em></li>
+      </ul>
+      <p>To exercise any of these rights, email us at <a href="mailto:privacy@colossalai.consulting">privacy@colossalai.consulting</a>. We will respond within 30 days.</p>
+    </div>
+
+    <div class="doc-section" id="cookies">
+      <span class="section-num">Section 09</span>
+      <h2>Cookies &amp; Tracking</h2>
+      <p>We use a minimal set of cookies essential to the App's operation:</p>
+      <ul>
+        <li><strong>Session cookies</strong> — Keep you logged in during a browsing session</li>
+        <li><strong>CSRF tokens</strong> — Protect against cross-site request forgery attacks</li>
+        <li><strong>Preference cookies</strong> — Remember your display and language settings</li>
+      </ul>
+      <p>We do not use third-party advertising cookies or tracking pixels. You may disable cookies in your browser settings, but some features of the App may not function correctly as a result.</p>
+    </div>
+
+    <div class="doc-section" id="children">
+      <span class="section-num">Section 10</span>
+      <h2>Children's Privacy</h2>
+      <p>The App is not directed at individuals under the age of 16. We do not knowingly collect personal data from children. If you believe a child has provided us with personal information, please contact us immediately and we will promptly delete it.</p>
+    </div>
+
+    <div class="doc-section" id="changes">
+      <span class="section-num">Section 11</span>
+      <h2>Changes to This Policy</h2>
+      <p>We may update this Privacy Policy periodically to reflect changes in our practices, technology, or legal requirements. When we make material changes, we will:</p>
+      <ul>
+        <li>Update the "Last Updated" date at the top of this page</li>
+        <li>Notify you by email or in-app notification at least 14 days before changes take effect</li>
+      </ul>
+      <p>Continued use of the App after changes are effective constitutes your acceptance of the revised policy. We encourage you to review this page periodically.</p>
+    </div>
+
+    <div class="doc-section" id="contact">
+      <span class="section-num">Section 12</span>
+      <h2>Contact Us</h2>
+      <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please reach out:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:privacy@colossalai.consulting">privacy@colossalai.consulting</a></li>
+        <li><strong>Mailing Address:</strong> Colossal AI Consulting, Greenwood, IN</li>
+        <li><strong>Policy URL:</strong> <a href="/privacy">colossalai.consulting/privacy</a></li>
+      </ul>
+      <p>For LinkedIn-specific privacy concerns, you may also contact LinkedIn directly at <a href="https://www.linkedin.com/help/linkedin" target="_blank">linkedin.com/help/linkedin</a>.</p>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-left">
+    <strong>Colossal AI Consulting</strong><br/>
+    Privacy Policy · Effective April 13, 2026
+  </div>
+  <ul class="footer-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/privacy">Privacy Policy</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
