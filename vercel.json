@@ -1,6 +1,7 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "outputDirectory": ".",
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy.html" }
   ]
