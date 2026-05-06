@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COLOSSAL. — AI Consulting for Small Businesses</title>
+  <meta name="description" content="AI consulting for small businesses. Plain language. Real results. Free 30-minute assessment." />
+  <meta property="og:title" content="COLOSSAL. — AI Consulting for Small Businesses" />
+  <meta property="og:description" content="We help small business owners find where AI fits — and show them exactly how." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --ink:    #0b0b0d;
+      --paper:  #ece5d4;
+      --accent: #c2884a;
+      --muted:  #6b6357;
+      --line:   rgba(236,229,212,0.18);
+      --font-display: 'Inter', 'Helvetica Neue', sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--font-display);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Global utilities ── */
+    .mono {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      display: block;
+    }
+
+    .accent { color: var(--accent); }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Measure rule ── */
+    .measure-rule {
+      display: flex;
+      height: 14px;
+      width: 100%;
+    }
+    .measure-rule span {
+      flex: 1;
+      border-left: 1px solid var(--paper);
+      opacity: 0.2;
+    }
+    .measure-rule span:nth-child(5n+1) {
+      height: 100%;
+      opacity: 0.5;
+    }
+    .measure-rule span:not(:nth-child(5n+1)) {
+      height: 50%;
+    }
+
+    /* ── Section anatomy ── */
+    section {
+      padding: 120px 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 80px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      list-style: none;
+    }
+
+    .nav-links a {
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .btn-ghost-nav {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border: 1px solid rgba(236,229,212,0.33);
+      color: var(--paper);
+      transition: background 0.2s;
+    }
+    .btn-ghost-nav:hover { background: rgba(236,229,212,0.08); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 100px 80px 140px;
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-top: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 56px;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(72px, 10vw, 168px);
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+    }
+
+    .hero-aside {
+      padding-top: 80px;
+    }
+
+    .hero-aside p {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.72;
+    }
+
+    .hero-scroll {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 32px;
+    }
+
+    .hero-rule {
+      margin-top: 80px;
+    }
+
+    .hero-rule-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.45;
+      margin-top: 8px;
+    }
+
+    /* ── Page-load animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow  { animation: fadeUp 0.7s ease both; animation-delay: 0.1s; }
+    .hero-h1       { animation: fadeUp 0.8s ease both; animation-delay: 0.25s; }
+    .hero-aside    { animation: fadeUp 0.7s ease both; animation-delay: 0.5s; }
+    .hero-rule     { animation: fadeUp 0.6s ease both; animation-delay: 0.7s; }
+
+    /* ── MARQUEE ── */
+    .marquee-section {
+      padding: 60px 80px;
+    }
+
+    .marquee-inner {
+      display: flex;
+      gap: 60px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ── THESIS ── */
+    .thesis-statement {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 52px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      max-width: 880px;
+    }
+
+    /* ── PRACTICE ── */
+    .service-rows { width: 100%; }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 60px 1fr 200px;
+      gap: 32px;
+      align-items: baseline;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .service-row:last-child { border-bottom: none; }
+
+    .service-n {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      opacity: 0.5;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 34px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .service-body {
+      font-size: 15px;
+      line-height: 1.55;
+      opacity: 0.72;
+      max-width: 560px;
+    }
+
+    .service-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: right;
+    }
+
+    /* ── FIELD NOTES ── */
+    .case-photo {
+      aspect-ratio: 16 / 9;
+      background:
+        repeating-linear-gradient(135deg, rgba(236,229,212,0.04) 0 14px, transparent 14px 28px),
+        var(--ink);
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+
+    .case-photo-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    .case-photo-caption {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      opacity: 0.55;
+    }
+
+    .case-headline {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 40px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+      max-width: 900px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      border-top: 1px solid var(--line);
+      padding-top: 32px;
+    }
+
+    .kpi-number {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 56px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      opacity: 0.55;
+      margin-top: 8px;
+    }
+
+    /* ── METHOD ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+
+    .method-n {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 72px;
+      color: var(--accent);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+    }
+
+    .method-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .method-body {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.72;
+    }
+
+    /* ── PEOPLE ── */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .portrait {
+      aspect-ratio: 4 / 5;
+      background:
+        repeating-linear-gradient(135deg, rgba(236,229,212,0.04) 0 14px, transparent 14px 28px),
+        var(--ink);
+      border: 1px solid var(--line);
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .portrait-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      opacity: 0.4;
+    }
+
+    .person-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .person-role {
+      font-size: 12px;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 160px 80px;
+      text-align: center;
+    }
+
+    .cta-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(56px, 8vw, 128px);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .cta-buttons {
+      margin-top: 64px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 20px 32px;
+      background: var(--accent);
+      color: var(--ink);
+      font-weight: 600;
+      transition: filter 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 20px 32px;
+      border: 1px solid rgba(236,229,212,0.33);
+      color: var(--paper);
+      transition: background 0.2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { background: rgba(236,229,212,0.08); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 48px 80px 36px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    footer .mono-col {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    footer .mono-col > * + * { margin-top: 8px; display: block; }
+    footer .mono-col .col-head { margin-bottom: 12px; opacity: 1; }
+
+    /* ── Hover on service rows ── */
+    .service-row {
+      transition: background 0.2s;
+      cursor: default;
+    }
+    .service-row:hover {
+      background: rgba(236,229,212,0.03);
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+
+      section { padding: 72px 24px; }
+      .hero { padding: 60px 24px 80px; min-height: 80vh; }
+
+      .section-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-top { grid-template-columns: 1fr; }
+      .hero-aside { padding-top: 0; }
+
+      .service-row { grid-template-columns: 40px 1fr; gap: 16px; }
+      .service-tag { display: none; }
+
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .method-grid { grid-template-columns: 1fr; gap: 40px; }
+      .people-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+
+      .marquee-section { padding: 40px 24px; }
+      .cta-section { padding: 80px 24px; }
+
+      .thesis-statement { font-size: 36px; }
+      .case-headline { font-size: 28px; }
+    }
+
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      COLOSSAL<span class="accent">.</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#practice">Practice</a></li>
+      <li><a href="#engagements">Engagements</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#begin">Begin</a></li>
+    </ul>
+    <a href="#begin" class="btn-ghost-nav">Begin →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-eyebrow">
+          ☉ &nbsp; AI Consultancy &nbsp;/&nbsp; Est. MMXXVI &nbsp;/&nbsp; 26°N
+        </div>
+        <h1 class="hero-h1">
+          Intelligence<br />
+          at scale,<br />
+          <span class="accent">sized</span> for you<span class="accent">.</span>
+        </h1>
+      </div>
+      <div class="hero-aside">
+        <p>
+          We embed with small businesses to deploy AI where it changes
+          the unit economics — not where it looks impressive in a deck.
+        </p>
+        <div class="hero-scroll">↓ Scroll · 01 of 06</div>
+      </div>
+    </div>
+
+    <div class="hero-rule">
+      <div class="measure-rule">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span>
+      </div>
+      <div class="hero-rule-labels">
+        <span>FORMERLY HUMAN</span>
+        <span>NOW LEVERAGED</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="marquee-section reveal">
+    <div class="marquee-inner">
+      <span>Local contractor groups</span>
+      <span class="accent">◊</span>
+      <span>Dental &amp; medical practices</span>
+      <span class="accent">◊</span>
+      <span>Real estate brokerages</span>
+      <span class="accent">◊</span>
+      <span>Restaurants &amp; hospitality</span>
+      <span class="accent">◊</span>
+      <span>Service businesses</span>
+      <span class="accent">◊</span>
+      <span>Retail &amp; trades</span>
+    </div>
+  </section>
+
+  <!-- § 01 THESIS -->
+  <section class="reveal">
+    <div class="section-grid">
+      <span class="eyebrow">§ 01 — Thesis</span>
+      <div class="thesis-statement">
+        Most small businesses don't have an AI problem.
+        They have a <span class="accent">"nobody showed me where to start"</span> problem<span class="accent">.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 02 PRACTICE -->
+  <section id="practice" class="reveal">
+    <div class="section-grid">
+      <span class="eyebrow">§ 02 — Practice</span>
+      <div class="service-rows">
+
+        <div class="service-row">
+          <div class="service-n">01</div>
+          <div>
+            <div class="service-title">Operating Diagnostic</div>
+            <div class="service-body">
+              A 30-minute deep dive into your business. We identify exactly where AI can save you time,
+              cut costs, or grow revenue — and hand you a prioritized action plan you can implement
+              immediately, with or without us.
+            </div>
+          </div>
+          <div class="service-tag">Free · 30 min</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-n">02</div>
+          <div>
+            <div class="service-title">Embedded Build</div>
+            <div class="service-body">
+              We identify one high-ROI AI opportunity, build it, and hand it off fully documented.
+              Speed-to-lead agents, knowledge systems, automation workflows — built to your
+              process, not a template.
+            </div>
+          </div>
+          <div class="service-tag">From $1,500</div>
+        </div>
+
+        <div class="service-row">
+          <div class="service-n">03</div>
+          <div>
+            <div class="service-title">Operator Retainer</div>
+            <div class="service-body">
+              Ongoing fractional AI advisor. Monthly strategy sessions, implementation support,
+              tool recommendations, and staff training. You stay current. Your team stays capable.
+              We handle the rest.
+            </div>
+          </div>
+          <div class="service-tag">From $1,000 / mo</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- § 03 FIELD NOTES -->
+  <section id="engagements" class="reveal">
+    <div class="section-grid">
+      <span class="eyebrow">§ 03 — Field Notes</span>
+      <div>
+        <div class="case-photo">
+          <div class="case-photo-label">[ CASE PHOTO · MONUMENTAL / EDITORIAL ]</div>
+          <div class="case-photo-caption">CASE №001 / WEDDING VENUE / 2026</div>
+        </div>
+
+        <div class="case-headline">
+          We built a speed-to-lead agent for a wedding venue group.
+          One month in, they booked two additional tours they would have
+          otherwise missed<span class="accent">.</span>
+        </div>
+
+        <div class="kpi-grid">
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Response time</div>
+            <div class="kpi-number">&lt;2 min</div>
+            <div class="kpi-sub">From 6–8 hours</div>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Tours booked</div>
+            <div class="kpi-number">+2 / mo</div>
+            <div class="kpi-sub">Avg. deal size $11k</div>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Close rate</div>
+            <div class="kpi-number">40%</div>
+            <div class="kpi-sub">On tour → contract</div>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Payback</div>
+            <div class="kpi-number">Wk 3</div>
+            <div class="kpi-sub">Verified</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 04 METHOD -->
+  <section id="method" class="reveal">
+    <div class="section-grid">
+      <span class="eyebrow">§ 04 — Method</span>
+      <div class="method-grid">
+        <div>
+          <div class="method-n">I.</div>
+          <div class="method-title">Listen</div>
+          <div class="method-body">
+            We start with a 30-minute conversation about your business — your day,
+            your bottlenecks, the tasks you wish someone else could do. No agenda.
+            No tools pitched before we understand the problem.
+          </div>
+        </div>
+        <div>
+          <div class="method-n">II.</div>
+          <div class="method-title">Build</div>
+          <div class="method-body">
+            We identify one high-ROI opportunity and execute it completely.
+            Off-the-shelf tools when they fit. Custom builds when they don't.
+            No subcontracting. No platform we'd rather sell you.
+          </div>
+        </div>
+        <div>
+          <div class="method-n">III.</div>
+          <div class="method-title">Hand off</div>
+          <div class="method-body">
+            You get the system, the documentation, and the training.
+            We stay on call for 30 days. The goal is that you never need
+            us for that particular problem again.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 05 PRACTITIONERS -->
+  <section class="reveal">
+    <div class="section-grid">
+      <span class="eyebrow">§ 05 — Practitioners</span>
+      <div class="people-grid">
+        <div>
+          <div class="portrait">
+            <div class="portrait-label">[ PORTRAIT ]</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <div>
+              <div class="person-name">Nick McCormick</div>
+              <div class="person-role">Principal · Strategy &amp; Build</div>
+            </div>
+            <div class="mono">MMXXVI</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8px;">
+          <blockquote style="font-size:15px;line-height:1.65;opacity:0.72;border-left:2px solid var(--accent);padding-left:24px;font-style:normal;">
+            "You only need to be one step ahead of your client.
+            Most business owners aren't using AI at all — which means
+            anyone paying attention is already ahead."
+          </blockquote>
+          <div class="mono" style="margin-top:20px;padding-left:24px;">
+            Purdue MGMT 687 · AI for Business Decisions
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px;justify-content:flex-end;">
+          <div style="border:1px solid var(--line);padding:24px;">
+            <div class="eyebrow" style="margin-bottom:12px;">Built &amp; shipped</div>
+            <div style="font-size:13px;line-height:1.8;opacity:0.72;">
+              MapsLeadFindr · Colossal API<br/>
+              MeetSync · SubRadar · DocPulse<br/>
+              LoopIn · SchedulePulse · NoteVault
+            </div>
+          </div>
+          <div style="border:1px solid var(--line);padding:24px;">
+            <div class="eyebrow" style="margin-bottom:12px;">Approach</div>
+            <div style="font-size:13px;line-height:1.8;opacity:0.72;">
+              Practitioner, not theorist.<br/>
+              Built real products. Served real clients.<br/>
+              Plain language throughout.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 06 BEGIN -->
+  <section id="begin" class="cta-section reveal">
+    <span class="eyebrow" style="margin-bottom:48px;display:block;">§ 06 — Begin</span>
+    <div class="cta-headline">
+      We take three<br />
+      new clients a quarter<span class="accent">.</span>
+    </div>
+    <div class="cta-buttons">
+      <a href="mailto:nick@colossalai.co" class="btn-primary">Request an Assessment →</a>
+      <a href="#practice" class="btn-ghost">See the Practice</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand">Colossal<span class="accent">.</span></div>
+      <div class="mono-col">
+        <span>An AI Consultancy</span>
+        <span>Greenwood, IN · Distributed</span>
+        <span>Est. MMXXVI</span>
+      </div>
+    </div>
+    <div class="mono-col">
+      <span class="col-head">Practice</span>
+      <a href="#practice">Diagnostic</a>
+      <a href="#practice">Build</a>
+      <a href="#practice">Retainer</a>
+    </div>
+    <div class="mono-col">
+      <span class="col-head">Index</span>
+      <a href="#engagements">Field Notes</a>
+      <a href="#method">Method</a>
+      <a href="#begin">Begin</a>
+    </div>
+    <div class="mono-col">
+      <span class="col-head">Contact</span>
+      <a href="mailto:nick@colossalai.co">nick@colossalai.co</a>
+      <span>DM on LinkedIn</span>
+      <span>DM on Facebook</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll reveal ──
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Stagger children in section grids ──
+    document.querySelectorAll('.section-grid .reveal, .method-grid > *, .people-grid > *, .kpi-grid > *').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.08}s`;
+    });
+
+    // ── Nav active state ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 120) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.style.opacity = link.getAttribute('href') === `#${current}` ? '1' : '0.75';
+      });
+    });
+  </script>
+
+</body>
+</html>
