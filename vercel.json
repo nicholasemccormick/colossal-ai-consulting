@@ -3,6 +3,10 @@
   "trailingSlash": false,
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/privacy", "destination": "/privacy.html" }
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/quiz", "destination": "/quiz.html" },
+    { "source": "/quiz-light", "destination": "/quiz-light" },
+    { "source": "/ai-iq", "destination": "/ai-iq.html" },
+    { "source": "/ai-iq-light", "destination": "/ai-iq-light" }
   ]
 }
