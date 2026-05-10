@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Is Your Business Already Behind on AI? — COLOSSAL.</title>
+<meta name="description" content="2 minutes. 12 questions. Find out exactly where your business stands on AI — and what it's costing you."/>
+<meta property="og:title" content="Is Your Business Already Behind on AI?"/>
+<meta property="og:description" content="12 questions. Instant score. Find out where your business stands — and what your competitors already know."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:      #f5ede0;
+  --bg2:     #ede4d4;
+  --ink:     #1a1208;
+  --ink2:    #3d2f1a;
+  --accent:  #c2884a;
+  --accent2: #a06830;
+  --muted:   #7a6a55;
+  --line:    rgba(26,18,8,0.1);
+  --line2:   rgba(26,18,8,0.06);
+  --white:   #fdf8f2;
+  --green:   #2d6b42;
+  --red:     #8a3a2a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Subtle warm texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.6;
+}
+
+/* Measure rule — dark on light */
+.rule { width: 100%; height: 14px; display: flex; }
+.rule span { flex: 1; border-left: 1px solid rgba(26,18,8,0.12); }
+.rule span:nth-child(5n+1) { border-color: rgba(26,18,8,0.3); }
+.rule span:not(:nth-child(5n+1)) { margin-top: 7px; }
+
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+
+nav {
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.wm { font-weight: 900; font-size: 15px; letter-spacing: -0.04em; text-transform: uppercase; color: var(--ink); }
+.wm .dot { color: var(--accent); }
+.nav-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); opacity: 0.7; }
+
+.shell { max-width: 680px; margin: 0 auto; padding: 0 28px 80px; flex: 1; width: 100%; }
+
+.screen { display: none; }
+.screen.active { display: block; animation: rise 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── INTRO ── */
+.intro { padding-top: 52px; }
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(194,136,74,0.1);
+  border: 1px solid rgba(194,136,74,0.3);
+  padding: 8px 14px;
+  margin-bottom: 32px;
+}
+.live-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 2s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+.intro-h1 {
+  font-weight: 900;
+  font-size: clamp(38px, 7vw, 70px);
+  line-height: 0.97;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.intro-h1 em { font-style: normal; color: var(--accent); }
+
+.intro-sub {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink2);
+  max-width: 500px;
+  margin-bottom: 36px;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  margin-bottom: 36px;
+  background: var(--white);
+}
+.meta-cell { padding: 14px 16px; border-right: 1px solid var(--line); }
+.meta-cell:last-child { border-right: none; }
+.meta-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 5px; }
+.meta-cell .val { font-weight: 700; font-size: 15px; color: var(--accent); }
+
+.trust { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 28px; }
+
+/* ── QUIZ ── */
+.quiz { padding-top: 40px; }
+
+.prog-wrap { margin-bottom: 32px; }
+.prog-track { height: 3px; background: var(--line); border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s cubic-bezier(0.16,1,0.3,1); }
+.prog-labels { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; color: var(--muted); }
+
+.q-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.q-text { font-weight: 700; font-size: clamp(19px, 3.2vw, 26px); line-height: 1.3; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 24px; }
+
+/* Encouragement message */
+.encouragement {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  min-height: 18px;
+}
+.encouragement.show { opacity: 1; }
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+
+.option {
+  border: 1.5px solid var(--line);
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--white);
+  color: var(--ink);
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s, box-shadow 0.15s;
+  min-height: 54px;
+}
+.option:hover { border-color: var(--accent); background: rgba(194,136,74,0.05); transform: translateX(3px); box-shadow: -3px 0 0 var(--accent); }
+.option.selected { border-color: var(--accent); background: rgba(194,136,74,0.08); box-shadow: -3px 0 0 var(--accent); }
+
+.opt-key { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); flex-shrink: 0; margin-top: 1px; width: 22px; font-weight: 600; }
+.opt-text { font-size: 15px; line-height: 1.45; color: var(--ink2); }
+.option.selected .opt-text { color: var(--ink); font-weight: 500; }
+
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); }
+
+/* ── EMAIL GATE ── */
+.gate { padding-top: 52px; }
+
+.gate-score-preview {
+  font-weight: 900;
+  font-size: 110px;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+  opacity: 0.1;
+  margin-bottom: -28px;
+  user-select: none;
+  pointer-events: none;
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+}
+
+.gate-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+.gate-h2 { font-weight: 800; font-size: clamp(28px, 5vw, 46px); line-height: 1.05; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 14px; }
+.gate-sub { font-size: 16px; line-height: 1.65; color: var(--ink2); max-width: 460px; margin-bottom: 32px; }
+
+.field {
+  width: 100%;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  padding: 16px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+  margin-bottom: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field::placeholder { color: var(--muted); opacity: 0.6; }
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(194,136,74,0.12); }
+.gate-micro { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; opacity: 0.7; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 17px 28px;
+  background: var(--accent);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-block;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--accent2); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-ghost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 17px 28px;
+  border: 1.5px solid var(--line);
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── RESULTS ── */
+.results { padding-top: 44px; }
+
+.result-top {
+  background: var(--ink);
+  color: #ece5d4;
+  padding: 40px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.result-top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(194,136,74,0.15) 0%, transparent 65%);
+}
+
+.r-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.45; margin-bottom: 10px; }
+.r-greeting { font-size: 13px; opacity: 0.55; margin-bottom: 6px; }
+.score-big { font-weight: 900; font-size: clamp(88px, 14vw, 128px); line-height: 0.88; letter-spacing: -0.05em; color: var(--accent); }
+.score-big sub { font-size: 0.28em; opacity: 0.4; font-weight: 400; vertical-align: super; }
+.tier-pill { display: inline-block; padding: 6px 16px; border: 1px solid currentColor; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-top: 12px; }
+
+.score-track { height: 4px; background: var(--line); border-radius: 2px; margin-bottom: 40px; overflow: hidden; }
+.score-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 2px; width: 0%; transition: width 1.5s cubic-bezier(0.16,1,0.3,1); }
+
+.sec-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+
+/* Dimension breakdown */
+.breakdown { margin-bottom: 44px; }
+.bd-row { display: grid; grid-template-columns: 170px 1fr 36px; gap: 14px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line2); }
+.bd-name { font-size: 13px; color: var(--ink2); }
+.bd-track { height: 3px; background: var(--line); border-radius: 2px; }
+.bd-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 1s ease both; }
+.bd-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); text-align: right; font-weight: 600; }
+
+/* Personal callout */
+.personal-callout {
+  background: var(--white);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  margin-bottom: 36px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink2);
+}
+.personal-callout strong { color: var(--accent); font-weight: 600; }
+
+/* Insights */
+.insights { margin-bottom: 44px; }
+.insight { border: 1.5px solid var(--line); background: var(--white); padding: 22px; margin-bottom: 8px; }
+.insight-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; font-weight: 600; }
+.insight-head { font-weight: 700; font-size: 15px; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--ink); }
+.insight-body { font-size: 14px; line-height: 1.65; color: var(--ink2); }
+
+/* CTA */
+.result-cta { background: var(--ink); color: #ece5d4; padding: 40px; text-align: center; margin-top: 44px; position: relative; overflow: hidden; }
+.result-cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(194,136,74,0.1) 0%,transparent 65%); pointer-events:none; }
+.cta-eyebrow { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; }
+.cta-h { font-weight:700; font-size:clamp(20px,3.5vw,30px); line-height:1.15; letter-spacing:-0.02em; margin-bottom:12px; color:#ece5d4; }
+.cta-sub { font-size:14px; line-height:1.65; opacity:0.65; max-width:440px; margin:0 auto 28px; }
+.btn-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.btn-cta-light { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.25em; text-transform:uppercase; font-weight:600; padding:17px 28px; background:var(--accent); color:var(--ink); border:none; cursor:pointer; transition:background 0.15s; display:inline-block; text-decoration:none; }
+.btn-cta-light:hover { background: #d4994f; }
+.btn-ghost-light { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.25em; text-transform:uppercase; padding:17px 28px; border:1px solid rgba(236,229,212,0.3); color:#ece5d4; background:transparent; cursor:pointer; transition:background 0.15s; }
+.btn-ghost-light:hover { background:rgba(236,229,212,0.08); }
+
+/* Share */
+.share-block { margin-top:28px; padding-top:24px; border-top:1px solid rgba(236,229,212,0.15); }
+.share-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.4; margin-bottom:12px; text-align:center; }
+.share-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.share-btn { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; border:1px solid rgba(236,229,212,0.2); color:#ece5d4; background:transparent; cursor:pointer; transition:border-color 0.15s,background 0.15s; display:flex; align-items:center; gap:7px; opacity:0.6; }
+.share-btn:hover { border-color:rgba(194,136,74,0.5); background:rgba(194,136,74,0.06); opacity:1; }
+
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--accent); color:var(--white); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:11px 18px; opacity:0; transition:opacity 0.2s,transform 0.2s; pointer-events:none; z-index:9999; font-weight:600; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+footer { border-top:1px solid var(--line); padding:16px 28px; display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); opacity:0.7; background: var(--white); }
+
+@media(max-width:560px){
+  .meta-row { grid-template-columns:1fr 1fr; }
+  .meta-cell:nth-child(2){ border-right:none; }
+  .result-top { padding:28px 22px; }
+  .result-cta { padding:28px 20px; }
+  .bd-row { grid-template-columns:120px 1fr 32px; }
+  footer { flex-direction:column; gap:5px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="rule" id="top-rule"></div>
+
+<nav>
+  <div class="wm">COLOSSAL<span class="dot">.</span></div>
+  <div class="nav-tag">Business AI Index</div>
+</nav>
+
+<div class="shell">
+
+  <!-- ══ INTRO ══ -->
+  <div class="screen active" id="s-intro">
+    <div class="intro">
+      <div class="live-badge">200+ business owners have taken this</div>
+      <h1 class="intro-h1">
+        Is your business<br/>
+        already <em>behind</em><br/>
+        on AI?
+      </h1>
+      <p class="intro-sub">
+        Most small business owners have no idea where they stand.
+        Their competitors might. This 12-question index gives you a
+        precise score — and shows you exactly what it's costing you.
+      </p>
+      <div class="meta-row">
+        <div class="meta-cell"><span class="lbl">Questions</span><span class="val">12</span></div>
+        <div class="meta-cell"><span class="lbl">Time</span><span class="val">~2 min</span></div>
+        <div class="meta-cell"><span class="lbl">Score</span><span class="val">0–100</span></div>
+        <div class="meta-cell"><span class="lbl">Cost</span><span class="val">Free</span></div>
+      </div>
+      <div class="trust">No account required &nbsp;·&nbsp; Results instant &nbsp;·&nbsp; No spam</div>
+      <button class="btn-primary" onclick="go('s-quiz'); startQuiz()">Find Out Now →</button>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ ══ -->
+  <div class="screen" id="s-quiz">
+    <div class="quiz">
+      <div class="prog-wrap">
+        <div class="prog-track"><div class="prog-fill" id="pbar"></div></div>
+        <div class="prog-labels">
+          <span id="pct-lbl">0% complete</span>
+          <span id="q-num-lbl">1 of 12</span>
+        </div>
+      </div>
+      <div class="encouragement" id="encouragement"></div>
+      <div class="q-cat" id="q-cat"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-opts"></div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" id="btn-back" onclick="prev()" style="visibility:hidden">← Back</button>
+        <button class="btn-primary" id="btn-next" onclick="next()" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GATE ══ -->
+  <div class="screen" id="s-gate">
+    <div class="gate">
+      <div class="gate-score-preview" id="gate-prev">??</div>
+      <div class="gate-eyebrow">§ One step away</div>
+      <h2 class="gate-h2">Your score is ready.<br/>Where should we send it?</h2>
+      <p class="gate-sub">Enter your email and we'll reveal your full breakdown — including the exact areas where your business is losing time and revenue right now.</p>
+      <input class="field" type="email" id="gate-email" placeholder="Your email address" onkeydown="if(event.key==='Enter')submitGate()"/>
+      <div class="gate-micro">No spam. Unsubscribe anytime. Results shown immediately.</div>
+      <button class="btn-primary" onclick="submitGate()">Reveal My Score →</button>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div class="screen" id="s-results">
+    <div class="results">
+
+      <div class="result-top">
+        <div class="r-eyebrow">§ 02 — Your AI Readiness Score</div>
+        <div class="r-greeting" id="r-greeting"></div>
+        <div class="score-big" id="r-score">0<sub>/100</sub></div>
+        <div class="tier-pill" id="r-tier"></div>
+      </div>
+
+      <div class="score-track"><div class="score-fill" id="r-bar"></div></div>
+
+      <div class="personal-callout" id="r-callout"></div>
+
+      <div class="breakdown">
+        <div class="sec-label">§ 03 — Score by Dimension</div>
+        <div id="r-breakdown"></div>
+      </div>
+
+      <div class="insights">
+        <div class="sec-label">§ 04 — What This Means for Your Business</div>
+        <div id="r-insights"></div>
+      </div>
+
+      <div class="result-cta">
+        <div class="cta-eyebrow">§ 05 — Next Step</div>
+        <div class="cta-h" id="r-cta-h"></div>
+        <div class="cta-sub" id="r-cta-sub"></div>
+        <div class="btn-row">
+          <a href="mailto:nick@colossalaiconsulting.com?subject=AI Assessment Request" class="btn-cta-light">Book Free Assessment →</a>
+          <button class="btn-ghost-light" onclick="retake()">Retake the Index</button>
+        </div>
+        <div class="share-block">
+          <div class="share-label">Share your score</div>
+          <div class="share-btns">
+            <button class="share-btn" onclick="shareLinkedIn()"><span>↗</span> LinkedIn</button>
+            <button class="share-btn" onclick="shareFacebook()"><span>↗</span> Facebook</button>
+            <button class="share-btn" onclick="copyLink()"><span>⊡</span> Copy Link</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>COLOSSAL. AI Consulting</span>
+  <span>Business AI Readiness Index · V2 Light</span>
+  <span>Est. MMXXVI</span>
+</footer>
+<div class="rule" id="bot-rule"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+['top-rule','bot-rule'].forEach(id => {
+  const el = document.getElementById(id);
+  for (let i=0;i<79;i++) el.innerHTML += '<span></span>';
+});
+
+const Qs = [
+  { cat:"Operations", text:"How does your team handle repetitive admin tasks — invoices, scheduling, follow-ups?", opts:[{t:"All done by hand, every time",s:0},{t:"Some basic tools, but mostly manual",s:1},{t:"Several tools handling different parts",s:2},{t:"Mostly automated — AI or software handles the majority",s:3}]},
+  { cat:"Lead Response", text:"A new lead comes in at 9pm on a Friday. What happens?", opts:[{t:"Nothing until I'm back — they wait or move on",s:0},{t:"An automated email reply goes out",s:1},{t:"A basic chatbot or auto-text responds",s:2},{t:"An AI agent responds, qualifies, and books a call automatically",s:3}]},
+  { cat:"Customer Communication", text:"How do you handle the same customer questions you get every week?", opts:[{t:"I answer every one personally",s:0},{t:"We copy-paste from a template doc",s:1},{t:"An FAQ page handles some of them",s:2},{t:"An AI handles most of them automatically",s:3}]},
+  { cat:"Data & Reporting", text:"How do you track your business performance — sales, revenue, key metrics?", opts:[{t:"Mostly from memory or rough notes",s:0},{t:"Spreadsheets I update manually",s:1},{t:"Software dashboard, but I pull the data",s:2},{t:"Automated — reports generate and send themselves",s:3}]},
+  { cat:"Content & Marketing", text:"How do you create content for your business — social posts, emails, ads?", opts:[{t:"I write everything from scratch when I find time",s:0},{t:"I write it but use AI occasionally to help",s:1},{t:"AI drafts most of it, I edit and approve",s:2},{t:"Content pipeline is largely automated with AI",s:3}]},
+  { cat:"Tool Awareness", text:"Which best describes your current AI tool usage?", opts:[{t:"I don't use AI tools in my business",s:0},{t:"I use ChatGPT occasionally for one-off tasks",s:1},{t:"I use 2–3 AI tools regularly with specific purposes",s:2},{t:"AI tools are woven throughout my daily workflow",s:3}]},
+  { cat:"Operations", text:"When a team member leaves, how long until a replacement is up to speed?", opts:[{t:"Weeks — everything is in people's heads",s:0},{t:"About a week with training and shadowing",s:1},{t:"A few days — we have some written SOPs",s:2},{t:"1–2 days — documented systems and AI tools they can use immediately",s:3}]},
+  { cat:"Lead Response", text:"How quickly do you typically respond to new leads during business hours?", opts:[{t:"When I get to it — could be hours",s:0},{t:"Within a few hours most of the time",s:1},{t:"Within 30–60 minutes",s:2},{t:"Within minutes — automated",s:3}]},
+  { cat:"Data & Reporting", text:"Do you use a CRM to track customers and deals?", opts:[{t:"No — spreadsheet or memory",s:0},{t:"I have one but barely use it",s:1},{t:"Yes, actively — my team logs in it regularly",s:2},{t:"Yes, and it auto-updates from my other tools",s:3}]},
+  { cat:"Content & Marketing", text:"What happens to notes and action items from client calls?", opts:[{t:"Memory or rough notes — things slip through",s:0},{t:"I type them up afterward",s:1},{t:"I use a note-taking app",s:2},{t:"An AI notetaker auto-joins calls and extracts action items",s:3}]},
+  { cat:"Tool Awareness", text:"Could you confidently explain to a peer where AI fits in your type of business?", opts:[{t:"Not really — I'm still figuring it out myself",s:0},{t:"I understand the basics but not the specifics",s:1},{t:"Yes — I could walk them through several use cases",s:2},{t:"Yes — I do this regularly and others come to me for advice",s:3}]},
+  { cat:"Operations", text:"Roughly how many hours per week does your team spend on tasks that feel repetitive?", opts:[{t:"10+ hours — a significant amount of busywork",s:0},{t:"5–10 hours per week",s:1},{t:"2–5 hours per week",s:2},{t:"Under 2 hours — most of it is automated",s:3}]},
+];
+
+const CATS = ["Operations","Lead Response","Customer Communication","Data & Reporting","Content & Marketing","Tool Awareness"];
+
+const INSIGHTS = {
+  "Operations":{ h:"Your operations have manual bottlenecks AI can close today.", b:"Repetitive admin — invoicing, scheduling, onboarding — is the fastest ROI category. The tools exist, most are under $30/month, and setup takes hours not weeks." },
+  "Lead Response":{ h:"Slow lead response is costing you jobs you never knew you lost.", b:"57% of deals go to whoever responds first. If you're responding in hours, you're losing to someone who responds in minutes. A speed-to-lead agent responds in under 90 seconds, around the clock." },
+  "Customer Communication":{ h:"You're personally answering questions an AI could handle 24/7.", b:"A knowledge base or FAQ assistant trained on your business typically saves 3–5 hours per week and improves response quality at the same time." },
+  "Data & Reporting":{ h:"Without automated reporting, you're spending hours building something that should build itself.", b:"Business owners who connect their tools to automated dashboards reclaim 2–4 hours every week and make faster decisions. This is one of the clearest before/after improvements." },
+  "Content & Marketing":{ h:"You're writing content by hand that AI can draft in seconds.", b:"Businesses using AI for content produce 3–5x more output with the same team. Social posts, emails, ad copy — drafts in minutes, you approve and post." },
+  "Tool Awareness":{ h:"The gap between knowing AI exists and knowing how to apply it is where most owners are stuck.", b:"This is the most common pattern — smart business owners who know AI matters but haven't had someone sit down and say: here's exactly where it fits for your business." },
+};
+
+const CALLOUTS = [
+  "You mentioned handling repetitive admin manually — that's typically 5–10 hours per week AI can absorb immediately.",
+  "You said new leads wait hours for a response. 57% of deals go to whoever responds first. That gap is measurable.",
+  "You're personally answering every customer question. An AI system can handle 80% of those automatically.",
+  "You're building reports manually — time every week spent on something that should run on its own.",
+  "You're writing content from scratch. AI can draft in seconds what takes you an hour.",
+  "Limited AI tool usage is the most common starting point. The gap closes faster than most people expect.",
+  "Knowledge living in people's heads is a fragility. Documented systems with AI support cut onboarding dramatically.",
+  "Hours-long response time during business hours means you're losing deals you don't know you're losing.",
+  "A CRM that doesn't self-update is one that doesn't get used. Automation fixes that.",
+  "Meeting notes staying in a doc is one step above memory. An AI notetaker makes every call searchable.",
+  "If you can't confidently explain AI's role in your business, your team can't implement it either.",
+  "If your team spends 5–10+ hours on repetitive tasks, that's a part-time salary going to work AI should be doing.",
+];
+
+const ENCOURAGEMENTS = {
+  6: "You're halfway there — keep going.",
+  7: "Almost done. These last few are the most revealing.",
+  8: "Just 4 questions left.",
+  9: "Nearly there — 3 to go.",
+  10: "Last stretch — 2 more questions.",
+  11: "Final question coming up.",
+};
+
+let cur=0, answers=new Array(Qs.length).fill(null), userEmail='';
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startQuiz(){ cur=0; renderQ(); }
+
+function renderQ(){
+  const q=Qs[cur]; const keys=['A','B','C','D'];
+  const pct=Math.round((cur/Qs.length)*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('pct-lbl').textContent=pct+'% complete';
+  document.getElementById('q-num-lbl').textContent=(cur+1)+' of '+Qs.length;
+  document.getElementById('q-cat').textContent=q.cat;
+  document.getElementById('q-text').textContent=q.text;
+
+  // Encouragement
+  const enc=document.getElementById('encouragement');
+  if(ENCOURAGEMENTS[cur]){ enc.textContent=ENCOURAGEMENTS[cur]; enc.classList.add('show'); }
+  else { enc.textContent=''; enc.classList.remove('show'); }
+
+  document.getElementById('q-opts').innerHTML=q.opts.map((o,i)=>`
+    <button class="option${answers[cur]===i?' selected':''}" onclick="pick(${i})">
+      <span class="opt-key">${keys[i]}</span>
+      <span class="opt-text">${o.t}</span>
+    </button>`).join('');
+
+  document.getElementById('btn-next').disabled=answers[cur]===null;
+  document.getElementById('btn-back').style.visibility=cur===0?'hidden':'visible';
+  document.getElementById('btn-next').textContent=cur===Qs.length-1?'Submit →':'Next →';
+}
+
+function pick(i){
+  answers[cur]=i;
+  document.querySelectorAll('.option').forEach((el,idx)=>el.classList.toggle('selected',idx===i));
+  document.getElementById('btn-next').disabled=false;
+}
+
+function next(){
+  if(answers[cur]===null) return;
+  if(cur<Qs.length-1){ cur++; go('s-quiz'); renderQ(); }
+  else {
+    const raw=answers.reduce((s,a,i)=>s+(a!==null?Qs[i].opts[a].s:0),0);
+    const score=Math.round((raw/(Qs.length*3))*100);
+    document.getElementById('gate-prev').textContent=score;
+    go('s-gate');
+  }
+}
+
+function prev(){ if(cur>0){ cur--; go('s-quiz'); renderQ(); } }
+
+function submitGate(){
+  const email=document.getElementById('gate-email').value.trim();
+  if(!email||!email.includes('@')){ document.getElementById('gate-email').focus(); document.getElementById('gate-email').style.borderColor='var(--accent)'; return; }
+  userEmail=email;
+  const raw=answers.reduce((s,a,i)=>s+(a!==null?Qs[i].opts[a].s:0),0);
+  const score=Math.round((raw/(Qs.length*3))*100);
+  let tier; if(score>=75)tier='AI-Forward'; else if(score>=50)tier='AI-Aware'; else if(score>=25)tier='AI-Adjacent'; else tier='AI-Unequipped';
+  const params=new URLSearchParams({email,score:String(score),tier,source:'quiz-light'});
+  const img=new Image(); img.src='https://script.google.com/macros/s/AKfycbyMP18blURRxh0dektUr0fUlVPKsqq36xdKe0I1B9BO3ZwYdA17Jl1JsoON1sdyJN4E/exec?'+params.toString();
+  buildResults(score,tier);
+  go('s-results');
+}
+
+function buildResults(score,tier){
+  let tierColor; if(score>=75)tierColor='#4a8a5a'; else if(score>=50)tierColor='var(--accent)'; else if(score>=25)tierColor='#aa9a5a'; else tierColor='#aa6a5a';
+  const scoreEl=document.getElementById('r-score');
+  let n=0; const iv=setInterval(()=>{ n=Math.min(n+Math.ceil(score/40),score); scoreEl.innerHTML=n+'<sub>/100</sub>'; if(n>=score)clearInterval(iv); },28);
+  const tb=document.getElementById('r-tier'); tb.textContent=tier; tb.style.color=tierColor; tb.style.borderColor=tierColor;
+  setTimeout(()=>{ document.getElementById('r-bar').style.width=score+'%'; },200);
+  document.getElementById('r-greeting').textContent=userEmail?'Result for '+userEmail:'Your result';
+
+  const catS={},catM={};
+  CATS.forEach(c=>{catS[c]=0;catM[c]=0;});
+  Qs.forEach((q,i)=>{ catS[q.cat]+=answers[i]!==null?q.opts[answers[i]].s:0; catM[q.cat]+=3; });
+
+  const weakestQ=Qs.reduce((w,q,i)=>{ if(answers[i]===null) return w; return q.opts[answers[i]].s<(answers[w]!==null?Qs[w].opts[answers[w]].s:4)?i:w; },0);
+  document.getElementById('r-callout').innerHTML='<strong>Based on your answers:</strong> '+CALLOUTS[weakestQ];
+
+  const bdEl=document.getElementById('r-breakdown');
+  bdEl.innerHTML=CATS.map(c=>{ if(!catM[c]) return ''; const pct=Math.round((catS[c]/catM[c])*100); return `<div class="bd-row"><div class="bd-name">${c}</div><div class="bd-track"><div class="bd-fill" data-w="${pct}"></div></div><div class="bd-val">${pct}</div></div>`; }).join('');
+  setTimeout(()=>{ document.querySelectorAll('.bd-fill').forEach(b=>b.style.width=b.dataset.w+'%'); },400);
+
+  const sorted=CATS.filter(c=>catM[c]>0).sort((a,b)=>(catS[a]/catM[a])-(catS[b]/catM[b]));
+  document.getElementById('r-insights').innerHTML=sorted.slice(0,3).map((cat,i)=>`<div class="insight"><div class="insight-tag">↓ Gap ${String(i+1).padStart(2,'0')} — ${cat}</div><div class="insight-head">${INSIGHTS[cat].h}</div><div class="insight-body">${INSIGHTS[cat].b}</div></div>`).join('');
+
+  const ctaH=document.getElementById('r-cta-h'),ctaS=document.getElementById('r-cta-sub');
+  if(score>=75){ ctaH.textContent="You're ahead of most. Here's how to extend the lead."; ctaS.textContent="Strong foundations. A 30-minute session with Nick identifies the next layer — advanced agents and automation systems that widen the gap between you and competitors who are just catching up."; }
+  else if(score>=50){ ctaH.textContent="You're aware. The gap is in execution."; ctaS.textContent="You know AI matters and have started. Awareness without implementation is expensive watching. A free assessment turns your score into a prioritized action list."; }
+  else { ctaH.textContent="There's real ground to cover — and real money on the table."; ctaS.textContent="The businesses closing this gap in the next 12 months will have a structural advantage that compounds. A 30-minute assessment is where it starts. No commitment, no pitch."; }
+
+  window._shareScore=score; window._shareTier=tier;
+}
+
+function retake(){ cur=0; answers=new Array(Qs.length).fill(null); userEmail=''; go('s-intro'); }
+function shareLinkedIn(){ const s=window._shareScore||0,t=window._shareTier||''; window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcolossalaiconsulting.com%2Fquiz&summary=${encodeURIComponent(`I scored ${s}/100 on the Business AI Readiness Index (${t}).\n\nMost small businesses have no idea where they stand on AI.\n\nTake it free: https://colossalaiconsulting.com/quiz\n\n#AI #SmallBusiness`)}`, '_blank'); }
+function shareFacebook(){ window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcolossalaiconsulting.com%2Fquiz','_blank'); }
+function copyLink(){ const s=window._shareScore||0; navigator.clipboard.writeText(`I scored ${s}/100 on the Business AI Readiness Index. Take it free: https://colossalaiconsulting.com/quiz`).then(()=>showToast('Copied to clipboard')); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
+</script>
+</body>
+</html>

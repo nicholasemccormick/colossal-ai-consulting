@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What's Your AI IQ? — COLOSSAL.</title>
+<meta name="description" content="10 questions. Find out exactly how AI-literate you are — and what the top 5% already know that you don't."/>
+<meta property="og:title" content="What's Your AI IQ?"/>
+<meta property="og:description" content="10 questions. Instant score. Find out where you actually stand on AI."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:     #0b0b0d;
+  --paper:   #ece5d4;
+  --accent:  #c2884a;
+  --accent2: #a06830;
+  --muted:   #6b6357;
+  --line:    rgba(236,229,212,0.12);
+  --green:   #4a7a5a;
+  --red:     #8a4a4a;
+  --gold:    #d4aa60;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.45;
+}
+
+/* Measure rule */
+.rule { width: 100%; height: 16px; display: flex; }
+.rule span { flex: 1; border-left: 1px solid rgba(236,229,212,0.14); }
+.rule span:nth-child(5n+1) { border-color: rgba(236,229,212,0.42); }
+.rule span:not(:nth-child(5n+1)) { margin-top: 8px; }
+
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+
+nav {
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.wm { font-weight: 900; font-size: 15px; letter-spacing: -0.04em; text-transform: uppercase; }
+.wm .dot { color: var(--accent); }
+.nav-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.4; }
+
+.shell { max-width: 680px; margin: 0 auto; padding: 0 28px 80px; flex: 1; width: 100%; }
+
+/* Screens */
+.screen { display: none; }
+.screen.active { display: block; animation: rise 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── INTRO ── */
+.intro { padding-top: 52px; }
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(194,136,74,0.28);
+  padding: 8px 14px;
+  margin-bottom: 32px;
+}
+.live-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 2s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+.intro-h1 {
+  font-weight: 900;
+  font-size: clamp(40px, 7.5vw, 76px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin-bottom: 28px;
+}
+.intro-h1 .iq { color: var(--accent); position: relative; }
+
+.intro-sub {
+  font-size: 16px;
+  line-height: 1.7;
+  opacity: 0.65;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+.meta-cell { padding: 14px 16px; border-right: 1px solid var(--line); }
+.meta-cell:last-child { border-right: none; }
+.meta-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.38; display: block; margin-bottom: 4px; }
+.meta-cell .val { font-weight: 700; font-size: 14px; color: var(--accent); }
+
+.trust { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.35; margin-bottom: 28px; }
+
+/* ── QUIZ ── */
+.quiz { padding-top: 40px; }
+
+.prog-wrap { margin-bottom: 32px; }
+.prog-track { height: 2px; background: var(--line); border-radius: 1px; margin-bottom: 10px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.5s cubic-bezier(0.16,1,0.3,1); }
+.prog-labels { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; opacity: 0.38; }
+
+.q-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); opacity: 0.8; margin-bottom: 14px; }
+.q-text { font-weight: 600; font-size: clamp(20px, 3.5vw, 28px); line-height: 1.28; letter-spacing: -0.02em; margin-bottom: 28px; }
+
+/* Answer options — this quiz has correct answers */
+.options { display: flex; flex-direction: column; gap: 8px; }
+
+.option {
+  border: 1px solid var(--line);
+  padding: 15px 20px;
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: transparent;
+  color: var(--paper);
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.option:hover:not(.revealed) { border-color: rgba(194,136,74,0.4); transform: translateX(2px); }
+.option.selected { border-color: var(--accent); background: rgba(194,136,74,0.07); }
+.option.correct { border-color: #4a8a5a; background: rgba(74,138,90,0.1); }
+.option.wrong { border-color: #8a4a4a; background: rgba(138,74,74,0.08); opacity: 0.7; }
+.option.revealed { cursor: default; }
+
+.opt-key { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); opacity: 0.6; flex-shrink: 0; margin-top: 1px; width: 20px; }
+.option.correct .opt-key { color: #6aaa7a; opacity: 1; }
+.option.wrong .opt-key { opacity: 0.4; }
+.opt-text { font-size: 14px; line-height: 1.45; opacity: 0.82; }
+.option.correct .opt-text { opacity: 1; }
+
+/* Explanation */
+.explanation {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-left: 2px solid var(--accent);
+  background: rgba(194,136,74,0.05);
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.85;
+  display: none;
+}
+.explanation.show { display: block; animation: rise 0.3s ease both; }
+.explanation strong { color: var(--accent); font-weight: 600; }
+
+.quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); }
+
+/* Running score */
+.running-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+/* ── EMAIL GATE ── */
+.gate { padding-top: 52px; }
+.gate-score-preview {
+  font-weight: 900;
+  font-size: 108px;
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+  opacity: 0.12;
+  margin-bottom: -28px;
+  user-select: none;
+  pointer-events: none;
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+}
+.gate-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; }
+.gate-h2 { font-weight: 800; font-size: clamp(28px, 5vw, 46px); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 14px; }
+.gate-sub { font-size: 15px; line-height: 1.65; opacity: 0.6; max-width: 460px; margin-bottom: 32px; }
+.field { width: 100%; background: rgba(236,229,212,0.04); border: 1px solid var(--line); border-bottom-color: rgba(236,229,212,0.22); padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 16px; color: var(--paper); outline: none; margin-bottom: 10px; transition: border-color 0.15s; }
+.field::placeholder { opacity: 0.28; }
+.field:focus { border-color: rgba(194,136,74,0.5); }
+.gate-micro { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.28; margin-bottom: 28px; }
+
+/* ── BUTTONS ── */
+.btn-primary { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; padding: 17px 28px; background: var(--accent); color: var(--ink); border: none; cursor: pointer; transition: filter 0.15s; display: inline-block; text-decoration: none; }
+.btn-primary:hover { filter: brightness(1.1); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; filter: none; }
+.btn-ghost { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; padding: 17px 28px; border: 1px solid rgba(236,229,212,0.2); color: var(--paper); background: transparent; cursor: pointer; transition: background 0.15s; display: inline-block; }
+.btn-ghost:hover { background: rgba(236,229,212,0.05); }
+
+/* ── RESULTS ── */
+.results { padding-top: 44px; }
+
+.result-top { margin-bottom: 36px; padding-bottom: 32px; border-bottom: 1px solid var(--line); }
+.r-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.42; margin-bottom: 10px; }
+.r-greeting { font-size: 14px; opacity: 0.55; margin-bottom: 6px; }
+
+.score-display { display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
+.score-big { font-weight: 900; font-size: clamp(88px, 15vw, 140px); line-height: 0.88; letter-spacing: -0.05em; color: var(--accent); }
+.score-denom { font-size: 0.28em; opacity: 0.38; font-weight: 400; vertical-align: super; }
+.score-pct { font-family: 'JetBrains Mono', monospace; font-size: 13px; opacity: 0.5; margin-top: 8px; }
+
+.tier-pill { display: inline-block; padding: 6px 16px; border: 1px solid currentColor; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; margin-top: 10px; }
+
+.score-track { height: 3px; background: var(--line); border-radius: 2px; margin-bottom: 40px; overflow: hidden; }
+.score-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 2px; width: 0%; transition: width 1.5s cubic-bezier(0.16,1,0.3,1); }
+
+/* Answer review */
+.review { margin-bottom: 44px; }
+.sec-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.36; margin-bottom: 18px; }
+
+.review-item {
+  padding: 18px 20px;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  position: relative;
+}
+.review-item.correct-item { border-left: 3px solid #4a8a5a; }
+.review-item.wrong-item { border-left: 3px solid #8a4a4a; }
+
+.review-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; opacity: 0.9; }
+.review-answers { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.review-ans { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 4px 10px; border: 1px solid var(--line); opacity: 0.6; }
+.review-ans.your-ans { border-color: #8a4a4a; color: #cc8080; opacity: 1; }
+.review-ans.correct-ans { border-color: #4a8a5a; color: #80cc99; opacity: 1; }
+.review-ans.both { border-color: #4a8a5a; color: #80cc99; opacity: 1; }
+.review-exp { font-size: 12px; line-height: 1.6; opacity: 0.6; }
+
+/* Insight blocks */
+.insights { margin-bottom: 44px; }
+.insight { border: 1px solid var(--line); padding: 22px; margin-bottom: 8px; }
+.insight-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); opacity: 0.75; margin-bottom: 8px; }
+.insight-head { font-weight: 600; font-size: 15px; letter-spacing: -0.01em; margin-bottom: 6px; }
+.insight-body { font-size: 13px; line-height: 1.65; opacity: 0.62; }
+
+/* CTA */
+.result-cta { border: 1px solid rgba(194,136,74,0.2); padding: 36px; text-align: center; margin-top: 44px; position: relative; overflow: hidden; }
+.result-cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(194,136,74,0.07) 0%,transparent 68%); pointer-events:none; }
+.cta-eyebrow { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); margin-bottom:14px; opacity:0.8; }
+.cta-h { font-weight:700; font-size:clamp(20px,3.5vw,30px); line-height:1.15; letter-spacing:-0.02em; margin-bottom:12px; }
+.cta-sub { font-size:14px; line-height:1.65; opacity:0.58; max-width:440px; margin:0 auto 28px; }
+
+.btn-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+.share-block { margin-top:28px; padding-top:24px; border-top:1px solid var(--line); }
+.share-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; opacity:0.35; margin-bottom:12px; text-align:center; }
+.share-btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.share-btn { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; padding:11px 18px; border:1px solid var(--line); color:var(--paper); background:transparent; cursor:pointer; transition:border-color 0.15s,background 0.15s; display:flex; align-items:center; gap:7px; opacity:0.65; }
+.share-btn:hover { border-color:rgba(194,136,74,0.4); background:rgba(194,136,74,0.04); opacity:1; }
+
+/* Business owner callout */
+.biz-callout { background:rgba(194,136,74,0.06); border:1px solid rgba(194,136,74,0.2); padding:24px; margin-bottom:8px; }
+.biz-callout-tag { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); opacity:0.8; margin-bottom:10px; }
+.biz-callout-text { font-size:14px; line-height:1.65; opacity:0.82; }
+.biz-callout-text strong { color:var(--accent); font-weight:600; }
+
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(16px); background:var(--accent); color:var(--ink); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:11px 18px; opacity:0; transition:opacity 0.2s,transform 0.2s; pointer-events:none; z-index:9999; font-weight:600; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+footer { border-top:1px solid var(--line); padding:16px 28px; display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; opacity:0.28; }
+
+@media(max-width:560px){
+  .meta-row { grid-template-columns:1fr 1fr; }
+  .meta-cell:nth-child(2){ border-right:none; }
+  .result-cta { padding:24px 18px; }
+  footer { flex-direction:column; gap:5px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="rule" id="top-rule"></div>
+
+<nav>
+  <div class="wm">COLOSSAL<span class="dot">.</span></div>
+  <div class="nav-tag">AI IQ Index</div>
+</nav>
+
+<div class="shell">
+
+  <!-- ══ INTRO ══ -->
+  <div class="screen active" id="s-intro">
+    <div class="intro">
+      <div class="live-badge">10,000+ people have taken this</div>
+      <h1 class="intro-h1">
+        What's your<br/>
+        <span class="iq">AI IQ?</span>
+      </h1>
+      <p class="intro-sub">
+        Most people think they understand AI. Most are wrong.
+        This 10-question knowledge test shows you exactly where
+        you stand — and what the people pulling ahead already know.
+      </p>
+      <div class="meta-row">
+        <div class="meta-cell"><span class="lbl">Questions</span><span class="val">10</span></div>
+        <div class="meta-cell"><span class="lbl">Time</span><span class="val">~2 min</span></div>
+        <div class="meta-cell"><span class="lbl">Score</span><span class="val">0–100</span></div>
+        <div class="meta-cell"><span class="lbl">Cost</span><span class="val">Free</span></div>
+      </div>
+      <div class="trust">No signup required &nbsp;·&nbsp; Results instant &nbsp;·&nbsp; No spam</div>
+      <button class="btn-primary" onclick="go('s-quiz'); startQuiz()">Take the Test →</button>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ ══ -->
+  <div class="screen" id="s-quiz">
+    <div class="quiz">
+      <div class="prog-wrap">
+        <div class="prog-track"><div class="prog-fill" id="pbar"></div></div>
+        <div class="prog-labels">
+          <span id="pct-lbl">0% complete</span>
+          <span id="q-num-lbl">1 of 10</span>
+        </div>
+      </div>
+      <div class="q-cat" id="q-cat"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-opts"></div>
+      <div class="explanation" id="q-explain"></div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" id="btn-back" onclick="prev()" style="visibility:hidden">← Back</button>
+        <div class="running-score" id="running-score"></div>
+        <button class="btn-primary" id="btn-next" onclick="next()" disabled>Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GATE ══ -->
+  <div class="screen" id="s-gate">
+    <div class="gate">
+      <div class="gate-score-preview" id="gate-prev">??</div>
+      <div class="gate-eyebrow">§ One step away</div>
+      <h2 class="gate-h2">Your score is ready.<br/>Where should we send it?</h2>
+      <p class="gate-sub">Enter your email and we'll reveal your full score — including the specific gaps the top 5% have already closed.</p>
+      <input class="field" type="email" id="gate-email" placeholder="Your email address" onkeydown="if(event.key==='Enter')submitGate()"/>
+      <div class="gate-micro">No spam. Unsubscribe anytime. Results shown immediately.</div>
+      <button class="btn-primary" onclick="submitGate()">Reveal My Score →</button>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div class="screen" id="s-results">
+    <div class="results">
+      <div class="result-top">
+        <div class="r-eyebrow">§ 01 — Your AI IQ Score</div>
+        <div class="r-greeting" id="r-greeting"></div>
+        <div class="score-display">
+          <div class="score-big" id="r-score">0<span class="score-denom">/10</span></div>
+        </div>
+        <div class="score-pct" id="r-pct"></div>
+        <div class="tier-pill" id="r-tier"></div>
+      </div>
+
+      <div class="score-track"><div class="score-fill" id="r-bar"></div></div>
+
+      <!-- Business owner callout -->
+      <div class="biz-callout" id="r-biz-callout">
+        <div class="biz-callout-tag">§ For Business Owners</div>
+        <div class="biz-callout-text" id="r-biz-text"></div>
+      </div>
+
+      <!-- Insights -->
+      <div class="insights">
+        <div class="sec-label">§ 02 — What This Means</div>
+        <div id="r-insights"></div>
+      </div>
+
+      <!-- Answer review -->
+      <div class="review">
+        <div class="sec-label">§ 03 — Question Review</div>
+        <div id="r-review"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="result-cta">
+        <div class="cta-eyebrow">§ 04 — Next Step</div>
+        <div class="cta-h" id="r-cta-h"></div>
+        <div class="cta-sub" id="r-cta-sub"></div>
+        <div class="btn-row">
+          <a href="https://colossalaiconsulting.com/quiz" class="btn-primary">Take the Business AI Index →</a>
+          <button class="btn-ghost" onclick="retake()">Retake the Test</button>
+        </div>
+        <div class="share-block">
+          <div class="share-label">Share your score</div>
+          <div class="share-btns">
+            <button class="share-btn" onclick="shareLinkedIn()"><span>↗</span> LinkedIn</button>
+            <button class="share-btn" onclick="shareFacebook()"><span>↗</span> Facebook</button>
+            <button class="share-btn" onclick="copyLink()"><span>⊡</span> Copy Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<footer>
+  <span>COLOSSAL. AI Consulting</span>
+  <span>AI IQ Index · V1</span>
+  <span>Est. MMXXVI</span>
+</footer>
+<div class="rule" id="bot-rule"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Build rules
+['top-rule','bot-rule'].forEach(id => {
+  const el = document.getElementById(id);
+  for (let i=0;i<79;i++) el.innerHTML += '<span></span>';
+});
+
+// ── Questions ──
+// Each has: cat, text, opts [{t,correct}], explanation
+const Qs = [
+  {
+    cat: "Foundations",
+    text: "What does 'LLM' stand for in the context of AI?",
+    opts: [
+      { t: "Large Language Model", c: true },
+      { t: "Layered Learning Mechanism", c: false },
+      { t: "Linear Logic Machine", c: false },
+      { t: "Linked Learning Module", c: false },
+    ],
+    explain: "<strong>Large Language Model.</strong> LLMs like ChatGPT, Claude, and Gemini are trained on vast amounts of text to understand and generate human language. They're the engine behind most AI tools you interact with today."
+  },
+  {
+    cat: "Tools",
+    text: "Which of these is NOT an AI tool?",
+    opts: [
+      { t: "Claude", c: false },
+      { t: "Zapier", c: true },
+      { t: "ChatGPT", c: false },
+      { t: "Gemini", c: false },
+    ],
+    explain: "<strong>Zapier is not AI — it's an automation platform.</strong> Claude, ChatGPT, and Gemini are all AI assistants powered by large language models. Zapier connects apps and automates workflows, but it doesn't use AI natively (though it has added some AI features recently)."
+  },
+  {
+    cat: "Concepts",
+    text: "What is 'hallucination' in the context of AI?",
+    opts: [
+      { t: "When AI generates visually distorted images", c: false },
+      { t: "When AI confidently states something that is false", c: true },
+      { t: "When AI takes too long to respond", c: false },
+      { t: "When AI refuses to answer a question", c: false },
+    ],
+    explain: "<strong>Hallucination is when AI confidently states false information.</strong> This is one of AI's most important limitations to understand. AI models don't 'know' facts — they predict likely text. Sometimes that prediction is wrong, and the model states it confidently anyway. Always verify important claims from AI."
+  },
+  {
+    cat: "Tools",
+    text: "What is a 'prompt' in AI?",
+    opts: [
+      { t: "The fee charged per AI request", c: false },
+      { t: "A pre-built AI workflow template", c: false },
+      { t: "The input or instruction you give to an AI", c: true },
+      { t: "The AI's memory of past conversations", c: false },
+    ],
+    explain: "<strong>A prompt is the input or instruction you give to an AI.</strong> Prompt engineering — the skill of writing effective prompts — is one of the highest-leverage skills you can develop. Better prompts produce dramatically better outputs."
+  },
+  {
+    cat: "Concepts",
+    text: "What does 'RAG' stand for in AI systems?",
+    opts: [
+      { t: "Rapid Automated Generation", c: false },
+      { t: "Retrieval-Augmented Generation", c: true },
+      { t: "Recursive AI Grouping", c: false },
+      { t: "Real-time Adaptive Grammar", c: false },
+    ],
+    explain: "<strong>Retrieval-Augmented Generation.</strong> RAG is how AI systems access specific knowledge bases — like your company's documents or a product catalog — to give accurate, up-to-date answers instead of relying only on training data. It's how custom AI assistants are built."
+  },
+  {
+    cat: "Applications",
+    text: "Which task would an AI language model handle WORST?",
+    opts: [
+      { t: "Drafting a marketing email", c: false },
+      { t: "Summarizing a long document", c: false },
+      { t: "Calculating yesterday's exact stock price", c: true },
+      { t: "Brainstorming product names", c: false },
+    ],
+    explain: "<strong>Real-time data lookup.</strong> LLMs have a knowledge cutoff and can't access live data unless given a tool to do so. Drafting, summarizing, and brainstorming are core strengths. Accurate real-time facts (stock prices, current events) require additional tools or search integration."
+  },
+  {
+    cat: "Tools",
+    text: "What is an 'AI agent'?",
+    opts: [
+      { t: "A human consultant who specializes in AI", c: false },
+      { t: "An AI that can take actions and complete multi-step tasks autonomously", c: true },
+      { t: "A chatbot that answers customer service questions", c: false },
+      { t: "A filter that detects AI-generated content", c: false },
+    ],
+    explain: "<strong>An AI agent takes autonomous action across multiple steps.</strong> Unlike a basic chatbot that responds to one message at a time, an agent can plan, use tools, browse the web, send emails, and complete complex tasks on its own. This is the fastest-growing area of AI in 2026."
+  },
+  {
+    cat: "Concepts",
+    text: "What does it mean to 'fine-tune' an AI model?",
+    opts: [
+      { t: "Adjust the speed at which the model responds", c: false },
+      { t: "Write better prompts for an existing model", c: false },
+      { t: "Train an existing model further on specific data", c: true },
+      { t: "Connect the model to external tools", c: false },
+    ],
+    explain: "<strong>Fine-tuning trains an existing model on new specific data.</strong> Instead of building an AI from scratch, fine-tuning takes a powerful base model and trains it on your specific domain — like medical records, legal documents, or customer support conversations — to make it much more accurate for that use case."
+  },
+  {
+    cat: "Applications",
+    text: "What is 'vibe coding'?",
+    opts: [
+      { t: "Writing code with aesthetic variable names", c: false },
+      { t: "Using AI to build software by describing what you want in plain English", c: true },
+      { t: "A coding style that prioritizes readability over performance", c: false },
+      { t: "Pair programming with an AI assistant", c: false },
+    ],
+    explain: "<strong>Vibe coding is building software by describing it to AI in plain English.</strong> Tools like Replit, Cursor, and Claude let non-developers build functional apps, websites, and tools without writing traditional code. It's how John Cheney built a $2.5M/year AI consulting business in a weekend — starting with $400."
+  },
+  {
+    cat: "Concepts",
+    text: "What is the 'context window' of an AI model?",
+    opts: [
+      { t: "The maximum resolution of images the AI can process", c: false },
+      { t: "How far back the AI can see into a conversation or document", c: true },
+      { t: "The geographic regions where the AI is available", c: false },
+      { t: "The time delay before the AI starts responding", c: false },
+    ],
+    explain: "<strong>The context window is how much text the AI can 'hold in mind' at once.</strong> A larger context window means the AI can work with longer documents, longer conversations, and more complex tasks without forgetting earlier information. Modern models like Claude can handle hundreds of thousands of words in a single context."
+  },
+];
+
+// State
+let cur = 0;
+let answers = new Array(Qs.length).fill(null); // index of selected option
+let revealed = false;
+let userEmail = '';
+
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startQuiz() { cur = 0; renderQ(); }
+
+function renderQ() {
+  const q = Qs[cur];
+  const keys = ['A','B','C','D'];
+  const pct = Math.round((cur / Qs.length) * 100);
+
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('pct-lbl').textContent = pct + '% complete';
+  document.getElementById('q-num-lbl').textContent = (cur+1) + ' of ' + Qs.length;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+
+  // Running score
+  const correct = answers.slice(0, cur).filter((a, i) => a !== null && Qs[i].opts[a].c).length;
+  if (cur > 0) document.getElementById('running-score').textContent = correct + '/' + cur + ' correct';
+  else document.getElementById('running-score').textContent = '';
+
+  document.getElementById('q-opts').innerHTML = q.opts.map((o, i) => `
+    <button class="option${answers[cur]===i?' selected':''}"
+            onclick="pick(${i})" id="opt-${i}">
+      <span class="opt-key">${keys[i]}</span>
+      <span class="opt-text">${o.t}</span>
+    </button>
+  `).join('');
+
+  const explainEl = document.getElementById('q-explain');
+  explainEl.innerHTML = '';
+  explainEl.classList.remove('show');
+
+  document.getElementById('btn-next').disabled = answers[cur] === null;
+  document.getElementById('btn-back').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = cur === Qs.length-1 ? 'Submit →' : 'Next →';
+
+  revealed = false;
+
+  // If already answered (navigating back/forward), reveal immediately
+  if (answers[cur] !== null) revealAnswer(answers[cur], false);
+}
+
+function pick(i) {
+  if (revealed) return;
+  answers[cur] = i;
+  revealed = true;
+  revealAnswer(i, true);
+  document.getElementById('btn-next').disabled = false;
+}
+
+function revealAnswer(selected, animate) {
+  const q = Qs[cur];
+  const keys = ['A','B','C','D'];
+
+  q.opts.forEach((o, idx) => {
+    const el = document.getElementById('opt-' + idx);
+    if (!el) return;
+    el.classList.add('revealed');
+    if (o.c) el.classList.add('correct');
+    else if (idx === selected && !o.c) el.classList.add('wrong');
+  });
+
+  const explainEl = document.getElementById('q-explain');
+  explainEl.innerHTML = q.explain;
+  if (animate) {
+    setTimeout(() => explainEl.classList.add('show'), 150);
+  } else {
+    explainEl.classList.add('show');
+  }
+}
+
+function next() {
+  if (answers[cur] === null) return;
+  if (cur < Qs.length - 1) {
+    cur++;
+    go('s-quiz');
+    renderQ();
+  } else {
+    // Calculate raw score for gate preview
+    const score = answers.filter((a, i) => a !== null && Qs[i].opts[a].c).length;
+    document.getElementById('gate-prev').textContent = score;
+    go('s-gate');
+  }
+}
+
+function prev() {
+  if (cur > 0) { cur--; go('s-quiz'); renderQ(); }
+}
+
+function submitGate() {
+  const email = document.getElementById('gate-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('gate-email').focus();
+    document.getElementById('gate-email').style.borderColor = 'rgba(194,136,74,0.6)';
+    return;
+  }
+  userEmail = email;
+
+  const score = answers.filter((a, i) => a !== null && Qs[i].opts[a].c).length;
+  let tier;
+  if (score >= 9)      tier = 'AI Expert';
+  else if (score >= 7) tier = 'AI Proficient';
+  else if (score >= 5) tier = 'AI Aware';
+  else if (score >= 3) tier = 'AI Curious';
+  else                 tier = 'AI Beginner';
+
+  // Send to Google Sheet
+  const params = new URLSearchParams({ email, score: String(score), tier, source: 'ai-iq' });
+  const img = new Image();
+  img.src = 'https://script.google.com/macros/s/AKfycbyMP18blURRxh0dektUr0fUlVPKsqq36xdKe0I1B9BO3ZwYdA17Jl1JsoON1sdyJN4E/exec?' + params.toString();
+
+  buildResults(score, tier);
+  go('s-results');
+}
+
+function buildResults(score, tier) {
+  const pct = Math.round((score / Qs.length) * 100);
+
+  // Animate score counter
+  const scoreEl = document.getElementById('r-score');
+  let n = 0;
+  const interval = setInterval(() => {
+    n = Math.min(n+1, score);
+    scoreEl.innerHTML = n + '<span class="score-denom">/10</span>';
+    if (n >= score) clearInterval(interval);
+  }, 80);
+
+  document.getElementById('r-pct').textContent = pct + 'th percentile equivalent';
+  document.getElementById('r-greeting').textContent = userEmail ? 'Result for ' + userEmail : 'Your result';
+
+  // Tier
+  let tierColor;
+  if (score >= 9)      tierColor = '#6aaa7a';
+  else if (score >= 7) tierColor = 'var(--accent)';
+  else if (score >= 5) tierColor = 'var(--accent)';
+  else if (score >= 3) tierColor = '#aa9a5a';
+  else                 tierColor = '#aa6a5a';
+
+  const tierEl = document.getElementById('r-tier');
+  tierEl.textContent = tier;
+  tierEl.style.color = tierColor;
+  tierEl.style.borderColor = tierColor;
+
+  setTimeout(() => { document.getElementById('r-bar').style.width = pct + '%'; }, 200);
+
+  // Business owner callout
+  const bizEl = document.getElementById('r-biz-text');
+  if (score >= 7) {
+    bizEl.innerHTML = "You clearly follow AI closely. <strong>If you run a business, that knowledge is worth real money</strong> — most of your competitors haven't gotten here yet. See how your business specifically stacks up on the Business AI Index.";
+  } else {
+    bizEl.innerHTML = "<strong>If you run a business, this gap matters more than you think.</strong> Every point you missed represents a category of AI capability your competitors may already be using. The Business AI Index shows exactly where the revenue impact is.";
+  }
+
+  // Insights based on wrong answers
+  const wrongQs = Qs.filter((q, i) => answers[i] !== null && !q.opts[answers[i]].c);
+  const rightQs = Qs.filter((q, i) => answers[i] !== null && q.opts[answers[i]].c);
+
+  const insightMap = {
+    "Foundations": { h: "Foundation knowledge has gaps.", b: "Understanding how LLMs work — what they can and can't do — is the single most important prerequisite for using AI effectively. Most mistakes come from misunderstanding the fundamentals." },
+    "Tools": { h: "Tool awareness is behind where it needs to be.", b: "The AI tool landscape moves fast, but a handful of tools dominate real-world usage. Knowing the difference between an AI assistant, an automation platform, and an AI agent changes how you approach problems." },
+    "Concepts": { h: "Some core AI concepts need reinforcement.", b: "Concepts like RAG, fine-tuning, and context windows aren't just jargon — they directly affect what you can build and how you prompt. Closing these gaps makes everything else click." },
+    "Applications": { h: "Real-world application knowledge has room to grow.", b: "Knowing what AI is good at and bad at — and where the boundaries are — is what separates effective AI users from frustrated ones. Most people over-trust or under-use AI because they don't know these limits." },
+  };
+
+  const wrongCats = [...new Set(wrongQs.map(q => q.cat))];
+  const insightsEl = document.getElementById('r-insights');
+
+  if (score === 10) {
+    insightsEl.innerHTML = `
+      <div class="insight">
+        <div class="insight-tag">Perfect Score</div>
+        <div class="insight-head">You're in the top 5%. Now put it to work.</div>
+        <div class="insight-body">A perfect score means you understand AI well. The next level isn't more knowledge — it's application. If you run a business, take the Business AI Index to see where the operational gaps are.</div>
+      </div>`;
+  } else {
+    insightsEl.innerHTML = wrongCats.slice(0,3).map((cat, i) => `
+      <div class="insight">
+        <div class="insight-tag">Gap ${String(i+1).padStart(2,'0')} — ${cat}</div>
+        <div class="insight-head">${insightMap[cat]?.h || cat + ' knowledge has room to grow.'}</div>
+        <div class="insight-body">${insightMap[cat]?.b || ''}</div>
+      </div>`).join('');
+  }
+
+  // Answer review
+  const reviewEl = document.getElementById('r-review');
+  reviewEl.innerHTML = Qs.map((q, i) => {
+    const a = answers[i];
+    const isCorrect = a !== null && q.opts[a].c;
+    const correctIdx = q.opts.findIndex(o => o.c);
+    return `
+      <div class="review-item ${isCorrect ? 'correct-item' : 'wrong-item'}">
+        <div class="review-q">${String(i+1).padStart(2,'0')}. ${q.text}</div>
+        <div class="review-answers">
+          ${a !== null && !isCorrect ? `<span class="review-ans your-ans">Your answer: ${q.opts[a].t}</span>` : ''}
+          <span class="review-ans ${isCorrect ? 'both' : 'correct-ans'}">${isCorrect ? '✓ ' : 'Correct: '}${q.opts[correctIdx].t}</span>
+        </div>
+        <div class="review-exp">${q.explain.replace(/<[^>]*>/g, '')}</div>
+      </div>`;
+  }).join('');
+
+  // CTA
+  const ctaH = document.getElementById('r-cta-h');
+  const ctaS = document.getElementById('r-cta-sub');
+  if (score >= 8) {
+    ctaH.textContent = "Your knowledge is strong. Now see how your business stacks up.";
+    ctaS.textContent = "You clearly track AI closely. Take the 2-minute Business AI Index to see exactly where AI can make the biggest difference in your day-to-day operations — and what it's currently costing you.";
+  } else if (score >= 5) {
+    ctaH.textContent = "Good foundation. The application gap is where the money is.";
+    ctaS.textContent = "You know the concepts. The Business AI Index takes it further — showing you exactly where AI fits in your specific business and what competitors are already doing with it.";
+  } else {
+    ctaH.textContent = "Every gap here is an opportunity your competitors may already be closing.";
+    ctaS.textContent = "The businesses pulling ahead on AI aren't smarter — they just started the right conversation. The Business AI Index shows you exactly where to start. Free, 2 minutes, no commitment.";
+  }
+
+  window._shareScore = score;
+  window._shareTier = tier;
+}
+
+function retake() {
+  cur = 0; answers = new Array(Qs.length).fill(null); userEmail = '';
+  go('s-intro');
+}
+
+function shareLinkedIn() {
+  const s = window._shareScore || 0; const t = window._shareTier || '';
+  const text = encodeURIComponent(`I scored ${s}/10 on the AI IQ Test (${t}).\n\nMost people think they understand AI. Most are wrong. This 10-question test shows where you actually stand.\n\nTake it free: https://colossalaiconsulting.com/ai-iq\n\n#AI #AILiteracy #ArtificialIntelligence`);
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcolossalaiconsulting.com%2Fai-iq&summary=${text}`, '_blank');
+}
+
+function shareFacebook() {
+  window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcolossalaiconsulting.com%2Fai-iq', '_blank');
+}
+
+function copyLink() {
+  const s = window._shareScore || 0;
+  navigator.clipboard.writeText(`I scored ${s}/10 on the AI IQ Test. Take it free: https://colossalaiconsulting.com/ai-iq`).then(() => showToast('Copied to clipboard'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+</script>
+</body>
+</html>
