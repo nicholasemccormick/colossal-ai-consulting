@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI for Med Spas — COLOSSAL.</title>
+<meta name="description" content="AI systems for med spa owners. Missed call recovery, no-show reduction, patient follow-up automation. Free 30-minute assessment."/>
+<meta property="og:title" content="You didn't open a med spa to answer phones."/>
+<meta property="og:description" content="AI handles the calls, follow-ups, booking, and FAQs. You handle the patients. Free 30-min assessment."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:      #f5ede0;
+  --bg2:     #ede4d4;
+  --ink:     #1a1208;
+  --ink2:    #3d2f1a;
+  --accent:  #c2884a;
+  --accent2: #a06830;
+  --muted:   #7a6a55;
+  --line:    rgba(26,18,8,0.1);
+  --line2:   rgba(26,18,8,0.06);
+  --white:   #fdf8f2;
+  --green:   #2d6b42;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* Grain */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.55;}
+
+/* Measure rule */
+.rule{width:100%;height:14px;display:flex;}
+.rule span{flex:1;border-left:1px solid rgba(26,18,8,0.1);}
+.rule span:nth-child(5n+1){border-color:rgba(26,18,8,0.28);}
+.rule span:not(:nth-child(5n+1)){margin-top:7px;}
+
+/* Nav */
+nav{padding:20px 80px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:var(--white);position:sticky;top:0;z-index:100;}
+.wm{font-weight:900;font-size:15px;letter-spacing:-0.04em;text-transform:uppercase;color:var(--ink);}
+.wm .dot{color:var(--accent);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.15s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-cta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;font-weight:600;padding:11px 20px;background:var(--accent);color:var(--white);text-decoration:none;transition:background 0.15s;}
+.nav-cta:hover{background:var(--accent2);}
+
+/* Sections */
+section{padding:100px 80px;border-top:1px solid var(--line);}
+.section-grid{display:grid;grid-template-columns:200px 1fr;gap:80px;align-items:start;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);display:block;}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── HERO ── */
+.hero{padding:80px 80px 120px;min-height:90vh;display:flex;flex-direction:column;justify-content:space-between;border-top:none;background:var(--ink);color:var(--bg);}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;opacity:0.5;margin-bottom:52px;}
+.hero-h1{font-weight:900;font-size:clamp(56px,9vw,128px);line-height:0.93;letter-spacing:-0.05em;margin-bottom:0;}
+.hero-h1 .accent{color:var(--accent);}
+.hero-bottom{display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:end;margin-top:72px;}
+.hero-sub{font-size:17px;line-height:1.7;opacity:0.7;max-width:480px;}
+.hero-aside{text-align:right;}
+.hero-cta{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;padding:18px 28px;background:var(--accent);color:var(--ink);text-decoration:none;transition:background 0.15s;margin-bottom:12px;}
+.hero-cta:hover{background:#d4994f;}
+.hero-cta-note{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.4;}
+
+/* Hero measure rule */
+.hero-rule{margin-top:60px;}
+.hero-rule-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.38;margin-top:8px;}
+.rule-dark span{border-color:rgba(236,229,212,0.15);}
+.rule-dark span:nth-child(5n+1){border-color:rgba(236,229,212,0.4);}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-eyebrow{animation:fadeUp 0.7s ease both;animation-delay:0.1s;}
+.hero-h1{animation:fadeUp 0.8s ease both;animation-delay:0.25s;}
+.hero-bottom{animation:fadeUp 0.7s ease both;animation-delay:0.5s;}
+
+/* ── PAIN POINTS ── */
+.pain-intro{font-family:'Inter',sans-serif;font-weight:700;font-size:clamp(28px,4vw,52px);line-height:1.1;letter-spacing:-0.03em;max-width:760px;}
+.pain-intro .accent{color:var(--accent);}
+.pain-rows{margin-top:56px;}
+.pain-row{display:grid;grid-template-columns:48px 1fr;gap:24px;align-items:start;padding:28px 0;border-bottom:1px solid var(--line);}
+.pain-row:last-child{border-bottom:none;}
+.pain-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);font-weight:600;margin-top:3px;}
+.pain-head{font-weight:700;font-size:20px;letter-spacing:-0.02em;margin-bottom:8px;}
+.pain-body{font-size:15px;line-height:1.6;color:var(--ink2);}
+.pain-stat{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(194,136,74,0.3);padding:4px 10px;margin-top:10px;}
+
+/* ── SERVICES ── */
+.service-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.service-card{background:var(--white);border:1.5px solid var(--line);padding:32px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+.service-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform 0.2s;transform-origin:left;}
+.service-card:hover::before{transform:scaleX(1);}
+.service-n{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:16px;font-weight:600;}
+.service-title{font-weight:700;font-size:22px;letter-spacing:-0.02em;margin-bottom:12px;color:var(--ink);}
+.service-body{font-size:14px;line-height:1.6;color:var(--ink2);margin-bottom:20px;}
+.service-outcomes{list-style:none;}
+.service-outcomes li{font-size:13px;color:var(--ink2);padding:5px 0;border-bottom:1px solid var(--line2);display:flex;gap:10px;align-items:baseline;}
+.service-outcomes li::before{content:'→';color:var(--accent);flex-shrink:0;font-size:11px;}
+.service-price{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+
+/* ── ROI CALCULATOR ── */
+.roi-section{background:var(--ink);color:var(--bg);padding:100px 80px;}
+.roi-headline{font-weight:900;font-size:clamp(36px,5vw,72px);line-height:1.0;letter-spacing:-0.04em;margin-bottom:48px;}
+.roi-headline .accent{color:var(--accent);}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.roi-calc{background:rgba(236,229,212,0.05);border:1px solid rgba(236,229,212,0.12);padding:36px;}
+.roi-row{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-bottom:1px solid rgba(236,229,212,0.08);}
+.roi-row:last-child{border-bottom:none;padding-top:20px;margin-top:8px;border-top:1px solid rgba(194,136,74,0.3);}
+.roi-label{font-size:14px;opacity:0.7;}
+.roi-val{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent);font-weight:600;}
+.roi-total-val{font-size:32px;font-weight:900;letter-spacing:-0.03em;color:var(--accent);}
+.roi-proof{display:flex;flex-direction:column;gap:24px;justify-content:center;}
+.roi-stat-block{border-left:3px solid var(--accent);padding-left:24px;}
+.roi-stat-n{font-weight:900;font-size:56px;line-height:0.9;letter-spacing:-0.04em;color:var(--accent);}
+.roi-stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;opacity:0.5;margin-top:8px;}
+.roi-stat-body{font-size:14px;line-height:1.55;opacity:0.7;margin-top:6px;}
+
+/* ── METHOD ── */
+.method-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+.method-step{position:relative;}
+.step-n{font-weight:900;font-size:72px;line-height:0.88;letter-spacing:-0.05em;color:var(--accent);margin-bottom:20px;}
+.step-title{font-weight:700;font-size:22px;letter-spacing:-0.02em;margin-bottom:12px;}
+.step-body{font-size:14px;line-height:1.6;color:var(--ink2);}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.about-quote{font-family:'Inter',sans-serif;font-weight:600;font-size:24px;line-height:1.4;letter-spacing:-0.02em;border-left:3px solid var(--accent);padding-left:28px;color:var(--ink);margin-bottom:32px;}
+.about-body{font-size:16px;line-height:1.7;color:var(--ink2);margin-bottom:20px;}
+.about-creds{display:flex;flex-direction:column;gap:16px;}
+.cred-item{display:flex;gap:16px;align-items:start;padding:16px;background:var(--white);border:1.5px solid var(--line);}
+.cred-icon{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);flex-shrink:0;margin-top:2px;font-weight:600;}
+.cred-text{font-size:13px;line-height:1.5;color:var(--ink2);}
+.cred-text strong{color:var(--ink);font-weight:600;}
+
+/* ── CTA ── */
+.cta-section{background:var(--ink);color:var(--bg);padding:140px 80px;text-align:center;}
+.cta-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;opacity:0.9;}
+.cta-h{font-weight:900;font-size:clamp(48px,8vw,112px);line-height:0.93;letter-spacing:-0.05em;margin-bottom:24px;}
+.cta-h .accent{color:var(--accent);}
+.cta-sub{font-size:17px;line-height:1.7;opacity:0.65;max-width:520px;margin:0 auto 52px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary-dark{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;font-weight:600;padding:18px 28px;background:var(--accent);color:var(--ink);text-decoration:none;transition:background 0.15s;display:inline-block;}
+.btn-primary-dark:hover{background:#d4994f;}
+.btn-ghost-dark{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;padding:18px 28px;border:1px solid rgba(236,229,212,0.25);color:rgba(236,229,212,0.85);text-decoration:none;transition:background 0.15s;display:inline-block;}
+.btn-ghost-dark:hover{background:rgba(236,229,212,0.07);}
+.cta-note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.35;margin-top:24px;}
+
+/* Footer */
+footer{padding:40px 80px;border-top:1px solid var(--line);background:var(--white);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:32px;}
+.footer-wm{font-weight:900;font-size:15px;letter-spacing:-0.04em;text-transform:uppercase;margin-bottom:10px;}
+.footer-wm .dot{color:var(--accent);}
+.footer-col{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);}
+.footer-col .col-head{font-weight:600;color:var(--ink);margin-bottom:12px;display:block;}
+.footer-col a{display:block;margin-top:6px;text-decoration:none;color:var(--muted);transition:color 0.15s;}
+.footer-col a:hover{color:var(--accent);}
+
+/* Responsive */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  section{padding:64px 24px;}
+  .hero{padding:52px 24px 72px;}
+  .section-grid{grid-template-columns:1fr;gap:28px;}
+  .service-cards{grid-template-columns:1fr;}
+  .roi-grid{grid-template-columns:1fr;}
+  .method-steps{grid-template-columns:1fr;gap:32px;}
+  .about-grid{grid-template-columns:1fr;}
+  .hero-bottom{grid-template-columns:1fr;}
+  .hero-aside{text-align:left;}
+  .cta-section{padding:80px 24px;}
+  footer{grid-template-columns:1fr 1fr;padding:32px 24px;}
+  .roi-section{padding:64px 24px;}
+}
+@media(max-width:480px){
+  footer{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="rule" id="top-rule"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="wm">COLOSSAL<span class="dot">.</span></div>
+  <ul class="nav-links">
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#assess" class="nav-cta">Free Assessment →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">§ AI for Med Spa Owners · Colossal AI Consulting</div>
+    <h1 class="hero-h1">
+      You didn't<br/>
+      open a med spa<br/>
+      to answer<br/>
+      <span class="accent">phones.</span>
+    </h1>
+  </div>
+  <div class="hero-bottom">
+    <p class="hero-sub">
+      AI handles the missed calls, the no-shows, the patient follow-ups,
+      and the Instagram DMs at 10pm. You handle the patients.
+      One system. Installed in a week. Pays for itself in the first
+      consultation it recovers.
+    </p>
+    <div class="hero-aside">
+      <a href="#assess" class="hero-cta">Book Free Assessment →</a>
+      <div class="hero-cta-note">30 min · No pitch · Written plan yours to keep</div>
+    </div>
+  </div>
+  <div class="hero-rule">
+    <div class="rule rule-dark" id="hero-rule"></div>
+    <div class="hero-rule-labels">
+      <span>WHILE YOU'RE WITH A PATIENT</span>
+      <span>AI IS HANDLING EVERYTHING ELSE</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section id="problem" class="reveal">
+  <div class="section-grid">
+    <span class="eyebrow">§ 01 — The Problem</span>
+    <div>
+      <div class="pain-intro">
+        Single-owner med spas lose revenue every day to problems
+        that <span class="accent">AI solved three years ago.</span>
+      </div>
+      <div class="pain-rows">
+        <div class="pain-row">
+          <div class="pain-n">01</div>
+          <div>
+            <div class="pain-head">Missed calls become missed consultations</div>
+            <div class="pain-body">You're with a patient. Your phone rings. By the time you call back, they've booked somewhere else. Every missed call is a consultation you didn't book — and at $200–$800 per treatment, those add up fast.</div>
+            <span class="pain-stat">57% of leads book with whoever responds first</span>
+          </div>
+        </div>
+        <div class="pain-row">
+          <div class="pain-n">02</div>
+          <div>
+            <div class="pain-head">No-shows drain revenue you already earned</div>
+            <div class="pain-body">A 20% no-show rate is a 20% revenue problem. Most med spas accept it as normal. The ones growing fastest don't. Automated reminders, confirmation sequences, and rebooking flows cut no-show rates by 30–50%.</div>
+            <span class="pain-stat">1 recovered no-show/week at $300 avg = $15,600/yr</span>
+          </div>
+        </div>
+        <div class="pain-row">
+          <div class="pain-n">03</div>
+          <div>
+            <div class="pain-head">Instagram leads fall through at 10pm</div>
+            <div class="pain-body">Your best marketing drives DMs and inquiries around the clock. Your capacity to respond doesn't. An AI agent responds within minutes — answers questions, qualifies the lead, and books the consultation — while you sleep.</div>
+            <span class="pain-stat">Leads go cold in under 5 minutes without a response</span>
+          </div>
+        </div>
+        <div class="pain-row">
+          <div class="pain-n">04</div>
+          <div>
+            <div class="pain-head">Your front desk answers the same 10 questions 40 times a week</div>
+            <div class="pain-body">Pricing. Availability. What to expect. Aftercare instructions. These questions have the same answers every time. A knowledge base trained on your practice handles them automatically — freeing your staff for the work that actually requires a human.</div>
+            <span class="pain-stat">80% of patient inquiries are answerable by AI today</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="reveal">
+  <div class="section-grid">
+    <span class="eyebrow">§ 02 — Services</span>
+    <div>
+      <div class="service-cards">
+        <div class="service-card">
+          <div class="service-n">01 — CORE</div>
+          <div class="service-title">AI Receptionist</div>
+          <div class="service-body">An AI agent that answers every call, responds to every DM, handles FAQs, and books consultations — 24 hours a day, 7 days a week.</div>
+          <ul class="service-outcomes">
+            <li>Missed call recovery — automatic text response within 60 seconds</li>
+            <li>Handles pricing, availability, and FAQ inquiries</li>
+            <li>Books directly into your scheduling system</li>
+            <li>Escalates to you when human judgment is needed</li>
+          </ul>
+          <div class="service-price">From $1,500 setup · $299/mo</div>
+        </div>
+        <div class="service-card">
+          <div class="service-n">02 — REVENUE</div>
+          <div class="service-title">No-Show Recovery</div>
+          <div class="service-body">Automated appointment reminders, confirmation sequences, and rebooking flows that cut no-show rates by 30–50% for the practices I work with.</div>
+          <ul class="service-outcomes">
+            <li>Multi-touch reminder sequence (72hr, 24hr, 2hr)</li>
+            <li>Automated rebooking for cancellations</li>
+            <li>Post-appointment follow-up and review requests</li>
+            <li>Monthly reporting on recovery rate</li>
+          </ul>
+          <div class="service-price">From $1,200 setup · $199/mo</div>
+        </div>
+        <div class="service-card">
+          <div class="service-n">03 — GROWTH</div>
+          <div class="service-title">Lead Nurture System</div>
+          <div class="service-body">An automated follow-up system for leads who didn't book — email and SMS sequences that keep your practice top of mind until they're ready.</div>
+          <ul class="service-outcomes">
+            <li>Personalized follow-up sequences for each service type</li>
+            <li>Reactivation campaigns for dormant leads</li>
+            <li>Post-consultation nurture to reduce decision friction</li>
+            <li>Integration with your existing CRM or booking system</li>
+          </ul>
+          <div class="service-price">From $1,800 setup · $249/mo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI SECTION -->
+<section class="roi-section reveal">
+  <div class="roi-headline">
+    What this looks like<br/>
+    in <span class="accent">real numbers.</span>
+  </div>
+  <div class="roi-grid">
+    <div class="roi-calc">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;opacity:0.8;">§ ROI MODEL — TYPICAL MED SPA</div>
+      <div class="roi-row">
+        <span class="roi-label">Average treatment value</span>
+        <span class="roi-val">$350</span>
+      </div>
+      <div class="roi-row">
+        <span class="roi-label">Missed calls recovered / week</span>
+        <span class="roi-val">3</span>
+      </div>
+      <div class="roi-row">
+        <span class="roi-label">Consultation close rate</span>
+        <span class="roi-val">35%</span>
+      </div>
+      <div class="roi-row">
+        <span class="roi-label">No-shows recovered / week</span>
+        <span class="roi-val">2</span>
+      </div>
+      <div class="roi-row">
+        <span class="roi-label">Monthly system cost</span>
+        <span class="roi-val" style="color:rgba(236,229,212,0.5);">~$750</span>
+      </div>
+      <div class="roi-row">
+        <span class="roi-label" style="font-weight:600;color:rgba(236,229,212,0.9);">Monthly revenue recovered</span>
+        <span class="roi-total-val">$4,200+</span>
+      </div>
+    </div>
+    <div class="roi-proof">
+      <div class="roi-stat-block">
+        <div class="roi-stat-n">57%</div>
+        <div class="roi-stat-label">Of leads book with the first responder</div>
+        <div class="roi-stat-body">Your AI responds in under 60 seconds, around the clock. Your competitor responds when they get around to it.</div>
+      </div>
+      <div class="roi-stat-block">
+        <div class="roi-stat-n">30–50%</div>
+        <div class="roi-stat-label">No-show reduction with automated sequences</div>
+        <div class="roi-stat-body">Most no-shows happen because nobody followed up. A three-touch reminder sequence fixes that without lifting a finger.</div>
+      </div>
+      <div class="roi-stat-block">
+        <div class="roi-stat-n">~1 wk</div>
+        <div class="roi-stat-label">Average setup time</div>
+        <div class="roi-stat-body">No tech background needed. We handle the build, the integration, and the training. You approve and launch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method" class="reveal">
+  <div class="section-grid">
+    <span class="eyebrow">§ 03 — Method</span>
+    <div class="method-steps">
+      <div class="method-step">
+        <div class="step-n">I.</div>
+        <div class="step-title">Assessment</div>
+        <div class="step-body">A 30-minute conversation about your practice — your scheduling system, your biggest revenue leaks, your current tools. No agenda. No pitch. I'll tell you honestly where AI fits and where it doesn't.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-n">II.</div>
+        <div class="step-title">Build</div>
+        <div class="step-body">I build the system to your practice — your services, your voice, your FAQs, your booking flow. Not a template. Not a generic chatbot. A system that sounds like your front desk, not a robot.</div>
+      </div>
+      <div class="method-step">
+        <div class="step-n">III.</div>
+        <div class="step-title">Launch + Support</div>
+        <div class="step-body">You review, approve, and we go live. I monitor the first 30 days and tune based on real interactions. You get monthly reporting so you can see exactly what it's recovering.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="reveal">
+  <div class="section-grid">
+    <span class="eyebrow">§ 04 — About</span>
+    <div class="about-grid">
+      <div>
+        <div class="about-quote">
+          "Most med spa owners didn't go to school to run a call center.
+          They went to become providers. My job is to give that back."
+        </div>
+        <p class="about-body">I'm Nick McCormick — an AI consultant who works with single-owner healthcare practices. I've built AI tools that serve thousands of small businesses and I bring that same infrastructure to practices like yours.</p>
+        <p class="about-body">I don't work with enterprise health systems. I work with owners — the person who is both the provider and the CEO — because that's where AI makes the most measurable difference the fastest.</p>
+      </div>
+      <div class="about-creds">
+        <div class="cred-item">
+          <div class="cred-icon">§01</div>
+          <div class="cred-text"><strong>Purdue University</strong> — Graduate studies in AI for Business Decisions (MGMT 687)</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">§02</div>
+          <div class="cred-text"><strong>Colossal API</strong> — Built and shipped 6 AI infrastructure products serving thousands of users</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">§03</div>
+          <div class="cred-text"><strong>Practitioner, not theorist</strong> — Every system I recommend I've built, tested, and deployed in a real business</div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">§04</div>
+          <div class="cred-text"><strong>Plain language guarantee</strong> — No jargon. No tech overwhelm. You'll understand exactly what's being built and why</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="assess" class="cta-section">
+  <div class="cta-eyebrow">§ 05 — Begin</div>
+  <div class="cta-h">
+    We take five<br/>
+    new clients a<br/>
+    <span class="accent">month.</span>
+  </div>
+  <p class="cta-sub">A 30-minute call. I'll look at your practice, identify the two or three places AI can make the biggest difference, and give you a written action plan — yours to keep whether you work with me or not.</p>
+  <div class="cta-btns">
+    <a href="mailto:nick@colossalaiconsulting.com?subject=Med Spa AI Assessment Request" class="btn-primary-dark">Book Free Assessment →</a>
+    <a href="https://www.linkedin.com/in/nicholasemccormick" target="_blank" class="btn-ghost-dark">Connect on LinkedIn</a>
+  </div>
+  <div class="cta-note">Free · 30 minutes · No commitment · Written plan yours to keep</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-wm">COLOSSAL<span class="dot">.</span></div>
+    <div class="footer-col">
+      <span>AI Consulting</span>
+      <span style="display:block;margin-top:4px;">Greenwood, IN · Distributed</span>
+    </div>
+  </div>
+  <div class="footer-col">
+    <span class="col-head">Services</span>
+    <a href="#services">AI Receptionist</a>
+    <a href="#services">No-Show Recovery</a>
+    <a href="#services">Lead Nurture</a>
+  </div>
+  <div class="footer-col">
+    <span class="col-head">Practice</span>
+    <a href="#problem">The Problem</a>
+    <a href="#method">Method</a>
+    <a href="#about">About Nick</a>
+  </div>
+  <div class="footer-col">
+    <span class="col-head">Contact</span>
+    <a href="mailto:nick@colossalaiconsulting.com">nick@colossalaiconsulting.com</a>
+    <a href="https://www.linkedin.com/in/nicholasemccormick" target="_blank">LinkedIn</a>
+    <a href="https://www.facebook.com/profile.php?id=61589483753668" target="_blank">Facebook</a>
+  </div>
+</footer>
+
+<div class="rule" id="bot-rule"></div>
+
+<script>
+// Build measure rules
+['top-rule','bot-rule','hero-rule'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let i = 0; i < 79; i++) el.innerHTML += '<span></span>';
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Active nav
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+  navLinks.forEach(l => { l.style.color = l.getAttribute('href') === '#'+current ? 'var(--accent)' : ''; });
+});
+</script>
+</body>
+</html>

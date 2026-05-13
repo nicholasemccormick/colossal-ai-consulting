@@ -7,6 +7,7 @@
     { "source": "/quiz", "destination": "/quiz.html" },
     { "source": "/quiz-light", "destination": "/quiz-light.html" },
     { "source": "/ai-iq", "destination": "/ai-iq.html" },
-    { "source": "/ai-iq-light", "destination": "/ai-iq-light.html" }
+    { "source": "/ai-iq-light", "destination": "/ai-iq-light.html" },
+    { "source": "/medspa", "destination": "/medspa.html" }
   ]
 }
