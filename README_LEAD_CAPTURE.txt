@@ -1,0 +1,1 @@
+Lead capture is implemented in api/assessment.js. Configure Vercel environment variables as documented in LEAD_CAPTURE_SETUP.md.
