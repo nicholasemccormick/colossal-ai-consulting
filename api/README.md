@@ -1,0 +1,1 @@
+`assessment.js` receives scored assessment submissions, optionally stores them in Supabase, and sends lead notifications through Resend.
