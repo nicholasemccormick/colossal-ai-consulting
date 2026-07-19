@@ -1,0 +1,4 @@
+- Homepage readiness-score CTAs now link to the assessment.
+- Assessment submissions post to a Vercel API route.
+- Lead notifications are sent through Resend.
+- Lead records can be stored in Supabase.
