@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autonomous Meta Ads Systems — Colossal.</title>
+<meta name="description" content="A six-week engagement to build and hand off a Meta Ads system that researches, generates creative, publishes, and retires losing ads on its own. No platform lock-in.">
+
+<meta property="og:title" content="Autonomous Meta Ads Systems — Colossal.">
+<meta property="og:description" content="Intelligence at scale, sized for you. Six weeks. Senior practitioners only. No platform lock-in.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://colossalaiconsulting.com/meta-ads.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ===================== Meta Pixel ===================== -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '27632747186389488');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=27632747186389488&ev=PageView&noscript=1"/></noscript>
+<!-- ================== End Meta Pixel =================== -->
+
+<style>
+  :root{
+    --ink:#0B0B0D;
+    --paper:#ECE5D4;
+    --accent:#C2884A;
+    --muted:#6B6357;
+    --rule:rgba(11,11,13,.14);
+    --surface:rgba(11,11,13,.035);
+    --max:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.03em}
+  h1{font-size:clamp(2.7rem,6.4vw,4.8rem)}
+  h2{font-size:clamp(1.95rem,3.9vw,3rem)}
+  h3{font-size:1.12rem;letter-spacing:-.01em;font-weight:600;line-height:1.3}
+  p{color:var(--muted)}
+  .lead{font-size:1.14rem;color:var(--ink);opacity:.82;font-weight:400}
+
+  .mono{
+    font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:500;
+  }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(236,229,212,.88);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{font-weight:800;font-size:1.2rem;letter-spacing:-.03em}
+  .brand i{color:var(--accent);font-style:normal}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    padding:16px 28px;border-radius:2px;font-weight:600;font-size:.92rem;
+    letter-spacing:.01em;text-decoration:none;border:1px solid var(--ink);
+    transition:background .14s ease,color .14s ease,transform .14s ease;
+  }
+  .btn:hover{background:var(--accent);border-color:var(--accent);color:var(--ink);transform:translateY(-1px)}
+  .btn-sm{padding:11px 18px;font-size:.85rem}
+
+  /* ---------- hero ---------- */
+  header.hero{padding:clamp(66px,11vw,126px) 0 clamp(56px,8vw,94px);border-bottom:1px solid var(--rule)}
+  .hero-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:60px;align-items:end}
+  .hero h1{margin-top:20px}
+  .hero .lead{margin-top:24px;max-width:44ch}
+  .hero-cta{margin-top:32px}
+  .microcopy{font-size:.87rem;color:var(--muted);margin-top:16px}
+  .tagline{
+    border-left:2px solid var(--accent);padding-left:18px;
+    font-size:1.02rem;color:var(--ink);opacity:.75;
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(62px,8vw,104px) 0;border-bottom:1px solid var(--rule)}
+  .section-head{max-width:730px;margin-bottom:54px}
+  .section-head h2{margin-top:16px}
+  .section-head p{margin-top:18px;font-size:1.06rem}
+
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .card{background:var(--surface);border:1px solid var(--rule);padding:30px 26px;border-radius:3px}
+  .card h3{margin:12px 0 10px}
+  .card p{font-size:.96rem}
+
+  /* ---------- phases ---------- */
+  .phase{display:grid;grid-template-columns:190px 1fr;gap:30px;padding:30px 0;border-top:1px solid var(--rule)}
+  .phase:last-of-type{border-bottom:1px solid var(--rule)}
+  .phase h3{margin-bottom:8px}
+  .phase p{font-size:.98rem}
+  .phase-when{font-size:.86rem;color:var(--muted);margin-top:8px}
+
+  /* ---------- fit ---------- */
+  .fit{border:1px solid var(--rule);padding:30px 26px;border-radius:3px}
+  .fit ul{list-style:none;margin-top:18px}
+  .fit li{padding:10px 0 10px 26px;position:relative;color:var(--muted);font-size:.97rem}
+  .fit li::before{position:absolute;left:0;font-weight:600}
+  .fit-yes li::before{content:"→";color:var(--accent)}
+  .fit-no li::before{content:"×";color:rgba(11,11,13,.3)}
+
+  /* ---------- faq ---------- */
+  details{border-top:1px solid var(--rule);padding:22px 0}
+  details:last-of-type{border-bottom:1px solid var(--rule)}
+  summary{cursor:pointer;font-weight:600;font-size:1.04rem;list-style:none;display:flex;justify-content:space-between;gap:20px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--accent);font-weight:600}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:14px;font-size:.98rem;max-width:78ch}
+
+  /* ---------- final ---------- */
+  .final{text-align:center;padding:clamp(74px,10vw,124px) 0}
+  .final h2{max-width:17ch;margin:18px auto 0}
+  .final p{max-width:54ch;margin:20px auto 0;font-size:1.06rem}
+  .final .btn{margin-top:34px}
+
+  footer{padding:40px 0}
+  .foot-in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.87rem;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{color:var(--ink)}
+
+  @media (max-width:880px){
+    .hero-grid,.grid-3,.grid-2{grid-template-columns:1fr}
+    .hero-grid{gap:32px}
+    .phase{grid-template-columns:1fr;gap:10px}
+    nav .btn{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand">Colossal<i>.</i></div>
+    <a href="#book" class="btn btn-sm js-cta">Book a call</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="mono">Meta Ads Infrastructure</div>
+      <h1>Your creative pipeline shouldn't depend on someone's calendar.</h1>
+      <p class="lead">
+        We build you a system that researches your customers, generates on-brand
+        creative, publishes it to Meta, and retires losing ads against a rule you
+        set — running daily without a person in the loop.
+      </p>
+    </div>
+    <div>
+      <p class="tagline">Intelligence at scale, sized for you.</p>
+      <div class="hero-cta">
+        <a href="#book" class="btn js-cta">Book a 20-minute call</a>
+      </div>
+      <div class="microcopy">
+        Six-week engagement. Senior practitioners only. No platform lock-in.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="mono">The problem</div>
+      <h2>Meta rewards creative volume. People are the constraint.</h2>
+      <p>
+        Clever targeting stopped being the lever years ago. What moves an account
+        now is how much varied creative you can put in front of the market — which
+        makes your bottleneck production speed, not strategy.
+      </p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="mono">01</div>
+        <h3>The retainer is slow</h3>
+        <p>
+          You're paying monthly and waiting on creative rounds. By the time an ad
+          is live, the angle has moved on without it.
+        </p>
+      </div>
+      <div class="card">
+        <div class="mono">02</div>
+        <h3>Fatigue outruns production</h3>
+        <p>
+          Winners wear out. If the replacement only starts once the current ad
+          dies, there's always a gap where performance drops.
+        </p>
+      </div>
+      <div class="card">
+        <div class="mono">03</div>
+        <h3>Kill decisions are guesses</h3>
+        <p>
+          Without a fixed threshold, ads get cut on a feeling — killing winners
+          early and funding losers too long, often in the same week.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="mono">What we build</div>
+      <h2>Four agents and a warehouse that make each other smarter.</h2>
+      <p>
+        Every part writes to one database. That's the difference between a system
+        that learns and an automation that fires once and forgets — it can see
+        what it published and what that produced.
+      </p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="mono">Research</div>
+        <h3>Mines how your buyers actually talk</h3>
+        <p>
+          Pulls the language customers use to describe the problem, ranks the
+          recurring themes, and refreshes from competitor ads and category
+          content so the system doesn't converge on one angle.
+        </p>
+      </div>
+      <div class="card">
+        <div class="mono">Creative</div>
+        <h3>Generates statics and video, on brand</h3>
+        <p>
+          Turns each theme into ad concepts, then checks every asset against your
+          brand rules and a compliance gate before anything reaches your account.
+        </p>
+      </div>
+      <div class="card">
+        <div class="mono">Publish</div>
+        <h3>Ships through the Marketing API</h3>
+        <p>
+          Builds campaigns, ad sets and ads using a write-only pattern that stays
+          inside platform terms — the approach that doesn't put accounts at risk.
+        </p>
+      </div>
+      <div class="card">
+        <div class="mono">Learn</div>
+        <h3>Enforces your kill rule, continuously</h3>
+        <p>
+          Gives each ad a fair testing window, cuts what's losing against your
+          cost threshold, moves survivors into a pool competing for budget, and
+          logs the numbers behind every decision.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="mono">The engagement</div>
+      <h2>Six weeks. Then it's yours.</h2>
+      <p>
+        We embed, build against your actual economics, and hand over something
+        your team can operate and change. No retainer that never ends.
+      </p>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="mono">01 — Discovery</div>
+        <div class="phase-when">Weeks 1–2</div>
+      </div>
+      <div>
+        <h3>Your account, your numbers, your constraints</h3>
+        <p>
+          We go through what you're running, what a lead or sale is actually worth
+          to you, and where creative is getting stuck. The kill thresholds and
+          testing windows get set against your economics — not defaults borrowed
+          from someone else's playbook.
+        </p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="mono">02 — Build</div>
+        <div class="phase-when">Weeks 3–5</div>
+      </div>
+      <div>
+        <h3>Deployed in your accounts, not ours</h3>
+        <p>
+          The research, creative, publishing and learning agents go live against
+          your ad account, your warehouse, your API keys — with brand rules and a
+          compliance gate configured for how you're allowed to talk about what you do.
+        </p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div>
+        <div class="mono">03 — Handoff</div>
+        <div class="phase-when">Week 6</div>
+      </div>
+      <div>
+        <h3>Documented, so it isn't a black box</h3>
+        <p>
+          Written runbooks for operating, tuning and extending the system, plus
+          the reasoning behind every threshold. If we disappeared, it would keep
+          running and your team could change it.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="mono">Fit</div>
+      <h2>This isn't for everyone.</h2>
+    </div>
+    <div class="grid-2">
+      <div class="fit fit-yes">
+        <div class="mono">A fit if</div>
+        <ul>
+          <li>You're already spending on Meta and want to spend more, profitably</li>
+          <li>Creative production is visibly the bottleneck</li>
+          <li>You have a tracked conversion event that means something</li>
+          <li>You'd rather own infrastructure than rent another seat</li>
+        </ul>
+      </div>
+      <div class="fit fit-no">
+        <div class="mono">Not a fit if</div>
+        <ul>
+          <li>You haven't found an offer that converts yet</li>
+          <li>You want someone to promise a specific return</li>
+          <li>Your budget is too small for tests to reach signal</li>
+          <li>You want a vendor you never have to talk to</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="mono">Questions</div>
+      <h2>The ones people actually ask.</h2>
+    </div>
+
+    <details>
+      <summary>Will this put my ad account at risk?</summary>
+      <p>
+        The usual cause of trouble is using the Marketing API to bulk-pull data
+        from a live ad account. This system doesn't read performance that way —
+        writes go through the API, reads come from a warehouse fed by a supported
+        data pipeline. That separation is deliberate.
+      </p>
+    </details>
+    <details>
+      <summary>Does AI-generated creative actually work?</summary>
+      <p>
+        Some of it will and most of it won't — that's the point. The value isn't
+        that any single generated ad is brilliant, it's that you can put many
+        angles in front of the market cheaply and let spend data decide, rather
+        than betting a long production cycle on one idea.
+      </p>
+    </details>
+    <details>
+      <summary>What stops it from publishing something embarrassing?</summary>
+      <p>
+        Two gates before anything reaches your account: a brand check on the
+        visuals, and a compliance check on the text that blocks unsubstantiated
+        claims, invented testimonials and anything on your do-not list. Both are
+        configured during Discovery.
+      </p>
+    </details>
+    <details>
+      <summary>What do you need from me?</summary>
+      <p>
+        Access to your ad account and conversion tracking, decisions on your cost
+        thresholds, and about an hour a week reviewing what's being published.
+        Less than managing an agency. More than nothing.
+      </p>
+    </details>
+    <details>
+      <summary>What does it cost?</summary>
+      <!-- TODO: replace with real pricing. Being specific filters out bad-fit
+           leads before they take up call time. -->
+      <p>
+        Scoped per engagement — we'll walk through it on the call. No drawn-out
+        sales process.
+      </p>
+    </details>
+  </div>
+</section>
+
+<section class="final" id="book">
+  <div class="wrap">
+    <div class="mono">Next step</div>
+    <h2>Let's look at your ad account.</h2>
+    <p>
+      Twenty minutes. We'll go through what you're running, where creative is
+      getting stuck, and whether this is worth building for you. If it isn't,
+      we'll say so.
+    </p>
+    <!-- TODO: replace href with your real booking link (Calendly, Cal.com, etc.) -->
+    <a href="https://calendar.app.google/LcguKSU11kHSJzff9" class="btn js-cta">Book a 20-minute call</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>© 2026 Colossal. — An AI Consultancy</div>
+    <div><a href="/">colossalaiconsulting.com</a></div>
+  </div>
+</footer>
+
+<script>
+  // Fire Lead on real intent (a booking click), never on page load —
+  // business.yaml optimizes toward this event.
+  document.querySelectorAll('.js-cta').forEach(function (el) {
+    el.addEventListener('click', function () {
+      if (typeof fbq === 'function') { fbq('track', 'Lead'); }
+    });
+  });
+</script>
+
+</body>
+</html>
