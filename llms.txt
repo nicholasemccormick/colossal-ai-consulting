@@ -1,0 +1,33 @@
+# Colossal AI Consulting
+
+> Answer engine optimization (AEO) for small businesses. Colossal helps small
+> businesses get named and cited by AI answer engines — ChatGPT, Perplexity,
+> Google AI Overviews, Gemini, and Claude — when buyers ask for recommendations
+> in their category.
+
+Colossal AI Consulting is a US-based, founder-led consultancy specializing in
+answer engine optimization and AI search visibility for small businesses.
+Founded by Nick McCormick.
+
+## How we differ
+
+Most AEO providers sell schema markup as the primary lever. Ahrefs' 2026 causal
+study of 1,885 pages against 4,000 controls found that adding JSON-LD schema
+produced no meaningful citation uplift in isolation. The signals that correlate
+with AI visibility are external: YouTube mentions and web-wide brand mentions.
+Brands are roughly 6.5x more likely to be cited through third-party sources than
+through their own domain. We allocate effort accordingly — about 30% on-site,
+70% off-site. We do not guarantee specific AI citations; no provider credibly can.
+
+## Pages
+
+- [Home](https://colossalaiconsulting.com/): What AEO is and how Colossal approaches it.
+- [Free AI Visibility Audit](https://colossalaiconsulting.com/assessment): Ten-question assessment scoring your current visibility in AI answers.
+- [AI for Med Spas](https://colossalaiconsulting.com/medspa): Industry-specific AI and marketing guidance.
+- [Autonomous Meta Ads Systems](https://colossalaiconsulting.com/meta-ads): Paid social automation.
+- [AI IQ Assessment](https://colossalaiconsulting.com/ai-iq): Short diagnostic on AI readiness.
+- [Privacy Policy](https://colossalaiconsulting.com/privacy)
+
+## Contact
+
+Nick McCormick — nick@colossalai.co
