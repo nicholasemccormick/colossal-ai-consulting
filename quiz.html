@@ -866,7 +866,7 @@ footer {
           <div class="cta-h" id="r-cta-h"></div>
           <div class="cta-sub" id="r-cta-sub"></div>
           <div class="btn-row">
-            <a href="mailto:nick@colossalai.co?subject=AI Assessment Request" class="btn-primary">
+            <a href="mailto:nick@colossalaiconsulting.com?subject=AI Assessment Request" class="btn-primary">
               Book Free Assessment →
             </a>
             <button class="btn-ghost" onclick="retake()">Retake the Index</button>
@@ -1229,18 +1229,18 @@ function shareLinkedIn() {
   const score = window._shareScore || 0;
   const tier  = window._shareTier || '';
   const text  = encodeURIComponent(
-    `I just took the Business AI Readiness Index and scored ${score}/100 (${tier}).\n\nMost small businesses have no idea where they stand on AI. This 2-min quiz gives you a precise score across 6 dimensions.\n\nTake it free: https://colossalai.co/quiz\n\n#AI #SmallBusiness #AIReadiness`
+    `I just took the Business AI Readiness Index and scored ${score}/100 (${tier}).\n\nMost small businesses have no idea where they stand on AI. This 2-min quiz gives you a precise score across 6 dimensions.\n\nTake it free: https://colossalaiconsulting.com/quiz\n\n#AI #SmallBusiness #AIReadiness`
   );
-  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcolossalai.co%2Fquiz&summary=${text}`, '_blank');
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcolossalaiconsulting.com%2Fquiz&summary=${text}`, '_blank');
 }
 
 function shareFacebook() {
-  window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcolossalai.co%2Fquiz', '_blank');
+  window.open('https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcolossalaiconsulting.com%2Fquiz', '_blank');
 }
 
 function copyLink() {
   const score = window._shareScore || 0;
-  const text = `I scored ${score}/100 on the Business AI Readiness Index. Take it free: https://colossalai.co/quiz`;
+  const text = `I scored ${score}/100 on the Business AI Readiness Index. Take it free: https://colossalaiconsulting.com/quiz`;
   navigator.clipboard.writeText(text).then(() => showToast('Link copied to clipboard'));
 }
 
