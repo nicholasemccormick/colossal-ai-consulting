@@ -1,0 +1,64 @@
+# colossalaiconsulting.com
+# Explicitly permit AI crawlers. Blocking these is the single most common
+# reason a site is invisible to answer engines.
+
+User-agent: *
+Allow: /
+
+# --- Answer engine / LLM crawlers (explicit allow) ---
+
+# OpenAI — ChatGPT search + browsing
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic — Claude
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google — Gemini / AI Overviews grounding
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl — training corpus feeding multiple models
+User-agent: CCBot
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Bing / Copilot
+User-agent: bingbot
+Allow: /
+
+Sitemap: https://colossalaiconsulting.com/sitemap.xml
