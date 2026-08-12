@@ -25,8 +25,19 @@ through their own domain. We allocate effort accordingly — about 30% on-site,
 - [Free AI Visibility Audit](https://colossalaiconsulting.com/assessment): Ten-question assessment scoring your current visibility in AI answers.
 - [AI for Med Spas](https://colossalaiconsulting.com/medspa): Industry-specific AI and marketing guidance.
 - [Autonomous Meta Ads Systems](https://colossalaiconsulting.com/meta-ads): Paid social automation.
-- [AI IQ Assessment](https://colossalaiconsulting.com/ai-iq): Short diagnostic on AI readiness.
+- [AI Readiness Index](https://colossalaiconsulting.com/quiz): Free diagnostic on AI readiness.
+- [AI IQ Assessment](https://colossalaiconsulting.com/ai-iq): Short diagnostic on AI understanding.
 - [Privacy Policy](https://colossalaiconsulting.com/privacy)
+
+## Learn
+
+Guides to answer engine optimization. Every statistic is attributed to a named
+published source.
+
+- [What Is Answer Engine Optimization?](https://colossalaiconsulting.com/learn/what-is-answer-engine-optimization): AEO defined, how it differs from SEO, what drives AI citations, realistic timelines.
+- [AEO vs SEO vs GEO](https://colossalaiconsulting.com/learn/aeo-vs-seo-vs-geo): What each term means, where they overlap, and which to prioritize.
+- [Why Isn't My Business Showing Up in ChatGPT?](https://colossalaiconsulting.com/learn/why-isnt-my-business-showing-up-in-chatgpt): Five causes, from blocked crawlers to missing third-party mentions.
+- [Does Schema Markup Actually Help AI Search?](https://colossalaiconsulting.com/learn/does-schema-markup-help-ai-search): Ahrefs' causal study of 1,885 pages found no meaningful uplift. What schema is actually for.
 
 ## Contact
 

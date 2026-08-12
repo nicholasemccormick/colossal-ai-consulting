@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W3CLLXT5');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Does Schema Markup Actually Help AI Search? What the Data Shows</title>
+  <link rel="canonical" href="https://colossalaiconsulting.com/learn/does-schema-markup-help-ai-search" />
+  <meta name="description" content="Ahrefs tracked 1,885 pages that added JSON-LD against 4,000 controls. Citation lift was statistical noise. Here is what schema is actually for, and what drives citations instead.">
+  <meta property="og:title" content="Does Schema Markup Actually Help AI Search? What the Data Shows">
+  <meta property="og:description" content="Ahrefs tracked 1,885 pages that added JSON-LD against 4,000 controls. Citation lift was statistical noise. Here is what schema is actually for, and what drives citations instead.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://colossalaiconsulting.com/learn/does-schema-markup-help-ai-search">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>:root{--ink:#0b0b0d;--paper:#ece5d4;--accent:#c2884a;--line:rgba(236,229,212,.18);--panel:rgba(236,229,212,.035);--display:'Inter','Helvetica Neue',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:var(--display);font-size:17px;line-height:1.68;-webkit-font-smoothing:antialiased}
+a{color:inherit}.accent{color:var(--accent)}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.58;display:block}
+nav{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:22px 6vw;background:rgba(11,11,13,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-logo{font-weight:900;font-size:18px;letter-spacing:-.04em;text-transform:uppercase;text-decoration:none}
+.nav-links{display:flex;gap:28px;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.nav-links a{opacity:.72;text-decoration:none}.nav-links a:hover{opacity:1}
+.btn-nav{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:13px 18px;border:1px solid rgba(236,229,212,.32);text-decoration:none}.btn-nav:hover{background:rgba(236,229,212,.08)}
+.btn-primary{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:15px 22px;background:var(--accent);color:var(--ink);font-weight:700;border:1px solid var(--accent);text-decoration:none}.btn-primary:hover{filter:brightness(1.08)}
+.wrap{max-width:780px;margin:0 auto;padding:70px 24px 40px}
+.crumb{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.5;margin-bottom:26px}
+.crumb a{text-decoration:none}.crumb a:hover{opacity:1}
+h1{font-size:clamp(38px,6vw,62px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin-bottom:22px}
+.standfirst{font-size:20px;opacity:.78;line-height:1.6;margin-bottom:26px}
+.meta{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;padding-bottom:30px;border-bottom:1px solid var(--line);margin-bottom:44px}
+h2{font-size:clamp(25px,3.4vw,33px);line-height:1.18;letter-spacing:-.03em;font-weight:700;margin:54px 0 18px}
+h3{font-size:20px;font-weight:700;margin:34px 0 12px;letter-spacing:-.01em}
+p{margin-bottom:20px;opacity:.86}
+.answer{border-left:2px solid var(--accent);background:var(--panel);padding:20px 24px;margin:0 0 26px;font-size:18px;opacity:1}
+.answer p{margin:0;opacity:.94}
+ul,ol{margin:0 0 22px 22px}li{margin-bottom:11px;opacity:.86}
+strong{color:var(--paper);font-weight:700}
+table{width:100%;border-collapse:collapse;margin:0 0 26px;font-size:15px}
+th,td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.6;font-weight:600}
+.note{border:1px solid var(--line);background:var(--panel);padding:24px;margin:0 0 26px}
+.note p:last-child{margin-bottom:0}
+.cta-box{border:1px solid var(--line);background:var(--panel);padding:34px;margin:56px 0 0;text-align:center}
+.cta-box h3{font-size:26px;margin:0 0 12px}.cta-box p{opacity:.72;margin-bottom:22px}
+.related{border-top:1px solid var(--line);margin-top:56px;padding-top:30px}
+.related h4{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.55;font-weight:600;margin-bottom:16px}
+.related a{display:block;padding:13px 0;border-bottom:1px solid var(--line);text-decoration:none;opacity:.82}
+.related a:hover{opacity:1;color:var(--accent)}
+.sources{margin-top:48px;padding-top:26px;border-top:1px solid var(--line);font-size:14px;opacity:.62}
+.sources h4{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;font-weight:600}
+.sources li{margin-bottom:8px}
+footer{padding:44px 6vw;border-top:1px solid var(--line);margin-top:70px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer a{text-decoration:none}
+@media(max-width:760px){.nav-links{display:none}nav{padding:18px 24px}.wrap{padding:44px 22px 30px}body{font-size:16px}}</style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Does Schema Markup Actually Help AI Search?","description":"Ahrefs tracked 1,885 pages that added JSON-LD against 4,000 controls. Citation lift was statistical noise. Here is what schema is actually for, and what drives citations instead.","author":{"@type":"Person","@id":"https://colossalaiconsulting.com/#nick","name":"Nick McCormick"},"publisher":{"@type":"Organization","@id":"https://colossalaiconsulting.com/#organization","name":"Colossal AI Consulting"},"datePublished":"2026-08-11","dateModified":"2026-08-11","mainEntityOfPage":{"@type":"WebPage","@id":"https://colossalaiconsulting.com/learn/does-schema-markup-help-ai-search"},"inLanguage":"en-US"}
+  </script>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3CLLXT5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<nav><a href="/" class="nav-logo">COLOSSAL<span class="accent">.</span></a><ul class="nav-links"><li><a href="/#score">AI Visibility Score</a></li><li><a href="/#opportunities">What We Fix</a></li><li><a href="/#method">How It Works</a></li><li><a href="/learn/">Learn</a></li></ul><a href="/assessment" class="btn-nav">Get Your Score &rarr;</a></nav>
+<article class="wrap">
+  <div class="crumb"><a href="/">Colossal</a> / <a href="/learn/">Learn</a></div>
+  <h1>Does Schema Markup Actually Help AI Search?</h1>
+  <p class="standfirst">Most AEO providers sell structured data as the main lever. A controlled study of 1,885 pages says otherwise. Here is the evidence, and what to do with it.</p>
+  <div class="meta">By Nick McCormick &middot; Updated August 11, 2026</div>
+
+  <div class="answer"><p><strong>Not on its own.</strong> Ahrefs tracked 1,885 pages that added JSON-LD schema between August 2025 and March 2026 against 4,000 matched control pages. Citation lift was +2.4% on Google AI Mode and +2.2% on ChatGPT &mdash; statistically indistinguishable from zero. Schema defines your entity; it does not earn you citations.</p></div>
+
+  <p>This contradicts most of what's currently being sold as answer engine optimization, so it's worth walking through the evidence carefully.</p>
+
+  <h2>What the Ahrefs study found</h2>
+  <p>Ahrefs started with a broad correlational analysis of roughly 6 million URLs. Pages cited by AI were almost <strong>three times more likely</strong> to have JSON-LD markup than pages that weren't. That figure spread quickly and now appears in a large share of AEO pitch decks as proof that schema drives AI visibility.</p>
+  <p>Then they ran the causal test: track pages that <em>added</em> schema during a defined window, compare them against matched controls that didn't, and measure the change in citations across Google AI Overviews, AI Mode, and ChatGPT.</p>
+  <p>The effect disappeared. Across thousands of URLs, the movement was small enough to be noise.</p>
+
+  <h2>Why does everyone believe schema drives citations?</h2>
+  <div class="answer"><p>Because the correlation is real &mdash; it&rsquo;s the causation that isn&rsquo;t. Schema tends to live on well-maintained sites that already publish strong content, earn links, and rank organically. Those sites get cited because of everything else they do. The markup is a symptom of competence, not the cause of visibility.</p></div>
+
+  <p>This is a textbook confounding variable, and it's an easy mistake to make in good faith. It's also a convenient one to make in bad faith: schema audits are fast to produce, easy to demonstrate, and can be billed as a retainer. "We added structured data to 40 pages" is a satisfying deliverable. It just isn't the thing that moves the number.</p>
+
+  <div class="note"><p><strong>How to use this when evaluating an agency.</strong> Ask what percentage of their engagement is on-site technical work. If the answer is most of it, ask what evidence they have that it drives citations. The honest answer to that question is public, and it isn't flattering to the schema-first model.</p></div>
+
+  <h2>So should I still use schema?</h2>
+  <p>Yes &mdash; for the right reason. Schema's job is <strong>entity definition</strong>: telling answer engines who you are, what you do, and that the various profiles bearing your name all refer to one business. Models need to classify you with confidence before recommending you, and structured data removes ambiguity from that process.</p>
+  <p>That makes it necessary but not sufficient. Table stakes, not a growth lever.</p>
+  <p>What's worth implementing:</p>
+  <ul>
+    <li><strong>Organization</strong> schema on every page, with <code>sameAs</code> pointing at every verified profile you control. This is the highest-value field &mdash; it's how models corroborate your identity.</li>
+    <li><strong>Person</strong> schema for the author or founder, linked to the organization.</li>
+    <li><strong>Article</strong> schema on content pages, with real author attribution and an accurate <code>dateModified</code>.</li>
+  </ul>
+  <p>What isn't worth much effort: exhaustively marking up every page type, chasing deprecated rich-result formats, or treating structured data as an ongoing program. It's largely a one-time job done correctly.</p>
+
+  <h2>What actually correlates with AI citations?</h2>
+  <table>
+    <tr><th>Signal</th><th>Correlation with AI visibility</th></tr>
+    <tr><td>YouTube mentions &mdash; titles, transcripts, descriptions</td><td><strong>0.737</strong></td></tr>
+    <tr><td>External brand mentions across the web</td><td><strong>0.664</strong></td></tr>
+    <tr><td>Adding JSON-LD schema, in isolation</td><td><strong>~0</strong> (causal test)</td></tr>
+  </table>
+
+  <p>Add to that: brands are roughly 6.5x more likely to be cited via third-party sources than their own domain, and 97% of AI Overview citations come from the top 20 organic results.</p>
+  <p>The pattern is consistent. What moves AI visibility is what the rest of the internet says about you, not what your own markup asserts.</p>
+
+  <h2>What should I do instead?</h2>
+  <ol>
+    <li><strong>Verify AI crawlers aren&rsquo;t blocked.</strong> Free, five minutes, and the most common silent failure there is.</li>
+    <li><strong>Get the entity right once.</strong> Consistent name and description everywhere, Organization schema with complete <code>sameAs</code>. Then stop optimizing it.</li>
+    <li><strong>Baseline your visibility.</strong> Twenty prompts, four engines, weekly, before you change anything else.</li>
+    <li><strong>Publish video.</strong> Highest measured correlation, and almost no small business competes there.</li>
+    <li><strong>Earn mentions you don&rsquo;t control.</strong> Podcasts, press, directories, community participation.</li>
+    <li><strong>Make content extractable.</strong> Direct answers, question headings, attributed data.</li>
+  </ol>
+  <p>Roughly 30% of your effort belongs on your own site. The other 70% belongs everywhere else.</p>
+
+<div class="cta-box"><h3>Find out what AI says about your business.</h3><p>Ten questions. Instant score. No contact details needed to see your results.</p><a href="/assessment" class="btn-primary">Get Your Free AI Visibility Score&trade; &rarr;</a></div>
+  <div class="related"><h4>Related</h4><a href="/learn/what-is-answer-engine-optimization">What is answer engine optimization? &rarr;</a><a href="/learn/why-isnt-my-business-showing-up-in-chatgpt">Why isn’t my business showing up in ChatGPT? &rarr;</a><a href="/learn/aeo-vs-seo-vs-geo">AEO vs SEO vs GEO: what is actually different &rarr;</a></div>
+  <div class="sources"><h4>Sources</h4><ul><li><a href="https://ahrefs.com/blog/schema-ai-citations/">Ahrefs — We tracked 1,885 pages adding schema. AI citations didn't move.</a></li><li><a href="https://www.searchenginejournal.com/schema-markup-didnt-move-ai-citations-in-ahrefs-test/574568/">Search Engine Journal — Schema markup didn't move AI citations in Ahrefs test</a></li><li><a href="https://ahrefs.com/blog/ai-overview-citations-top-10">Ahrefs — AI Overview citations and the top 10</a></li><li><a href="https://machinerelations.ai/research/ai-search-citation-factors-2026">MR Research — AI Search Citation Factors 2026</a></li><li><a href="https://www.semrush.com/news/463141-semrush-releases-expanded-2026-ai-visibility-index-analyzing-126-million-ai-search-prompts/">Semrush — 2026 AI Visibility Index (126M prompts)</a></li></ul></div>
+</article>
+<footer><span>&copy; 2026 Colossal AI Consulting</span><span><a href="/">Home</a> &middot; <a href="/learn/">Learn</a> &middot; <a href="/assessment">Free Audit</a> &middot; <a href="/privacy">Privacy</a></span><span><a href="mailto:nick@colossalaiconsulting.com">nick@colossalaiconsulting.com</a></span></footer>
+</body>
+</html>
