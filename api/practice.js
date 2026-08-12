@@ -151,6 +151,28 @@ async function callAnthropic(key, body) {
   return (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("");
 }
 
+/**
+ * Removes roleplay stage directions — *shrugs*, (looks away), [sighs].
+ *
+ * The system prompt already forbids these and the model produces them anyway,
+ * which is the general lesson: an instruction is a preference, code is a
+ * guarantee. It matters more than it looks here, because the browser's speech
+ * synthesis reads the asterisks aloud — "asterisk shrugs comma half smiles
+ * asterisk" — and that is the moment a live demo stops being convincing.
+ *
+ * Falls back to the original if stripping would empty the message, so a reply
+ * that is genuinely all action still shows something rather than a blank bubble.
+ */
+function stripStageDirections(text) {
+  const cleaned = String(text)
+    .replace(/\*[^*\n]{1,120}\*/g, " ")          // *shrugs*
+    .replace(/^\s*[([][^)\]\n]{1,120}[)\]]\s*/gm, "")  // leading (looks away)
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return cleaned.length >= 2 ? cleaned : String(text).trim();
+}
+
 function safeJson(raw) {
   const cleaned = String(raw).replace(/^```[a-z]*\s*/i, "").replace(/\s*```$/, "").trim();
   try {
@@ -206,7 +228,7 @@ export default async function handler(req, res) {
         system: studentSystemPrompt(persona, scenario),
         messages: trimmed,
       });
-      return res.status(200).json({ reply: text.trim() });
+      return res.status(200).json({ reply: stripStageDirections(text) });
     }
 
     if (action === "score") {
