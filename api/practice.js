@@ -51,6 +51,39 @@ function rateLimited(ip) {
 
 const clamp = (v, n = MAX_FIELD) => String(v == null ? "" : v).slice(0, n);
 
+/**
+ * Makes a conversation acceptable to the Messages API.
+ *
+ * Two things it will reject that happen constantly here:
+ *
+ * 1. A first message from the assistant. Most of these scenarios deliberately
+ *    open on the student's line — "So am I in trouble or what?" — which puts the
+ *    learner on the back foot, and that is the point. But the API requires the
+ *    first turn to be the user's, so a scene-setting line is prepended. It is
+ *    never shown to the learner and never stored; it exists only to satisfy the
+ *    shape of the request.
+ *
+ * 2. Two turns in a row from the same role. If a request fails and the learner
+ *    types again, the array ends up with two user turns back to back and the
+ *    next request fails too — so one transient error becomes a dead session.
+ *    Merging them keeps a recoverable error recoverable.
+ */
+function normalizeTurns(messages) {
+  const out = [];
+  for (const m of messages) {
+    const role = m.role === "assistant" ? "assistant" : "user";
+    const content = clamp(m.content, 3000).trim();
+    if (!content) continue;   // a whitespace-only turn is a rejected request, not a turn
+    const last = out[out.length - 1];
+    if (last && last.role === role) last.content += "\n\n" + content;
+    else out.push({ role, content });
+  }
+  if (out.length && out[0].role === "assistant") {
+    out.unshift({ role: "user", content: "(You are approached by your teacher.)" });
+  }
+  return out;
+}
+
 function studentSystemPrompt(persona, scenario) {
   return `You are role-playing a STUDENT so that a teacher can practise a difficult conversation. You are not an assistant. Never break character, never mention being an AI, and never coach the teacher.
 
@@ -215,10 +248,7 @@ export default async function handler(req, res) {
       if (turns.length > MAX_TURNS) {
         return res.status(400).json({ error: `Practice sessions cap at ${MAX_TURNS} turns.` });
       }
-      const trimmed = (messages || []).slice(-40).map((m) => ({
-        role: m.role === "assistant" ? "assistant" : "user",
-        content: clamp(m.content, 3000),
-      }));
+      const trimmed = normalizeTurns((messages || []).slice(-40));
       if (!trimmed.length) return res.status(400).json({ error: "No messages." });
 
       const text = await callAnthropic(key, {
