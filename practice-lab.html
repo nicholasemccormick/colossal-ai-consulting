@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AI Practice Lab — prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F4EC; --surface:#FFF; --ink:#14131A; --body:#3A3730; --muted:#5F594F;
+  --accent:#B0763A; --accent-soft:#F4E7D6; --line:rgba(20,19,26,.11); --line-soft:rgba(20,19,26,.06);
+  --good:#2F6B4F; --good-bg:#E3F0E9; --warn:#8A5C12; --warn-bg:#FBECD4; --bad:#8C3A2B; --bad-bg:#F7E3DE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--body);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:14px;color:var(--ink);background:var(--surface);
+border:1px solid var(--line);border-radius:5px;padding:9px 11px;width:100%;line-height:1.5}
+textarea{resize:vertical;min-height:74px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.hide{display:none !important}
+
+/* top */
+.top{background:var(--ink);color:var(--paper);padding:11px 0}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:14px;letter-spacing:-.02em}
+.logo i{color:var(--accent);font-style:normal}
+.tabs{display:flex;gap:5px}
+.tab{font-size:13px;font-weight:600;padding:6px 15px;border-radius:20px;color:rgba(247,244,236,.62)}
+.tab.on{background:rgba(247,244,236,.14);color:var(--paper)}
+
+.demo{background:var(--accent);color:#25150A;text-align:center;padding:8px;font-size:12.5px;font-weight:600}
+
+header{padding:34px 0 24px;border-bottom:1px solid var(--line)}
+h1{font-size:28px;font-weight:800;letter-spacing:-.027em;color:var(--ink);line-height:1.15}
+.sub{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:68ch}
+h2{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.018em}
+.lede{color:var(--muted);font-size:14px;max-width:70ch;margin-top:5px}
+section{margin-top:30px}
+.mono{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+
+/* buttons */
+.btn{background:var(--ink);color:var(--paper);font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:5px}
+.btn:hover{opacity:.88}
+.btn.sec{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn.warn{background:var(--accent);color:#25150A}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.btn.sm{font-size:12.5px;padding:7px 13px}
+
+/* scenario cards */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:19px;
+text-align:left;display:flex;flex-direction:column;gap:9px;transition:border-color .12s}
+.card:hover{border-color:var(--accent)}
+.card h3{font-size:15.5px;font-weight:700;color:var(--ink);letter-spacing:-.012em}
+.card .who{font-size:12.5px;color:var(--accent);font-weight:600}
+.card p{font-size:13px;color:var(--muted);flex:1}
+.card .meta{font-size:11.5px;color:var(--muted);padding-top:9px;border-top:1px solid var(--line-soft)}
+
+/* session */
+.grid{display:grid;grid-template-columns:290px 1fr;gap:18px;margin-top:20px;align-items:start}
+.brief{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;position:sticky;top:16px}
+.brief h4{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+font-weight:600;margin:15px 0 5px}
+.brief h4:first-of-type{margin-top:0}
+.brief p{font-size:13px;color:var(--body)}
+.brief .nm{font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.015em}
+
+.chatbox{background:var(--surface);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;min-height:460px}
+.msgs{padding:20px;display:flex;flex-direction:column;gap:13px;flex:1;max-height:56vh;overflow-y:auto}
+.msg{max-width:80%;font-size:14.5px;padding:11px 15px;border-radius:13px;white-space:pre-wrap;word-wrap:break-word}
+.msg.student{background:#F1EEE6;color:var(--ink);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.teacher{background:var(--ink);color:var(--paper);border-bottom-right-radius:4px;align-self:flex-end}
+.msg.sys{align-self:center;background:none;color:var(--muted);font-size:12.5px;text-align:center;max-width:60ch}
+.who-lab{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+opacity:.55;display:block;margin-bottom:3px}
+.typing{align-self:flex-start;color:var(--muted);font-size:13px;font-style:italic}
+
+.composer{border-top:1px solid var(--line);padding:13px;display:flex;gap:9px;align-items:flex-end}
+.composer textarea{min-height:44px;max-height:150px}
+.mic{width:44px;height:44px;flex:none;border-radius:5px;border:1px solid var(--line);
+background:var(--surface);font-size:17px;display:flex;align-items:center;justify-content:center}
+.mic.live{background:var(--bad-bg);border-color:var(--bad);animation:pulse 1.1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.sessbar{display:flex;justify-content:space-between;align-items:center;gap:12px;
+margin-top:11px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.toggles{display:flex;gap:14px;align-items:center}
+.toggles label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.toggles input{width:auto}
+
+/* results */
+.score-head{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;
+display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.big{font-size:46px;font-weight:800;letter-spacing:-.04em;color:var(--ink);line-height:1}
+.big small{font-size:19px;color:var(--muted);font-weight:600}
+.band{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;display:inline-block;margin-top:7px}
+.crit{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:19px 21px;margin-top:11px}
+.crit-top{display:flex;justify-content:space-between;gap:14px;align-items:baseline;flex-wrap:wrap}
+.crit-top h3{font-size:15px;font-weight:700;color:var(--ink)}
+.crit-score{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap}
+.lvl{font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:20px}
+.evidence{margin:12px 0;padding:11px 15px;border-left:3px solid var(--accent);background:#FBF8F2;
+font-size:13.5px;color:var(--ink);font-style:italic}
+.no-evidence{border-left-color:var(--muted);color:var(--muted);font-style:normal;font-size:13px}
+.crit p.c{font-size:13.5px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:13px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:19px 21px}
+.panel h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px}
+.panel ul{list-style:none}
+.panel li{font-size:13.5px;color:var(--muted);padding:7px 0 7px 17px;position:relative;border-bottom:1px solid var(--line-soft)}
+.panel li:last-child{border:none}
+.panel li:before{content:"—";position:absolute;left:0;color:var(--accent)}
+.onething{background:var(--accent-soft);border:1px solid rgba(176,118,58,.3);border-radius:6px;
+padding:19px 21px;margin-top:13px}
+.onething .mono{margin-bottom:5px;display:block}
+.onething p{font-size:15px;color:#3D2610;font-weight:600}
+
+/* studio */
+.studio{display:grid;grid-template-columns:250px 1fr;gap:18px;margin-top:20px;align-items:start}
+.side{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:15px;position:sticky;top:16px}
+.side h4{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+font-weight:600;margin:16px 0 7px;display:flex;justify-content:space-between;align-items:center}
+.side h4:first-child{margin-top:0}
+.side .add{font-size:16px;color:var(--accent);line-height:1;padding:0 4px}
+.side ul{list-style:none}
+.side li button{width:100%;text-align:left;font-size:13px;padding:6px 9px;border-radius:4px;color:var(--body)}
+.side li button:hover{background:#F4F1E9}
+.side li button.on{background:var(--ink);color:var(--paper);font-weight:600}
+.editor{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px}
+.f{margin-bottom:16px}
+.f label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.f .help{font-size:12.5px;color:var(--muted);margin-bottom:6px;max-width:64ch}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.critbox{border:1px solid var(--line);border-radius:5px;padding:16px;margin-bottom:12px;background:#FCFBF8}
+.critbox .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.critbox .hd b{font-size:12.5px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.lvlrow{display:grid;grid-template-columns:38px 130px 1fr;gap:8px;align-items:center;margin-bottom:7px}
+.lvlrow .n{font-size:12.5px;font-weight:700;color:var(--muted);text-align:center}
+.bar{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.link{color:var(--accent);font-weight:600;font-size:13px;text-decoration:underline}
+.err{background:var(--bad-bg);border:1px solid rgba(140,58,43,.3);color:var(--bad);
+border-radius:5px;padding:11px 14px;font-size:13.5px;margin-top:12px}
+footer{margin-top:46px;padding:20px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+
+@media(max-width:900px){
+  .cards,.two,.row{grid-template-columns:1fr}
+  .grid,.studio{grid-template-columns:1fr}
+  .brief,.side{position:static}
+}
+</style></head>
+<body>
+
+<div class="demo">Working prototype · Built for the AI Practice Lab brief · Conversations are live, not scripted</div>
+
+<div class="top"><div class="wrap">
+  <span class="logo">Colossal<i>.</i> <span style="opacity:.55;font-weight:600">AI Practice Lab</span></span>
+  <div class="tabs">
+    <button class="tab on" data-view="practice">Practice</button>
+    <button class="tab" data-view="studio">Studio</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+
+<!-- ============================ PRACTICE ============================ -->
+<div id="view-practice">
+
+  <div id="pick">
+    <header>
+      <h1>Practice the conversation before it matters</h1>
+      <p class="sub">Pick a scenario and talk to the student — by typing or out loud. When you
+      finish, the conversation is scored against the rubric your team wrote, and every score
+      quotes your own words back to you.</p>
+    </header>
+    <section>
+      <h2>Scenarios</h2>
+      <p class="lede">These three were written in the Studio tab. Nothing here is hard-coded.</p>
+      <div class="cards" id="cards"></div>
+    </section>
+  </div>
+
+  <div id="session" class="hide">
+    <header>
+      <div class="mono" id="s-role">Scenario</div>
+      <h1 id="s-title" style="font-size:24px;margin-top:8px"></h1>
+    </header>
+    <div class="grid">
+      <aside class="brief">
+        <div class="nm" id="s-name"></div>
+        <div style="font-size:12.5px;color:var(--muted)" id="s-grade"></div>
+        <h4>The situation</h4><p id="s-context"></p>
+        <h4>What you are trying to do</h4><p id="s-objective"></p>
+        <h4>Watch for</h4><p id="s-guidance"></p>
+        <h4>Scored against</h4><p id="s-rubric"></p>
+      </aside>
+      <div>
+        <div class="chatbox">
+          <div class="msgs" id="msgs"></div>
+          <div class="composer">
+            <button class="mic" id="mic" title="Hold a conversation out loud">🎤</button>
+            <textarea id="input" rows="1" placeholder="Type what you would say…"></textarea>
+            <button class="btn" id="send">Send</button>
+          </div>
+        </div>
+        <div class="sessbar">
+          <div class="toggles">
+            <label><input type="checkbox" id="speak"> Student speaks aloud</label>
+            <span id="turns">0 turns</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn sec sm" id="quit">Leave</button>
+            <button class="btn warn sm" id="finish">End &amp; get feedback</button>
+          </div>
+        </div>
+        <div id="voicenote" class="lede hide" style="margin-top:9px"></div>
+        <div id="err-session"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="results" class="hide">
+    <header>
+      <div class="mono">Feedback</div>
+      <h1 id="r-title" style="font-size:24px;margin-top:8px"></h1>
+    </header>
+    <section>
+      <div class="score-head">
+        <div><div class="big" id="r-pct">—</div><div id="r-band"></div></div>
+        <div style="flex:1;min-width:240px"><p id="r-summary" style="font-size:14.5px;color:var(--body)"></p></div>
+      </div>
+      <div id="r-crits"></div>
+      <div class="onething"><span class="mono">If you change one thing</span><p id="r-one"></p></div>
+      <div class="two">
+        <div class="panel"><h3>What worked</h3><ul id="r-str"></ul></div>
+        <div class="panel"><h3>Next time</h3><ul id="r-next"></ul></div>
+      </div>
+      <div class="bar">
+        <button class="btn" id="again">Try this scenario again</button>
+        <button class="btn sec" id="back">Back to scenarios</button>
+        <button class="btn sec" id="dl">Download transcript &amp; scores</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ============================= STUDIO ============================= -->
+<div id="view-studio" class="hide">
+  <header>
+    <h1>Studio</h1>
+    <p class="sub">Everything the learner experiences is edited here, in plain language. No code,
+    no JSON, no developer. Change how a student behaves and you can be talking to the new version
+    ten seconds later.</p>
+  </header>
+
+  <div class="studio">
+    <aside class="side">
+      <h4>Scenarios <button class="add" data-new="scenario" title="New scenario">＋</button></h4>
+      <ul id="list-scenarios"></ul>
+      <h4>Students <button class="add" data-new="persona" title="New student">＋</button></h4>
+      <ul id="list-personas"></ul>
+      <h4>Rubrics <button class="add" data-new="rubric" title="New rubric">＋</button></h4>
+      <ul id="list-rubrics"></ul>
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px">
+        <button class="btn sec sm" id="export">Export all content</button>
+        <button class="btn sec sm" id="import">Import a file</button>
+        <button class="btn sec sm" id="reset">Reset to samples</button>
+      </div>
+    </aside>
+    <div class="editor" id="editor"></div>
+  </div>
+</div>
+
+<footer class="wrap">
+  Prototype built by Colossal AI Consulting. The simulated student and the scoring both run on a live
+  model through a server-side proxy — the API key is never in this page. Content is stored in your
+  browser only, so nothing you write here is sent anywhere except the conversation itself.
+</footer>
+</div>
+
+<script>
+/* ============================================================================
+   AI Practice Lab — prototype front end.
+
+   Three ideas worth noticing while reading this:
+
+   1. There is no scenario logic in the code. A scenario is data: a persona, a
+      situation, an objective, and a rubric. Adding a fourth scenario means
+      filling in a form, not editing this file. That is the whole answer to
+      "how do I change things without a developer".
+
+   2. Scoring quotes the learner. The model is required to attach a direct
+      quotation to every score, and where it cannot find one it must say so and
+      score accordingly. A rubric score with no evidence behind it is a number
+      a learner cannot argue with or learn from.
+
+   3. Voice uses the browser's own speech engine. It costs nothing per minute,
+      which matters when a course has hundreds of learners. The trade is that
+      support varies by browser — handled honestly below rather than silently.
+   ========================================================================== */
+
+const API = "/api/practice";
+const STORE = "practice_lab_content_v1";
+
+const DEFAULT_CONTENT = {
+  "_note": "Seed content for the AI Practice Lab prototype. In production this lives in a database and is edited through the Studio screen — this file is the shape of what that editor writes, kept here so the prototype runs with no backend.",
+  "personas": [
+    {
+      "id": "marcus",
+      "name": "Marcus",
+      "grade": "7th grade, 12 years old",
+      "summary": "Bright, funny with his friends, and has not started a piece of written work in three weeks.",
+      "behavior": "Deflects with humour first. If that does not work, goes flat and monosyllabic. Says 'this is stupid' and 'I'll do it at home' a lot. Gets defensive fast if he thinks he is being called lazy — that word in particular will end the conversation. Will keep his head down and avoid eye contact when the topic gets close to reading. If the teacher offers a genuine choice, or admits something was hard for them too, he softens noticeably.",
+      "speech_style": "Short. Teenage. Trails off. Uses 'I dunno' and 'whatever' as exits. Occasionally a flash of real wit that shows he is paying attention.",
+      "hidden_context": "He cannot read the assignment sheet well. He is roughly two years behind in reading and has been hiding it successfully since about fourth grade by copying, listening hard, and being the class clown at the exact moment work is handed out. He is genuinely afraid that if he tries and fails in front of someone, it confirms what he already believes about himself. He will not say the word 'reading' first.",
+      "difficulty": "moderate"
+    },
+    {
+      "id": "priya",
+      "name": "Priya",
+      "grade": "10th grade, 15 years old",
+      "summary": "Top of the class, just got her first B, and has been crying in the bathroom between periods.",
+      "behavior": "Polite, articulate, and completely unwilling to accept reassurance. Will argue with any attempt to minimise the grade — 'it's not just a B, it's a pattern'. Redirects to logistics: extra credit, retakes, what she can do to fix it. Becomes visibly uncomfortable if the teacher goes straight to feelings. Responds much better to being taken seriously than to being comforted. If a teacher validates the standard she holds herself to before questioning it, she will actually engage.",
+      "speech_style": "Fluent, fast, and precise. Full sentences. Uses qualifiers like 'I mean, obviously' and 'it's fine, I just'. Voice tightens when she is close to tears but she keeps talking through it.",
+      "hidden_context": "Her older sister was the 'smart one' and dropped out of college two years ago. Priya has quietly concluded that being exceptional is the only thing keeping her from the same outcome, and that this is not something anyone in her family says out loud. She will not raise her sister unless the teacher creates a lot of room.",
+      "difficulty": "hard"
+    },
+    {
+      "id": "dylan",
+      "name": "Dylan",
+      "grade": "9th grade, 14 years old",
+      "summary": "Was a solid student until about six weeks ago. Now late most days, asleep in class, and handing in nothing.",
+      "behavior": "Tired more than hostile. Gives short, tired answers and does not have the energy to construct a cover story. Says 'I've just got stuff going on' and hopes that ends it. Will not lie if asked something direct and kind, but will not offer anything either. If the teacher makes it about the missing work, he goes silent. If the teacher notices him rather than his grades — mentions he seems tired, not that he seems lazy — he will open slightly.",
+      "speech_style": "Flat and slow. Long pauses. 'Yeah.' 'It's fine.' 'I don't really want to get into it.' Occasionally one honest sentence that arrives without warning.",
+      "hidden_context": "His mother has been seriously unwell since the start of term. He is doing the school run for two younger siblings, most of the cooking, and is awake late most nights. Nobody at school knows. He does not think of himself as having a problem — he thinks of himself as the person handling it — so he will resist being treated as a case.",
+      "safety_note": "This scenario is about a caregiving burden and nothing else. Never introduce, hint at, or escalate toward abuse, neglect, self-harm or violence, even if the teacher asks leading questions in that direction. If the teacher probes that way, respond with confusion or mild offence, as a real student would when something untrue is suggested about their family. The learning objective is noticing and referring, not eliciting a disclosure.",
+      "difficulty": "hard"
+    }
+  ],
+  "rubrics": [
+    {
+      "id": "supportive-conversation",
+      "name": "Supportive conversation with a struggling student",
+      "criteria": [
+        {
+          "name": "Opening and tone",
+          "weight": 1,
+          "description": "How the conversation starts, and whether it makes the student more or less likely to say something true.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Confrontational",
+              "descriptor": "Opens with the problem, the deficit, or a consequence. Student is positioned as the issue."
+            },
+            {
+              "score": 2,
+              "label": "Neutral but transactional",
+              "descriptor": "Polite, but gets to the missing work within the first exchange. No warmth established."
+            },
+            {
+              "score": 3,
+              "label": "Warm opening",
+              "descriptor": "Starts with the person before the problem. Student is given a reason to stay in the conversation."
+            },
+            {
+              "score": 4,
+              "label": "Warm and specific",
+              "descriptor": "Opens with something specific and true about this student, showing they have been noticed as an individual rather than a gradebook row."
+            }
+          ]
+        },
+        {
+          "name": "Listening and drawing out",
+          "weight": 2,
+          "description": "Whether the teacher creates space for the student to speak, or fills it themselves.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Talks over",
+              "descriptor": "Teacher dominates. Questions are rhetorical or immediately answered by the teacher."
+            },
+            {
+              "score": 2,
+              "label": "Asks, then rushes",
+              "descriptor": "Asks questions but moves on before the student has finished, or stacks two questions at once."
+            },
+            {
+              "score": 3,
+              "label": "Genuine questions",
+              "descriptor": "Asks open questions and waits. Follows the student's answer rather than a script."
+            },
+            {
+              "score": 4,
+              "label": "Follows the thread",
+              "descriptor": "Picks up on something small the student said and returns to it. Tolerates silence. The student says more than they intended to."
+            }
+          ]
+        },
+        {
+          "name": "Naming without labelling",
+          "weight": 2,
+          "description": "Whether the teacher describes what they observe accurately, without attaching a character judgement to it.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Labels the student",
+              "descriptor": "Uses words like lazy, careless, unmotivated, or attributes the behaviour to who the student is."
+            },
+            {
+              "score": 2,
+              "label": "Vague",
+              "descriptor": "Avoids labels but also avoids saying anything concrete, so the student has nothing to respond to."
+            },
+            {
+              "score": 3,
+              "label": "Describes behaviour",
+              "descriptor": "States what has been observed factually and separately from the student's character."
+            },
+            {
+              "score": 4,
+              "label": "Describes and checks",
+              "descriptor": "States the observation and explicitly invites correction — leaves room for the student's account to be different from the teacher's."
+            }
+          ]
+        },
+        {
+          "name": "A concrete next step",
+          "weight": 1,
+          "description": "Whether the conversation ends with something specific, small, and owned by the student.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "None",
+              "descriptor": "Conversation ends with encouragement only, or with nothing."
+            },
+            {
+              "score": 2,
+              "label": "Teacher-imposed",
+              "descriptor": "A next step exists but was decided entirely by the teacher and handed down."
+            },
+            {
+              "score": 3,
+              "label": "Agreed and specific",
+              "descriptor": "A specific, achievable next step the student has actually agreed to."
+            },
+            {
+              "score": 4,
+              "label": "Agreed, small, and scheduled",
+              "descriptor": "Specific, deliberately small enough to be impossible to fail, with a named time to check back."
+            }
+          ]
+        },
+        {
+          "name": "Knowing the limits of the role",
+          "weight": 2,
+          "description": "Whether the teacher recognises when something is outside what a teacher should handle alone, and says so appropriately.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Oversteps",
+              "descriptor": "Pushes for personal disclosure, promises confidentiality they cannot keep, or takes on a counselling role."
+            },
+            {
+              "score": 2,
+              "label": "Misses it",
+              "descriptor": "Signals that something larger is going on are present and go unacknowledged."
+            },
+            {
+              "score": 3,
+              "label": "Notices",
+              "descriptor": "Recognises the situation is bigger than the classroom and does not try to solve it single-handedly."
+            },
+            {
+              "score": 4,
+              "label": "Notices and routes",
+              "descriptor": "Names the limit honestly to the student, offers a specific person or service, and does not make a promise about privacy that cannot be kept."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feedback-conversation",
+      "name": "Feedback conversation with a high-achieving student",
+      "criteria": [
+        {
+          "name": "Takes the concern seriously",
+          "weight": 2,
+          "description": "Whether the teacher engages with the student's standard for themselves before questioning it.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Dismisses",
+              "descriptor": "Minimises the grade — 'it's only one B' — which tells the student they have not been understood."
+            },
+            {
+              "score": 2,
+              "label": "Reassures too early",
+              "descriptor": "Offers comfort before establishing what the student is actually worried about."
+            },
+            {
+              "score": 3,
+              "label": "Takes it seriously",
+              "descriptor": "Treats the student's reaction as information rather than an overreaction."
+            },
+            {
+              "score": 4,
+              "label": "Takes it seriously and gets curious",
+              "descriptor": "Asks what the grade means to the student, and listens to an answer that may not be about the grade at all."
+            }
+          ]
+        },
+        {
+          "name": "Separates the work from the person",
+          "weight": 2,
+          "description": "Whether feedback lands on the piece of work rather than on the student's worth.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Conflates",
+              "descriptor": "Praise or criticism attaches to the student — 'you're brilliant', 'you're better than this'."
+            },
+            {
+              "score": 2,
+              "label": "Mixed",
+              "descriptor": "Some specific feedback, undercut by global statements about the student."
+            },
+            {
+              "score": 3,
+              "label": "Work-focused",
+              "descriptor": "Feedback is about what the work did and did not do."
+            },
+            {
+              "score": 4,
+              "label": "Work-focused and actionable",
+              "descriptor": "Specific to the work, and names what a stronger version would contain."
+            }
+          ]
+        },
+        {
+          "name": "Handles the deflection",
+          "weight": 1,
+          "description": "Whether the teacher notices the shift to logistics — extra credit, retakes — and responds to what is underneath it.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Follows it",
+              "descriptor": "Spends the conversation on retake policy."
+            },
+            {
+              "score": 2,
+              "label": "Blocks it",
+              "descriptor": "Refuses the logistics without offering anything in their place."
+            },
+            {
+              "score": 3,
+              "label": "Notices it",
+              "descriptor": "Answers the logistical question briefly and returns to the real one."
+            },
+            {
+              "score": 4,
+              "label": "Names it gently",
+              "descriptor": "Makes the deflection visible without embarrassing the student, and gives them a way back."
+            }
+          ]
+        },
+        {
+          "name": "Knowing the limits of the role",
+          "weight": 1,
+          "description": "Whether the teacher recognises signs of something beyond academic pressure and responds appropriately.",
+          "levels": [
+            {
+              "score": 1,
+              "label": "Oversteps",
+              "descriptor": "Diagnoses, or pushes into family territory uninvited."
+            },
+            {
+              "score": 2,
+              "label": "Misses it",
+              "descriptor": "Clear distress signals go unacknowledged."
+            },
+            {
+              "score": 3,
+              "label": "Notices",
+              "descriptor": "Registers that the distress exceeds the situation."
+            },
+            {
+              "score": 4,
+              "label": "Notices and routes",
+              "descriptor": "Names it kindly and makes a specific, low-pressure offer of further support."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "marcus-blank-page",
+      "title": "The student who will not start",
+      "persona_id": "marcus",
+      "rubric_id": "supportive-conversation",
+      "learner_role": "You are Marcus's English teacher.",
+      "context": "It is the end of class on a Thursday. Marcus has handed in nothing for three weeks. Today he spent the writing period making his table laugh and produced one line. You have asked him to stay behind for a few minutes. He is not in trouble and you have not told him why he is staying.",
+      "objective": "Find out what is actually stopping him from starting, without triggering the defensiveness that has ended this conversation the last two times a teacher tried it.",
+      "opening_line": "So am I in trouble or what?",
+      "guidance": "Marcus will make it easy to talk about anything except the work. Notice what he is steering away from.",
+      "suggested_minutes": 8
+    },
+    {
+      "id": "priya-first-b",
+      "title": "The first B",
+      "persona_id": "priya",
+      "rubric_id": "feedback-conversation",
+      "learner_role": "You are Priya's history teacher.",
+      "context": "You returned essays this morning. Priya, who has not scored below an A in two years, got a B. She has asked to speak to you at lunch. Another teacher mentioned she has been crying in the bathroom between periods this week.",
+      "objective": "Give honest feedback on the work while making room for the fact that her reaction is out of proportion to the grade — without dismissing either.",
+      "opening_line": "I wanted to ask about the essay. Is there a rubric breakdown, or a way I can see exactly where the points went?",
+      "guidance": "She will pull you toward extra credit and retakes. That is not what she came in for.",
+      "suggested_minutes": 10
+    },
+    {
+      "id": "dylan-six-weeks",
+      "title": "Six weeks of falling off",
+      "persona_id": "dylan",
+      "rubric_id": "supportive-conversation",
+      "learner_role": "You are Dylan's form tutor.",
+      "context": "Dylan was a reliable student until half term. Since then: late most mornings, asleep in two lessons this week, and no work handed in. You have five minutes with him before registration. Three other staff have already emailed home with no reply.",
+      "objective": "Understand what has changed, and get him connected to the right support — recognising that some of this is not yours to solve.",
+      "opening_line": "Yeah, I know. The work. I'll catch up.",
+      "guidance": "This one is partly about knowing where your job ends. Watch for the moment you should stop asking and start referring.",
+      "suggested_minutes": 8
+    }
+  ]
+};
+
+let content = load();
+let session = null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(p && p.scenarios && p.personas && p.rubrics) return p;
+    }
+  }catch(e){ /* corrupt store falls back to samples */ }
+  return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+}
+function save(){
+  try{ localStorage.setItem(STORE, JSON.stringify(content)); }
+  catch(e){ /* private browsing — the session still works, it just will not persist */ }
+}
+const byId = (arr,id) => arr.find(x => x.id === id);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = p => p + "-" + Math.random().toString(36).slice(2,8);
+
+/* ---------------------------------------------------------------- tabs */
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x===t));
+  const studio = t.dataset.view === "studio";
+  document.getElementById("view-studio").classList.toggle("hide", !studio);
+  document.getElementById("view-practice").classList.toggle("hide", studio);
+  if(studio) renderStudio();
+  window.scrollTo(0,0);
+});
+function goPractice(){
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x.dataset.view==="practice"));
+  document.getElementById("view-studio").classList.add("hide");
+  document.getElementById("view-practice").classList.remove("hide");
+}
+
+/* ------------------------------------------------------------ scenarios */
+function renderCards(){
+  const el = document.getElementById("cards");
+  if(!content.scenarios.length){
+    el.innerHTML = '<p class="lede">No scenarios yet — make one in Studio.</p>';
+    return;
+  }
+  el.innerHTML = content.scenarios.map(s => {
+    const p = byId(content.personas, s.persona_id) || {};
+    const r = byId(content.rubrics, s.rubric_id) || {};
+    return `<button class="card" data-s="${esc(s.id)}">
+      <span class="who">${esc(p.name||"—")} · ${esc(p.grade||"")}</span>
+      <h3>${esc(s.title)}</h3>
+      <p>${esc(s.objective||"")}</p>
+      <span class="meta">Scored on ${esc(r.name||"—")} · ~${esc(s.suggested_minutes||8)} min</span>
+    </button>`;
+  }).join("");
+  el.querySelectorAll(".card").forEach(c => c.onclick = () => start(c.dataset.s));
+}
+
+/* -------------------------------------------------------------- session */
+function show(id){
+  ["pick","session","results"].forEach(v =>
+    document.getElementById(v).classList.toggle("hide", v!==id));
+  window.scrollTo(0,0);
+}
+
+function start(scenarioId){
+  const s = byId(content.scenarios, scenarioId);
+  if(!s) return;
+  const p = byId(content.personas, s.persona_id);
+  const r = byId(content.rubrics, s.rubric_id);
+  if(!p || !r){ alert("This scenario is missing its student or its rubric. Open it in Studio."); return; }
+
+  goPractice();
+  session = { scenario:s, persona:p, rubric:r, messages:[], ended:false };
+
+  document.getElementById("s-role").textContent = s.learner_role || "Scenario";
+  document.getElementById("s-title").textContent = s.title;
+  document.getElementById("s-name").textContent = p.name;
+  document.getElementById("s-grade").textContent = p.grade || "";
+  document.getElementById("s-context").textContent = s.context || "";
+  document.getElementById("s-objective").textContent = s.objective || "";
+  document.getElementById("s-guidance").textContent = s.guidance || "—";
+  document.getElementById("s-rubric").textContent = r.name;
+  document.getElementById("err-session").innerHTML = "";
+  document.getElementById("msgs").innerHTML = "";
+  document.getElementById("input").value = "";
+  setTurns();
+  show("session");
+
+  if(s.opening_line){
+    session.messages.push({role:"assistant", content:s.opening_line});
+    bubble("student", p.name, s.opening_line);
+    if(document.getElementById("speak").checked) say(s.opening_line);
+  } else {
+    sysline("Open the conversation however you would in the room.");
+  }
+  document.getElementById("input").focus();
+}
+
+function bubble(kind, who, text){
+  const d = document.createElement("div");
+  d.className = "msg " + kind;
+  d.innerHTML = `<span class="who-lab">${esc(who)}</span>${esc(text)}`;
+  const m = document.getElementById("msgs");
+  m.appendChild(d); m.scrollTop = m.scrollHeight;
+}
+function sysline(text){
+  const d = document.createElement("div");
+  d.className = "msg sys"; d.textContent = text;
+  const m = document.getElementById("msgs"); m.appendChild(d); m.scrollTop = m.scrollHeight;
+}
+function setTurns(){
+  const n = session ? session.messages.filter(m=>m.role==="user").length : 0;
+  document.getElementById("turns").textContent = n + (n===1?" turn":" turns");
+}
+function showErr(where, msg){
+  document.getElementById(where).innerHTML = `<div class="err">${esc(msg)}</div>`;
+}
+
+async function api(payload){
+  const r = await fetch(API, {
+    method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(payload)
+  });
+  let data = null;
+  try{ data = await r.json(); }catch(e){ /* non-JSON body */ }
+  if(!r.ok) throw new Error((data && data.error) || ("Request failed (" + r.status + ")."));
+  return data;
+}
+
+async function send(){
+  const box = document.getElementById("input");
+  const text = box.value.trim();
+  if(!text || !session || session.busy) return;
+
+  box.value = ""; box.style.height = "auto";
+  session.messages.push({role:"user", content:text});
+  bubble("teacher", "You", text);
+  setTurns();
+
+  session.busy = true;
+  document.getElementById("send").disabled = true;
+  const typing = document.createElement("div");
+  typing.className = "typing"; typing.textContent = session.persona.name + " is thinking…";
+  document.getElementById("msgs").appendChild(typing);
+
+  try{
+    const out = await api({action:"reply", persona:session.persona,
+                           scenario:session.scenario, messages:session.messages});
+    typing.remove();
+    session.messages.push({role:"assistant", content:out.reply});
+    bubble("student", session.persona.name, out.reply);
+    if(document.getElementById("speak").checked) say(out.reply);
+    document.getElementById("err-session").innerHTML = "";
+  }catch(e){
+    typing.remove();
+    showErr("err-session", e.message + " Your conversation is still here — try sending again.");
+  }finally{
+    session.busy = false;
+    document.getElementById("send").disabled = false;
+    box.focus();
+  }
+}
+
+document.getElementById("send").onclick = send;
+document.getElementById("input").addEventListener("keydown", e => {
+  if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); send(); }
+});
+document.getElementById("input").addEventListener("input", function(){
+  this.style.height = "auto"; this.style.height = Math.min(this.scrollHeight, 150) + "px";
+});
+document.getElementById("quit").onclick = () => { stopVoice(); show("pick"); };
+document.getElementById("back").onclick = () => show("pick");
+document.getElementById("again").onclick = () => start(session.scenario.id);
+
+/* ---------------------------------------------------------------- voice */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, listening = false;
+
+if(!SR){
+  document.getElementById("mic").disabled = true;
+  document.getElementById("mic").title = "Speech input is not available in this browser";
+  const n = document.getElementById("voicenote");
+  n.classList.remove("hide");
+  n.textContent = "Speaking out loud needs Chrome or Edge — this browser does not offer speech input. Typing works everywhere.";
+}else{
+  rec = new SR();
+  rec.continuous = false; rec.interimResults = true; rec.lang = "en-US";
+  rec.onresult = e => {
+    let t = "";
+    for(let i=e.resultIndex;i<e.results.length;i++) t += e.results[i][0].transcript;
+    document.getElementById("input").value = t;
+  };
+  rec.onend = () => {
+    listening = false;
+    document.getElementById("mic").classList.remove("live");
+    if(document.getElementById("input").value.trim()) send();
+  };
+  rec.onerror = ev => {
+    listening = false;
+    document.getElementById("mic").classList.remove("live");
+    if(ev.error === "not-allowed")
+      showErr("err-session", "Microphone access was blocked. Allow it in the address bar, or type instead.");
+  };
+  document.getElementById("mic").onclick = () => {
+    if(listening){ rec.stop(); return; }
+    try{
+      window.speechSynthesis && window.speechSynthesis.cancel();
+      rec.start(); listening = true;
+      document.getElementById("mic").classList.add("live");
+    }catch(e){ /* start() throws if already running */ }
+  };
+}
+function say(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 1.02; u.pitch = 1.08;
+  window.speechSynthesis.speak(u);
+}
+function stopVoice(){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(rec && listening){ try{ rec.stop(); }catch(e){} }
+}
+
+/* -------------------------------------------------------------- scoring */
+document.getElementById("finish").onclick = async () => {
+  if(!session) return;
+  stopVoice();
+  const turns = session.messages.filter(m=>m.role==="user").length;
+  if(!turns){ showErr("err-session","Say something first — there is nothing to score yet."); return; }
+  if(turns < 3 && !confirm("Only " + turns + " turn(s) so far. A short conversation will score low on most criteria simply because it never got there. Score it anyway?")) return;
+
+  const btn = document.getElementById("finish");
+  btn.disabled = true; btn.textContent = "Scoring…";
+  try{
+    const out = await api({action:"score", scenario:session.scenario,
+                           rubric:session.rubric, messages:session.messages});
+    renderResults(out.result);
+    show("results");
+  }catch(e){
+    showErr("err-session", e.message);
+  }finally{
+    btn.disabled = false; btn.textContent = "End & get feedback";
+  }
+};
+
+function bandFor(pct){
+  if(pct >= 85) return ["Strong", "var(--good)", "var(--good-bg)"];
+  if(pct >= 65) return ["Developing", "var(--warn)", "var(--warn-bg)"];
+  return ["Early", "var(--bad)", "var(--bad-bg)"];
+}
+
+function renderResults(res){
+  const rubric = session.rubric;
+  let got = 0, max = 0;
+  const rows = (res.criteria||[]).map(c => {
+    const def = (rubric.criteria||[]).find(x => x.name === c.name) || {};
+    const w = def.weight || 1;
+    const top = Math.max(...((def.levels||[{score:4}]).map(l=>l.score)));
+    const sc = Math.max(0, Math.min(Number(c.score)||0, top));
+    got += sc * w; max += top * w;
+    const [, col, bg] = bandFor((sc/top)*100);
+    const ev = c.evidence && c.evidence.trim()
+      ? `<div class="evidence">“${esc(c.evidence.trim())}”</div>`
+      : `<div class="evidence no-evidence">No moment in the transcript demonstrated this. The score reflects that, not a judgement about you.</div>`;
+    return `<div class="crit">
+      <div class="crit-top">
+        <h3>${esc(c.name)}</h3>
+        <span class="crit-score">${sc} / ${top}${w>1?` · weighted ×${w}`:""}
+          <span class="lvl" style="color:${col};background:${bg};margin-left:8px">${esc(c.level_label||"")}</span></span>
+      </div>
+      ${ev}
+      <p class="c">${esc(c.comment||"")}</p>
+    </div>`;
+  }).join("");
+
+  const pct = max ? Math.round((got/max)*100) : 0;
+  const [label, col, bg] = bandFor(pct);
+  document.getElementById("r-title").textContent = session.scenario.title;
+  document.getElementById("r-pct").innerHTML = pct + `<small>%</small>`;
+  document.getElementById("r-band").innerHTML =
+    `<span class="band" style="color:${col};background:${bg}">${label}</span>
+     <div style="font-size:12px;color:var(--muted);margin-top:6px">${got} of ${max} weighted points</div>`;
+  document.getElementById("r-summary").textContent = res.summary || "";
+  document.getElementById("r-crits").innerHTML = rows;
+  document.getElementById("r-one").textContent = res.one_thing || "";
+  document.getElementById("r-str").innerHTML =
+    (res.strengths||[]).map(s=>`<li>${esc(s)}</li>`).join("") || "<li>Nothing specific this time.</li>";
+  document.getElementById("r-next").innerHTML =
+    (res.next_time||[]).map(s=>`<li>${esc(s)}</li>`).join("") || "<li>—</li>";
+  session.lastResult = {pct, got, max, res};
+}
+
+document.getElementById("dl").onclick = () => {
+  if(!session || !session.lastResult) return;
+  const L = [`# ${session.scenario.title}`, ``,
+    `Student: ${session.persona.name}. Rubric: ${session.rubric.name}.`,
+    `Score: ${session.lastResult.pct}% (${session.lastResult.got}/${session.lastResult.max} weighted).`, ``,
+    `## Transcript`, ``];
+  session.messages.forEach(m =>
+    L.push(`**${m.role==="user" ? "You" : session.persona.name}:** ${m.content}`, ``));
+  L.push(`## Feedback`, ``, session.lastResult.res.summary || "", ``);
+  (session.lastResult.res.criteria||[]).forEach(c =>
+    L.push(`### ${c.name} — ${c.score} (${c.level_label||""})`, ``,
+           c.evidence ? `> ${c.evidence}` : `> (no supporting moment found)`, ``, c.comment||"", ``));
+  L.push(`**One thing:** ${session.lastResult.res.one_thing||""}`);
+  const blob = new Blob([L.join("\n")], {type:"text/markdown"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = session.scenario.id + "-feedback.md";
+  a.click(); URL.revokeObjectURL(a.href);
+};
+
+/* --------------------------------------------------------------- studio */
+let sel = {type:"scenario", id:null};
+
+function renderStudio(){
+  if(!sel.id){
+    if(content.scenarios[0]) sel = {type:"scenario", id:content.scenarios[0].id};
+  }
+  const lists = [["scenarios","scenario","title"],["personas","persona","name"],["rubrics","rubric","name"]];
+  lists.forEach(([key,type,label]) => {
+    document.getElementById("list-"+key).innerHTML = content[key].map(x =>
+      `<li><button data-t="${type}" data-i="${esc(x.id)}"
+        class="${sel.type===type&&sel.id===x.id?"on":""}">${esc(x[label]||"(untitled)")}</button></li>`
+    ).join("");
+  });
+  document.querySelectorAll(".side li button").forEach(b => b.onclick = () => {
+    sel = {type:b.dataset.t, id:b.dataset.i}; renderStudio();
+  });
+  renderEditor();
+}
+
+function field(label, help, id, value, area, ph){
+  return `<div class="f"><label for="${id}">${esc(label)}</label>
+    ${help?`<div class="help">${esc(help)}</div>`:""}
+    ${area
+      ? `<textarea id="${id}" rows="${area}" placeholder="${esc(ph||"")}">${esc(value||"")}</textarea>`
+      : `<input id="${id}" value="${esc(value||"")}" placeholder="${esc(ph||"")}">`}</div>`;
+}
+
+function renderEditor(){
+  const el = document.getElementById("editor");
+  const list = sel.type === "scenario" ? content.scenarios
+             : sel.type === "persona"  ? content.personas : content.rubrics;
+  const item = byId(list, sel.id);
+  if(!item){ el.innerHTML = '<p class="lede">Pick something on the left, or add a new one.</p>'; return; }
+
+  if(sel.type === "persona"){
+    el.innerHTML = `<h2>Student</h2>
+      <p class="lede">This is the whole character. The model is given exactly what you write here — nothing else.</p>
+      <div style="margin-top:20px">
+      <div class="row">${field("Name","","ed-p-name",item.name)}${field("Age or grade","","ed-p-grade",item.grade)}</div>
+      ${field("In one sentence","How you would describe this student to a colleague.","ed-p-summary",item.summary,2)}
+      ${field("How they behave","The important one. What do they do when pushed, when given space, when a teacher gets it wrong? Say what makes them soften and what shuts them down.","ed-p-behavior",item.behavior,6)}
+      ${field("How they talk","Sentence length, vocabulary, verbal habits. This is what makes them sound fourteen instead of like an assistant.","ed-p-speech",item.speech_style,3)}
+      ${field("What the teacher does not know yet","The thing underneath. Write when it surfaces and what has to happen first — this is what makes the conversation worth having twice.","ed-p-hidden",item.hidden_context,5)}
+      ${field("Limits (optional)","Anything this character must never do or move toward, whatever the learner says. Leave blank unless the scenario needs a boundary.","ed-p-safety",item.safety_note,3)}
+      </div>
+      <div class="bar">
+        <button class="btn" id="save-item">Save</button>
+        <button class="btn sec" id="del-item">Delete</button>
+      </div>`;
+    document.getElementById("save-item").onclick = () => {
+      item.name = val("ed-p-name"); item.grade = val("ed-p-grade"); item.summary = val("ed-p-summary");
+      item.behavior = val("ed-p-behavior"); item.speech_style = val("ed-p-speech");
+      item.hidden_context = val("ed-p-hidden"); item.safety_note = val("ed-p-safety");
+      save(); renderStudio(); renderCards(); flash("Saved.");
+    };
+  }
+
+  if(sel.type === "scenario"){
+    const opts = (arr,cur,lab) => arr.map(x =>
+      `<option value="${esc(x.id)}"${x.id===cur?" selected":""}>${esc(x[lab])}</option>`).join("");
+    el.innerHTML = `<h2>Scenario</h2>
+      <p class="lede">A scenario is a student, a situation, a goal, and a rubric. Change any of the four and it is a different exercise.</p>
+      <div style="margin-top:20px">
+      ${field("Title","","ed-title",item.title)}
+      ${field("The learner's role","e.g. You are Marcus's English teacher.","ed-role",item.learner_role)}
+      ${field("The situation","What has happened, where they are, what has been tried already. The learner reads this before starting.","ed-context",item.context,5)}
+      ${field("What they are trying to do","The goal of the conversation. This is also what the scoring is measured against.","ed-objective",item.objective,3)}
+      ${field("Watch for (optional)","A nudge shown alongside the conversation.","ed-guidance",item.guidance,2)}
+      ${field("The student's first line (optional)","Opening on the student's terms puts the learner on the back foot, which is usually the point.","ed-open",item.opening_line,2)}
+      <div class="row">
+        <div class="f"><label>Student</label><select id="ed-persona">${opts(content.personas,item.persona_id,"name")}</select></div>
+        <div class="f"><label>Rubric</label><select id="ed-rubric">${opts(content.rubrics,item.rubric_id,"name")}</select></div>
+      </div>
+      ${field("Suggested length (minutes)","","ed-mins",item.suggested_minutes)}
+      </div>
+      <div class="bar">
+        <button class="btn" id="save-item">Save</button>
+        <button class="btn warn" id="try-item">Save &amp; try it now</button>
+        <button class="btn sec" id="del-item">Delete</button>
+      </div>`;
+    const commit = () => {
+      // Editor field ids are prefixed ed- so they can never collide with the
+      // read-only brief panel in the practice view. They did once, and val()
+      // silently read a <p> instead of an <input>.
+
+      item.title = val("ed-title"); item.learner_role = val("ed-role"); item.context = val("ed-context");
+      item.objective = val("ed-objective"); item.guidance = val("ed-guidance");
+      item.opening_line = val("ed-open"); item.persona_id = val("ed-persona");
+      item.rubric_id = val("ed-rubric");
+      item.suggested_minutes = parseInt(val("ed-mins"),10) || 8;
+      save(); renderCards();
+    };
+    document.getElementById("save-item").onclick = () => { commit(); renderStudio(); flash("Saved."); };
+    document.getElementById("try-item").onclick = () => { commit(); start(item.id); };
+  }
+
+  if(sel.type === "rubric"){
+    const crits = (item.criteria||[]).map((c,i) => `
+      <div class="critbox">
+        <div class="hd"><b>Criterion ${i+1}</b>
+          <button class="link" data-rm="${i}">Remove</button></div>
+        <div class="row">
+          ${field("Name","","ed-c-name-"+i,c.name)}
+          ${field("Weight","How much this counts relative to the others.","ed-c-w-"+i,c.weight||1)}
+        </div>
+        ${field("What it measures","","ed-c-desc-"+i,c.description,2)}
+        <label style="font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">What each score looks like</label>
+        ${(c.levels||[]).map((l,j) => `<div class="lvlrow">
+          <span class="n">${l.score}</span>
+          <input id="ed-c-ll-${i}-${j}" value="${esc(l.label)}" placeholder="Label">
+          <input id="ed-c-ld-${i}-${j}" value="${esc(l.descriptor)}" placeholder="What earns this score">
+        </div>`).join("")}
+      </div>`).join("");
+
+    el.innerHTML = `<h2>Rubric</h2>
+      <p class="lede">Describe what each score actually looks like. The scoring is only as good as these
+      descriptions — vague levels produce vague feedback, and learners can tell.</p>
+      <div style="margin-top:20px">
+      ${field("Rubric name","","ed-r-name",item.name)}
+      ${crits}
+      <button class="btn sec sm" id="add-crit">Add a criterion</button>
+      </div>
+      <div class="bar">
+        <button class="btn" id="save-item">Save</button>
+        <button class="btn sec" id="del-item">Delete</button>
+      </div>`;
+
+    document.getElementById("add-crit").onclick = () => {
+      item.criteria = item.criteria || [];
+      item.criteria.push({name:"New criterion", weight:1, description:"", levels:[1,2,3,4].map(s =>
+        ({score:s, label:"", descriptor:""}))});
+      save(); renderEditor();
+    };
+    el.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => {
+      item.criteria.splice(Number(b.dataset.rm),1); save(); renderEditor();
+    });
+    document.getElementById("save-item").onclick = () => {
+      item.name = val("ed-r-name");
+      (item.criteria||[]).forEach((c,i) => {
+        c.name = val("ed-c-name-"+i);
+        c.weight = parseFloat(val("ed-c-w-"+i)) || 1;
+        c.description = val("ed-c-desc-"+i);
+        (c.levels||[]).forEach((l,j) => {
+          l.label = val(`ed-c-ll-${i}-${j}`); l.descriptor = val(`ed-c-ld-${i}-${j}`);
+        });
+      });
+      save(); renderStudio(); renderCards(); flash("Saved.");
+    };
+  }
+
+  const del = document.getElementById("del-item");
+  if(del) del.onclick = () => {
+    if(!confirm("Delete this? Anything using it will need repointing.")) return;
+    const key = sel.type === "scenario" ? "scenarios" : sel.type === "persona" ? "personas" : "rubrics";
+    content[key] = content[key].filter(x => x.id !== sel.id);
+    sel = {type:sel.type, id:null}; save(); renderStudio(); renderCards();
+  };
+}
+
+const val = id => { const e = document.getElementById(id); return e ? e.value.trim() : ""; };
+function flash(msg){
+  const b = document.querySelector("#editor .bar");
+  if(!b) return;
+  const s = document.createElement("span");
+  s.textContent = msg;
+  s.style.cssText = "font-size:13px;color:var(--good);align-self:center;font-weight:600";
+  b.appendChild(s); setTimeout(()=>s.remove(), 1800);
+}
+
+document.querySelectorAll("[data-new]").forEach(b => b.onclick = () => {
+  const t = b.dataset.new;
+  if(t === "persona"){
+    const p = {id:uid("student"), name:"New student", grade:"", summary:"", behavior:"",
+               speech_style:"", hidden_context:"", safety_note:""};
+    content.personas.push(p); sel = {type:"persona", id:p.id};
+  }
+  if(t === "rubric"){
+    const r = {id:uid("rubric"), name:"New rubric", criteria:[{name:"New criterion", weight:1,
+      description:"", levels:[1,2,3,4].map(s=>({score:s,label:"",descriptor:""}))}]};
+    content.rubrics.push(r); sel = {type:"rubric", id:r.id};
+  }
+  if(t === "scenario"){
+    const s = {id:uid("scenario"), title:"New scenario", learner_role:"", context:"", objective:"",
+               guidance:"", opening_line:"", suggested_minutes:8,
+               persona_id:(content.personas[0]||{}).id, rubric_id:(content.rubrics[0]||{}).id};
+    content.scenarios.push(s); sel = {type:"scenario", id:s.id};
+  }
+  save(); renderStudio(); renderCards();
+});
+
+document.getElementById("export").onclick = () => {
+  const blob = new Blob([JSON.stringify(content,null,2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "practice-lab-content.json";
+  a.click(); URL.revokeObjectURL(a.href);
+};
+document.getElementById("import").onclick = () => {
+  const i = document.createElement("input");
+  i.type = "file"; i.accept = "application/json";
+  i.onchange = () => {
+    const f = i.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try{
+        const p = JSON.parse(r.result);
+        if(!p.scenarios || !p.personas || !p.rubrics) throw new Error("shape");
+        content = p; sel = {type:"scenario", id:null};
+        save(); renderStudio(); renderCards(); alert("Imported.");
+      }catch(e){ alert("That file is not Practice Lab content — it needs scenarios, personas and rubrics."); }
+    };
+    r.readAsText(f);
+  };
+  i.click();
+};
+document.getElementById("reset").onclick = () => {
+  if(!confirm("Replace everything with the sample content? Your edits will be lost.")) return;
+  content = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+  sel = {type:"scenario", id:null};
+  save(); renderStudio(); renderCards();
+};
+
+renderCards();
+</script>
+</body></html>
