@@ -895,6 +895,13 @@ function renderResults(res){
     const top = Math.max(...((def.levels||[{score:4}]).map(l=>l.score)));
     const sc = Math.max(0, Math.min(Number(c.score)||0, top));
     got += sc * w; max += top * w;
+    // Take the level name from the rubric, not from the model. Asked for a
+    // label, models tend to return "Confrontational: leads with the deficit" —
+    // label and descriptor glued together. The rubric is the authority on what
+    // a 1 is called, so read it from there and only fall back to the model's
+    // wording if the score is somehow outside the defined levels.
+    const lvlDef = (def.levels||[]).find(l => Number(l.score) === sc);
+    const lvlLabel = (lvlDef && lvlDef.label) || c.level_label || "";
     const [, col, bg] = bandFor((sc/top)*100);
     const ev = c.evidence && c.evidence.trim()
       ? `<div class="evidence">“${esc(c.evidence.trim())}”</div>`
@@ -903,7 +910,7 @@ function renderResults(res){
       <div class="crit-top">
         <h3>${esc(c.name)}</h3>
         <span class="crit-score">${sc} / ${top}${w>1?` · weighted ×${w}`:""}
-          <span class="lvl" style="color:${col};background:${bg};margin-left:8px">${esc(c.level_label||"")}</span></span>
+          <span class="lvl" style="color:${col};background:${bg};margin-left:8px">${esc(lvlLabel)}</span></span>
       </div>
       ${ev}
       <p class="c">${esc(c.comment||"")}</p>
