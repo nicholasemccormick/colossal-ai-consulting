@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Build Sprint — Stop renting your software. — Colossal.</title>
+<link rel="canonical" href="https://colossalaiconsulting.com/sprint" />
+<meta name="description" content="A four-week build-alongside sprint for small business owners. Ten seats. You replace a real software subscription with a tool you own and control — and you keep the ability to build the next one.">
+
+<meta property="og:title" content="The Build Sprint — Stop renting your software.">
+<meta property="og:description" content="Four weeks. Ten seats. You build the software you have been renting.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://colossalaiconsulting.com/sprint">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ===================== Meta Pixel ===================== -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '27632747186389488');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=27632747186389488&ev=PageView&noscript=1"/></noscript>
+<!-- ================== End Meta Pixel =================== -->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3CLLXT5');</script>
+<!-- End Google Tag Manager -->
+
+<style>
+:root{
+  --ink:#0B0B0D;
+  --paper:#ECE5D4;
+  --accent:#C2884A;
+  --muted:#6B6357;
+  --rule:rgba(11,11,13,.14);
+  --surface:rgba(11,11,13,.035);
+  --max:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+  font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.03em}
+h1{font-size:clamp(2.3rem,4.4vw,3.5rem)}
+h2{font-size:clamp(1.95rem,3.9vw,3rem)}
+h3{font-size:1.12rem;letter-spacing:-.01em;font-weight:600;line-height:1.3}
+p{color:var(--muted)}
+.lead{font-size:1.14rem;color:var(--ink);opacity:.82;font-weight:400}
+.mono{
+  font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:500;
+}
+a{color:inherit}
+
+nav{position:sticky;top:0;z-index:50;background:rgba(236,229,212,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+.brand{font-weight:800;font-size:1.2rem;letter-spacing:-.03em;text-decoration:none}
+.brand i{color:var(--accent);font-style:normal}
+
+.btn{display:inline-block;background:var(--ink);color:var(--paper);text-decoration:none;
+  font-weight:600;font-size:.95rem;padding:15px 26px;border:1px solid var(--ink);transition:.18s;cursor:pointer}
+.btn:hover{background:transparent;color:var(--ink)}
+.btn-sm{padding:11px 18px;font-size:.85rem}
+
+section{padding:88px 0;border-top:1px solid var(--rule)}
+.hero{padding:76px 0 88px;border-top:none}
+.hero h1{max-width:17ch;margin:18px 0 22px}
+.hero .lead{max-width:62ch}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:34px}
+.hero-meta{display:flex;gap:34px;flex-wrap:wrap;margin-top:52px;padding-top:22px;border-top:1px solid var(--rule)}
+.hero-meta div strong{display:block;font-size:1.6rem;font-weight:800;letter-spacing:-.03em}
+.hero-meta div span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+.two{display:grid;grid-template-columns:.85fr 1.15fr;gap:64px;align-items:start}
+.stack>*+*{margin-top:18px}
+
+.ledger{margin-top:34px;border-top:1px solid var(--rule)}
+.ledger-row{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--rule);font-size:.96rem}
+.ledger-row span:last-child{font-family:'JetBrains Mono',monospace;color:var(--muted);white-space:nowrap}
+.ledger-total{display:flex;justify-content:space-between;gap:20px;padding:18px 0;font-weight:800;font-size:1.05rem;border-bottom:2px solid var(--ink)}
+.ledger-total span:last-child{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+.ledger-note{font-size:.85rem;margin-top:12px;font-style:italic}
+
+.weeks{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+.week{border:1px solid var(--rule);background:var(--surface);padding:26px}
+.week .n{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--accent);margin-bottom:14px}
+.week h3{margin-bottom:10px}
+.week p{font-size:.92rem}
+
+.rhythm{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:38px}
+.rhythm div{border-top:2px solid var(--ink);padding-top:16px}
+.rhythm strong{display:block;margin-bottom:6px}
+.rhythm p{font-size:.92rem}
+
+.list{margin-top:26px;border-top:1px solid var(--rule)}
+.list li{list-style:none;padding:15px 0;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:baseline}
+.list li::before{content:"→";color:var(--accent);font-weight:600}
+
+.builds{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:38px}
+.build{border:1px solid var(--rule);padding:26px;background:var(--surface)}
+.build .mono{display:block;margin-bottom:10px}
+.build p{font-size:.92rem}
+
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:38px}
+.fit-col{border:1px solid var(--rule);padding:30px;background:var(--surface)}
+.fit-col h3{margin-bottom:16px}
+.fit-col li{list-style:none;padding:10px 0;border-top:1px solid var(--rule);font-size:.94rem;color:var(--muted)}
+
+.price-box{border:1px solid var(--ink);padding:40px;background:var(--surface)}
+.price-box .amt{font-size:3.2rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+.price-box .amt span{font-size:1rem;font-weight:500;color:var(--muted);letter-spacing:0}
+
+form{margin-top:30px}
+.field{margin-bottom:16px}
+label{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid var(--rule);background:#fff;
+  font-family:inherit;font-size:.95rem;color:var(--ink);border-radius:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:96px;resize:vertical}
+.status{margin-top:14px;font-size:.9rem;color:var(--muted);min-height:1.2em}
+.success{display:none;border:1px solid var(--accent);padding:32px;background:var(--surface)}
+.success h3{margin-bottom:10px}
+
+footer{padding:44px 0 34px;border-top:1px solid var(--rule)}
+.foot-in{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+
+@media(max-width:900px){
+  section{padding:62px 0}
+  .two{grid-template-columns:1fr;gap:34px}
+  .weeks,.rhythm,.fit,.builds{grid-template-columns:1fr}
+  .hero-meta{gap:24px}
+}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W3CLLXT5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav><div class="wrap nav-in">
+  <a href="/" class="brand">COLOSSAL<i>.</i></a>
+  <a href="#apply" class="btn btn-sm">Apply for a seat</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <span class="mono">Four weeks &middot; Ten seats &middot; Cohort 01</span>
+  <h1>You don&rsquo;t own your software. You rent it, forever.</h1>
+  <p class="lead">Every month you pay for tools that do maybe 30% of what you actually need, and the price goes up every year whether you use them or not. The Build Sprint is four weeks of building the software you have been renting &mdash; with nine other owners doing the same thing at the same time. You finish owning it.</p>
+  <div class="hero-actions">
+    <a href="#apply" class="btn">Apply for a seat &rarr;</a>
+    <a href="#math" class="mono">Run the numbers &darr;</a>
+  </div>
+  <div class="hero-meta">
+    <div><strong>4 weeks</strong><span>One sprint</span></div>
+    <div><strong>10</strong><span>Seats per cohort</span></div>
+    <div><strong>$1,000</strong><span>Per seat</span></div>
+    <div><strong>0</strong><span>Coding experience needed</span></div>
+  </div>
+</div></header>
+
+<section id="math"><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 01 &mdash; The math</span></div>
+    <div class="stack">
+      <h2>Add up what you paid last year for software you don&rsquo;t own.</h2>
+      <p class="lead">Most owners have never actually totalled it. Go pull your card statement and count. It is usually worse than the guess.</p>
+      <p>Here is the part that stings: you are not paying for the software. You are paying for the <em>option</em> to keep using it. Stop paying and it all disappears &mdash; your data, your workflows, the eight months you spent configuring it.</p>
+      <div class="ledger">
+        <div class="ledger-row"><span>CRM, per seat, per month</span><span>&mdash;</span></div>
+        <div class="ledger-row"><span>Scheduling and booking</span><span>&mdash;</span></div>
+        <div class="ledger-row"><span>Email marketing platform</span><span>&mdash;</span></div>
+        <div class="ledger-row"><span>Forms, intake, e-signature</span><span>&mdash;</span></div>
+        <div class="ledger-row"><span>Reporting dashboard</span><span>&mdash;</span></div>
+        <div class="ledger-row"><span>The one you forgot you were paying for</span><span>&mdash;</span></div>
+        <div class="ledger-total"><span>Your number</span><span>fill it in</span></div>
+      </div>
+      <p class="ledger-note">Whatever you wrote down, that is the annual figure this sprint is aimed at.</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 02 &mdash; What changed</span></div>
+    <div class="stack">
+      <h2>Building software stopped requiring a developer.</h2>
+      <p>Two years ago this advice would have been irresponsible. You would have needed to learn to code, or hire someone at $80&ndash;150 an hour who did not understand your business and left halfway through.</p>
+      <p>That is no longer the constraint. You describe what you need in plain English and the AI writes it, runs it, and fixes it when it breaks. The skill that matters now is knowing <em>what</em> to build and how to describe it precisely &mdash; which is a business skill, not an engineering one. You already have it.</p>
+      <p>What you do not have is someone who has done it fifty times sitting next to you the first time you try. That is the entire product here.</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 03 &mdash; The four weeks</span></div>
+    <div class="stack">
+      <h2>You ship in week one. Not week four.</h2>
+      <p>Every week is a build week. Nothing is theory, and you work on your own business the whole way through.</p>
+    </div>
+  </div>
+  <div class="weeks">
+    <div class="week"><div class="n">Week 01</div><h3>Audit and first build</h3><p>Total your stack and pick the one tool worth replacing first &mdash; usually not the most expensive one, but the one that fits your business worst. Get set up, and ship something small that works by Friday.</p></div>
+    <div class="week"><div class="n">Week 02</div><h3>The replacement</h3><p>Build the real thing. Your data, your workflow, your language &mdash; not a generic template with your logo on it. This is where people realise how much of their current tool they were working around.</p></div>
+    <div class="week"><div class="n">Week 03</div><h3>Make it real</h3><p>Get it online, get your team into it, handle logins and backups. The difference between a demo and something your business actually runs on is week three.</p></div>
+    <div class="week"><div class="n">Week 04</div><h3>Own it</h3><p>Learn to change it without me &mdash; fix it when it breaks, extend it when the business changes. You leave with the working tool and the ability to build the next one.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 04 &mdash; Examples</span></div>
+    <div class="stack">
+      <h2>The kind of thing people replace first.</h2>
+      <p>You bring the target. These are the patterns that come up most, and they are all comfortably inside four weeks.</p>
+    </div>
+  </div>
+  <div class="builds">
+    <div class="build"><span class="mono">Pattern 01</span><h3>Client intake and scheduling</h3><p>The form, the calendar, the reminder emails, the follow-up. Usually three separate subscriptions doing one job badly.</p></div>
+    <div class="build"><span class="mono">Pattern 02</span><h3>A dashboard that shows your numbers</h3><p>Pulled from the places your data already lives, arranged the way you actually think about the business.</p></div>
+    <div class="build"><span class="mono">Pattern 03</span><h3>The quote or proposal generator</h3><p>The thing you currently do in a spreadsheet and then paste into a document by hand, every single time.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 05 &mdash; The rhythm</span></div>
+    <div class="stack">
+      <h2>Two group calls a week. One-to-one when you&rsquo;re stuck.</h2>
+      <p>Ten people building at the same time means the question you feel stupid asking gets asked by someone else on Thursday, and everybody learns from the answer.</p>
+    </div>
+  </div>
+  <div class="rhythm">
+    <div><strong>Monday &mdash; Build session</strong><p>Full group. The week&rsquo;s method demonstrated live on a real build, then your assignment.</p></div>
+    <div><strong>Midweek &mdash; 1:1</strong><p>Thirty minutes with me on your specific build. Book it the weeks you need it.</p></div>
+    <div><strong>Thursday &mdash; Debrief</strong><p>Full group. What broke and how it got fixed. Most weeks everyone hits the same wall within a day of each other.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 06 &mdash; Straight answers</span></div>
+    <div class="stack">
+      <h2>What this does and does not do.</h2>
+      <ul class="list">
+        <li><strong>You will still pay for some things.</strong> An AI subscription, hosting, a domain. Call it $20&ndash;60 a month total. The point is replacing hundreds with tens &mdash; not reaching zero, which nobody does.</li>
+        <li><strong>You will own what you build.</strong> The code, the data, and the ability to change it. No seat pricing, no annual increase, no migration if you want to leave.</li>
+        <li><strong>Not everything is worth replacing.</strong> Accounting and payroll are cheap, regulated, and someone else&rsquo;s liability. I will tell you when to keep paying &mdash; usually in week one.</li>
+        <li><strong>Nothing is held back.</strong> You get the full method. The point is that you do not need me in month five.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="two">
+    <div><span class="mono">&sect; 07 &mdash; Fit</span></div>
+    <div class="stack"><h2>This is not for everyone.</h2>
+    <p>Ten seats means I would rather leave one empty than fill it badly.</p></div>
+  </div>
+  <div class="fit">
+    <div class="fit-col"><h3>A good fit if&hellip;</h3><ul>
+      <li>You own or run the business and can decide without a committee</li>
+      <li>You can commit roughly 3&ndash;5 hours a week for four weeks</li>
+      <li>You have at least one tool you resent paying for</li>
+      <li>You are willing to be bad at something for about a week</li>
+    </ul></div>
+    <div class="fit-col"><h3>Not a fit if&hellip;</h3><ul>
+      <li>You want it built for you &mdash; that is a different engagement, and I am happy to talk about it</li>
+      <li>You need it to replace regulated software like payroll or accounting</li>
+      <li>You cannot make the two group calls most weeks</li>
+      <li>You are looking for a course to watch rather than a thing to build</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section id="apply"><div class="wrap">
+  <div class="two">
+    <div>
+      <span class="mono">&sect; 08 &mdash; Apply</span>
+      <div class="price-box" style="margin-top:20px">
+        <div class="amt">$1,000<span> / seat</span></div>
+        <p style="margin-top:16px">One four-week sprint. Ten seats. Both weekly group calls, a 30-minute 1:1 each week you need one, and the full method &mdash; kept, not rented.</p>
+      </div>
+    </div>
+    <div>
+      <h2>Apply for a seat.</h2>
+      <p class="lead" style="margin-top:14px">Applications are read in the order they arrive. If it is not a fit I will tell you, and point you somewhere better.</p>
+
+      <form id="applyForm">
+        <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="company">Business name</label><input id="company" name="company" type="text" autocomplete="organization" required></div>
+        <div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="website">Website</label><input id="website" name="website" type="text" placeholder="yourbusiness.com"></div>
+        <div class="field"><label for="industry">Industry</label><input id="industry" name="industry" type="text" placeholder="Dental practice, HVAC, law firm&hellip;"></div>
+        <div class="field"><label for="goal">Which subscription would you replace first, and what does it cost you?</label><textarea id="goal" name="goal" placeholder="e.g. &ldquo;Our scheduling and intake tools &mdash; about $340/month combined, and neither fits how we actually book.&rdquo;"></textarea></div>
+        <button type="submit" class="btn" id="submitBtn" style="width:100%">Submit application &rarr;</button>
+        <div class="status" id="status"></div>
+      </form>
+
+      <div class="success" id="success">
+        <h3>Application received.</h3>
+        <p>I read these personally and reply within two business days &mdash; either with next steps or an honest no. If you do not hear back, email <a href="mailto:nick@colossalaiconsulting.com">nick@colossalaiconsulting.com</a> directly.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap foot-in">
+  <span>Colossal AI Consulting</span>
+  <a href="mailto:nick@colossalaiconsulting.com">nick@colossalaiconsulting.com</a>
+  <a href="/privacy">Privacy</a>
+</div></footer>
+
+<script>
+(function(){
+  var f=document.getElementById('applyForm'),b=document.getElementById('submitBtn'),s=document.getElementById('status');
+  f.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var body={
+      name:document.getElementById('name').value.trim(),
+      company:document.getElementById('company').value.trim(),
+      email:document.getElementById('email').value.trim(),
+      website:document.getElementById('website').value.trim(),
+      industry:document.getElementById('industry').value.trim(),
+      goal:document.getElementById('goal').value.trim()
+    };
+    if(!body.name||!body.company||!body.email){s.textContent='Please complete name, business name, and work email.';return}
+    if(!/^\S+@\S+\.\S+$/.test(body.email)){s.textContent='Please enter a valid work email.';return}
+    b.disabled=true;b.textContent='Sending…';s.textContent='';
+    try{
+      var r=await fetch('/api/cohort',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      var d=await r.json();
+      if(!r.ok)throw new Error(d.error||'Request failed');
+      if(window.fbq)fbq('track','Lead',{content_name:'Build Sprint',value:1000,currency:'USD'});
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'sprint_application_submitted',industry:body.industry||'not provided'});
+      f.style.display='none';
+      document.getElementById('success').style.display='block';
+      document.getElementById('success').scrollIntoView({behavior:'smooth'});
+    }catch(err){
+      s.innerHTML='Submission failed. Please email <a href="mailto:nick@colossalaiconsulting.com?subject=Build%20Sprint%20Application">nick@colossalaiconsulting.com</a>.';
+      b.disabled=false;b.textContent='Try again →';
+    }
+  });
+})();
+</script>
+</body>
+</html>

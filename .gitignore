@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Generated ad creative — regenerate with:
+#   cd meta-ads-creative && python3 make_statics.py && python3 make_video.py
+meta-ads-creative/out/
+
+# Secrets
+.env
+.env.local
+
+# OS
+.DS_Store
