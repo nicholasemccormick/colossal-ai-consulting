@@ -8,6 +8,31 @@
 <meta name="description" content="AI systems for med spa owners. Missed call recovery, no-show reduction, patient follow-up automation. Free 30-minute assessment."/>
 <meta property="og:title" content="You didn't open a med spa to answer phones."/>
 <meta property="og:description" content="AI handles the calls, follow-ups, booking, and FAQs. You handle the patients. Free 30-min assessment."/>
+<!-- ===================== Meta Pixel ===================== -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '27632747186389488');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=27632747186389488&ev=PageView&noscript=1"/></noscript>
+<!-- ================== End Meta Pixel =================== -->
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W3CLLXT5');</script>
+<!-- End Google Tag Manager -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -153,6 +178,24 @@ section{padding:100px 80px;border-top:1px solid var(--line);}
 .btn-ghost-dark{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;padding:18px 28px;border:1px solid rgba(236,229,212,0.25);color:rgba(236,229,212,0.85);text-decoration:none;transition:background 0.15s;display:inline-block;}
 .btn-ghost-dark:hover{background:rgba(236,229,212,0.07);}
 .cta-note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.35;margin-top:24px;}
+
+/* Missed Revenue Audit form */
+.audit-form{max-width:640px;margin:0 auto;text-align:left;}
+.af-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.af-field{margin-bottom:16px;}
+.af-full{margin-bottom:20px;}
+.audit-form label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.5;margin-bottom:8px;}
+.audit-form input{width:100%;padding:14px 15px;background:rgba(236,229,212,0.06);border:1px solid rgba(236,229,212,0.18);color:var(--bg);font-family:inherit;font-size:15px;border-radius:0;}
+.audit-form input::placeholder{color:rgba(236,229,212,0.3);}
+.audit-form input:focus{outline:none;border-color:var(--accent);background:rgba(236,229,212,0.09);}
+.af-submit{width:100%;text-align:center;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;}
+.af-submit:disabled{opacity:0.5;cursor:default;}
+.af-status{font-size:14px;opacity:0.7;margin-top:14px;min-height:1.2em;text-align:center;}
+.audit-success{display:none;max-width:560px;margin:0 auto;border:1px solid var(--accent);padding:36px;text-align:left;}
+.audit-success .as-h{font-size:26px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;}
+.audit-success p{font-size:15px;line-height:1.7;opacity:0.7;}
+.audit-success a{color:var(--accent);}
+@media(max-width:720px){.af-row{grid-template-columns:1fr;gap:0;}}
 
 /* Footer */
 footer{padding:40px 80px;border-top:1px solid var(--line);background:var(--white);display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:32px;}
@@ -447,12 +490,38 @@ footer{padding:40px 80px;border-top:1px solid var(--line);background:var(--white
     new clients a<br/>
     <span class="accent">month.</span>
   </div>
-  <p class="cta-sub">A 30-minute call. I'll look at your practice, identify the two or three places AI can make the biggest difference, and give you a written action plan — yours to keep whether you work with me or not.</p>
-  <div class="cta-btns">
-    <a href="mailto:nick@colossalaiconsulting.com?subject=Med Spa AI Assessment Request" class="btn-primary-dark">Book Free Assessment →</a>
+  <p class="cta-sub">Book the <strong>Missed Revenue Audit</strong>. Thirty minutes and your call log, and I'll tell you exactly how many consultations you missed last month and what they were worth. Written, yours to keep, whether you hire me or not. If it doesn't show at least $2,000 a month recoverable, I'll tell you that plainly and we're done.</p>
+
+  <form id="auditForm" class="audit-form">
+    <div class="af-row">
+      <div class="af-field"><label for="af-name">Your name</label><input id="af-name" type="text" autocomplete="name" required></div>
+      <div class="af-field"><label for="af-practice">Practice name</label><input id="af-practice" type="text" autocomplete="organization" required></div>
+    </div>
+    <div class="af-row">
+      <div class="af-field"><label for="af-email">Work email</label><input id="af-email" type="email" autocomplete="email" required></div>
+      <div class="af-field"><label for="af-phone">Phone</label><input id="af-phone" type="tel" autocomplete="tel" required></div>
+    </div>
+    <div class="af-row">
+      <div class="af-field"><label for="af-city">City &amp; state</label><input id="af-city" type="text" placeholder="Greenwood, IN"></div>
+      <div class="af-field"><label for="af-system">Booking system</label><input id="af-system" type="text" placeholder="Boulevard, Vagaro, pen and paper&hellip;"></div>
+    </div>
+    <div class="af-field af-full">
+      <label for="af-missed">Roughly how many calls do you think you miss in a week?</label>
+      <input id="af-missed" type="text" placeholder="A guess is fine — that's part of the point">
+    </div>
+    <button type="submit" id="af-submit" class="btn-primary-dark af-submit">Book my free audit &rarr;</button>
+    <div class="af-status" id="af-status"></div>
+  </form>
+
+  <div class="audit-success" id="auditSuccess">
+    <div class="as-h">Audit requested.</div>
+    <p>I read these personally and reply within one business day to book the thirty minutes. If you don't hear back, email <a href="mailto:nick@colossalaiconsulting.com">nick@colossalaiconsulting.com</a> directly.</p>
+  </div>
+
+  <div class="cta-note">Free · 30 minutes · No commitment · Written plan yours to keep</div>
+  <div class="cta-btns" style="margin-top:28px">
     <a href="https://www.linkedin.com/in/nicholasemccormick" target="_blank" class="btn-ghost-dark">Connect on LinkedIn</a>
   </div>
-  <div class="cta-note">Free · 30 minutes · No commitment · Written plan yours to keep</div>
 </section>
 
 <!-- FOOTER -->
@@ -510,6 +579,51 @@ window.addEventListener('scroll', () => {
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
   navLinks.forEach(l => { l.style.color = l.getAttribute('href') === '#'+current ? 'var(--accent)' : ''; });
 });
+
+// Missed Revenue Audit form. This is the conversion event the Meta campaign
+// optimizes against, so the Lead pixel fires only on a successful POST —
+// never on a click. A click is intent; a submitted form is a lead.
+(function () {
+  var f = document.getElementById('auditForm');
+  if (!f) return;
+  var btn = document.getElementById('af-submit');
+  var status = document.getElementById('af-status');
+  var v = function (id) { return (document.getElementById(id).value || '').trim(); };
+
+  f.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var body = {
+      name: v('af-name'), practice: v('af-practice'), email: v('af-email'),
+      phone: v('af-phone'), city: v('af-city'), system: v('af-system'),
+      missedCalls: v('af-missed')
+    };
+    if (!body.name || !body.practice || !body.email || !body.phone) {
+      status.textContent = 'Please complete name, practice, email and phone.'; return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(body.email)) {
+      status.textContent = 'Please enter a valid work email.'; return;
+    }
+    btn.disabled = true; btn.textContent = 'Sending…'; status.textContent = '';
+    try {
+      var r = await fetch('/api/medspa', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      var d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Request failed');
+      if (window.fbq) fbq('track', 'Lead', { content_name: 'Missed Revenue Audit' });
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'medspa_audit_submitted' });
+      f.style.display = 'none';
+      var s = document.getElementById('auditSuccess');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (err) {
+      status.innerHTML = 'Submission failed. Please email <a href="mailto:nick@colossalaiconsulting.com?subject=Missed%20Revenue%20Audit">nick@colossalaiconsulting.com</a>.';
+      btn.disabled = false; btn.textContent = 'Book my free audit →';
+    }
+  });
+})();
 </script>
 </body>
 </html>
